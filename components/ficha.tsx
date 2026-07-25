@@ -15,9 +15,10 @@ import {
   STATUS_CHIP,
   STATUS_GLYPH,
   STATUS_WORD,
-  formatFieldValue,
   num,
+  splitFieldValue,
 } from "@/lib/format";
+import { ThermalDelta } from "./thermal-delta";
 import { ThresholdGauge } from "./threshold-gauge";
 
 /**
@@ -62,13 +63,16 @@ export function Ficha({
   const nema = nemaFor(spec);
 
   return (
-    <section className="plate flex min-h-0 flex-col" aria-labelledby="ficha-title">
-      <header className="border-b border-[var(--color-hairline)] px-3.5 py-3">
+    <section
+      className="plate plate-instrument flex min-h-0 flex-col"
+      aria-labelledby="ficha-title"
+    >
+      <header className="plate-metal px-3.5 py-3 text-[var(--color-ink-inverse)]">
         <div className="mb-2.5 flex items-baseline justify-between gap-3">
-          <h2 id="ficha-title" className="u-nameplate text-[0.9375rem]">
+          <h2 id="ficha-title" className="u-nameplate engraved text-[0.9375rem]">
             Ficha de proyecto
           </h2>
-          <span className="u-datum text-[0.6875rem] text-[var(--color-ink-faint)]">
+          <span className="u-datum text-[0.6875rem] text-[rgba(238,240,236,0.6)]">
             {done}/{BLOCKING_FIELDS.length} bloqueantes
           </span>
         </div>
@@ -76,16 +80,19 @@ export function Ficha({
       </header>
 
       <div className="scroll-pane min-h-0 flex-1">
+        <ThermalDelta spec={spec} />
+
         <GroupHeading
           title="Umbral 1 · abre la compuerta"
           note="Con estos tres ya hay veredicto de tecnología, sin conocer la carga térmica."
         />
-        {GATE_FIELDS.map((key) => (
+        {GATE_FIELDS.map((key, i) => (
           <FieldCard
             key={key}
             fieldKey={key}
             field={spec[key] as Field}
             hot={touched.includes(key)}
+            index={i}
           />
         ))}
 
@@ -108,12 +115,13 @@ export function Ficha({
           title="Umbral 2 · abre el shortlist"
           note="Los modelos concretos no salen hasta que estos cinco estén cerrados."
         />
-        {SHORTLIST_FIELDS.map((key) => (
+        {SHORTLIST_FIELDS.map((key, i) => (
           <FieldCard
             key={key}
             fieldKey={key}
             field={spec[key] as Field}
             hot={touched.includes(key)}
+            index={GATE_FIELDS.length + i}
           />
         ))}
         {spec.component_list && spec.component_list.length > 0 && (
@@ -121,12 +129,13 @@ export function Ficha({
         )}
 
         <GroupHeading title="Contexto" note="No bloquea ninguna decisión." />
-        {CONTEXT_FIELDS.map((key) => (
+        {CONTEXT_FIELDS.map((key, i) => (
           <FieldCard
             key={key}
             fieldKey={key}
             field={spec[key] as Field}
             hot={touched.includes(key)}
+            index={GATE_FIELDS.length + SHORTLIST_FIELDS.length + i}
             compact
           />
         ))}
@@ -141,9 +150,9 @@ export function Ficha({
 
 function GroupHeading({ title, note }: { title: string; note: string }) {
   return (
-    <div className="border-b border-[var(--color-hairline-soft)] bg-[var(--color-field)] px-3.5 py-1.5">
-      <h3 className="u-eyebrow text-[var(--color-ink-muted)]">{title}</h3>
-      <p className="mt-0.5 text-[0.6875rem] leading-snug text-[var(--color-ink-faint)]">
+    <div className="band-chrome px-3.5 py-2">
+      <h3 className="u-eyebrow">{title}</h3>
+      <p className="mt-0.5 text-[0.6875rem] leading-snug text-[rgba(238,240,236,0.5)]">
         {note}
       </p>
     </div>
@@ -155,19 +164,24 @@ function FieldCard({
   field,
   hot = false,
   compact = false,
+  index = 0,
 }: {
   fieldKey: string;
   field: Field;
   hot?: boolean;
   compact?: boolean;
+  index?: number;
 }) {
   const status = field.status;
   // Un `missing` sin decision trabada es un hueco, no una alarma: va neutro.
   const blank = status === "missing" && !field.blocks;
 
+  const { value, unit } = splitFieldValue(fieldKey, field);
+
   return (
     <article
       className={`fieldcard fieldcard-${blank ? "empty" : status}${hot ? " fieldcard-hot animate-settle" : ""}`}
+      style={{ "--stagger": index } as React.CSSProperties}
     >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
@@ -187,13 +201,14 @@ function FieldCard({
       </div>
 
       <p
-        className={`u-datum mt-1 leading-tight ${
+        className={`u-datum mt-1 leading-none ${
           status === "missing"
             ? "text-[var(--color-ink-faint)]"
-            : "text-[1.0625rem] font-medium"
+            : "text-[1.1875rem] font-medium tracking-[-0.02em]"
         }`}
       >
-        {formatFieldValue(fieldKey, field)}
+        {value}
+        {unit && <span className="datum-unit"> {unit}</span>}
       </p>
 
       {!compact && <Receipt field={field} />}
@@ -243,7 +258,7 @@ function ComponentSum({ spec }: { spec: ProjectSpec }) {
   const total = list.reduce((acc, c) => acc + c.w * c.qty, 0);
 
   return (
-    <div className="border-b border-[var(--color-hairline-soft)] px-3.5 py-2 pl-[1.15rem]">
+    <div className="border-b border-[var(--color-hairline-soft)] bg-[var(--color-panel-lift)] px-3.5 py-2 pl-[1.15rem]">
       <span className="u-eyebrow">Suma de componentes declarados</span>
       <table className="mt-1 w-full text-[var(--text-micro)]">
         <tbody>
@@ -277,7 +292,7 @@ function PendingForPss({ spec }: { spec: ProjectSpec }) {
   if (pending.length === 0) return null;
 
   return (
-    <details className="border-b border-[var(--color-hairline-soft)] px-3.5 py-2 last:border-b-0">
+    <details className="bg-[var(--color-panel)] px-3.5 py-2.5">
       <summary className="u-eyebrow cursor-pointer list-none marker:content-none">
         Pendiente para PSS · {pending.length} campos
       </summary>

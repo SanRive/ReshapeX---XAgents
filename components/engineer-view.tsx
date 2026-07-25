@@ -97,11 +97,11 @@ export function EngineerView({ turn }: { turn: TurnResult }) {
   return (
     <div className="mx-auto flex w-full max-w-[62rem] flex-col gap-4 pb-10">
       {/* Cabecera del artefacto: placa antracita, como la chapa de un equipo. */}
-      <header className="rounded-[3px] bg-[var(--color-anthracite)] px-5 py-5 text-[var(--color-ink-inverse)] sm:px-7 sm:py-6">
+      <header className="plate-metal rounded-[3px] px-5 py-5 text-[var(--color-ink-inverse)] sm:px-7 sm:py-6">
         <span className="u-eyebrow text-[rgba(238,240,236,0.55)]">
           Fase 4 · artefacto
         </span>
-        <h1 className="u-nameplate mt-2 text-[clamp(1.5rem,4vw,2.25rem)]">
+        <h1 className="u-nameplate engraved mt-2 text-[clamp(1.5rem,4vw,2.25rem)]">
           Brief técnico
           <br />
           PSS-ready

@@ -256,10 +256,12 @@ function nemaFor(spec: ProjectSpec) {
 
 /** Nombre de archivo estable para la descarga. */
 export function briefFilename(spec: ProjectSpec, now = new Date()): string {
+  // Sin nombre de proyecto el archivo se llama `brief-pss-proyecto-…`, no
+  // `brief-pss-brief-…`: el prefijo ya dice qué es.
   const name =
-    typeof spec.project_name.value === "string"
+    typeof spec.project_name.value === "string" && spec.project_name.value.trim()
       ? spec.project_name.value
-      : "brief";
+      : "proyecto";
   const slug = name
     .toLowerCase()
     .normalize("NFD")

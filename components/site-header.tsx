@@ -1,13 +1,16 @@
 "use client";
 
+import { BrandMark } from "./brand-mark";
+
 export type View = "cliente" | "ingeniero";
 
 /**
- * La chapa del equipo.
+ * La chapa de datos del equipo.
  *
- * Un riel de antracita RAL 7016 — el acabado del gabinete que este producto
- * enfria — con el nombre grabado en ancho expandido. El toggle de vista es lo
- * unico interactivo: una sola ruta, dos roles, sin navegacion.
+ * Aluminio anodizado sobre antracita RAL 7016 —el acabado del gabinete que este
+ * producto climatiza— con el nombre troquelado en ancho expandido y una rejilla
+ * de ventilación cerrando el canto inferior. El toggle de vista es lo único
+ * interactivo: una sola ruta, dos roles, sin navegación.
  */
 export function SiteHeader({
   view,
@@ -19,15 +22,18 @@ export function SiteHeader({
   briefReady: boolean;
 }) {
   return (
-    <header className="shrink-0 bg-[var(--color-anthracite)] text-[var(--color-ink-inverse)]">
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 px-4 py-2.5 sm:px-5">
-        <div className="min-w-0">
-          <p className="u-eyebrow text-[rgba(238,240,236,0.5)]">
-            Pfannenberg · thermal management
-          </p>
-          <h1 className="u-nameplate text-[1.0625rem] leading-none">
-            Engineering Copilot
-          </h1>
+    <header className="nameplate-rail shrink-0 text-[var(--color-ink-inverse)]">
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 px-4 py-3 sm:px-5">
+        <div className="flex min-w-0 items-center gap-3">
+          <BrandMark className="h-8 w-8 shrink-0 text-[rgba(238,240,236,0.85)]" />
+          <div className="min-w-0">
+            <p className="u-eyebrow text-[rgba(238,240,236,0.5)]">
+              Pfannenberg · thermal management
+            </p>
+            <h1 className="u-nameplate engraved text-[1.0625rem] leading-none">
+              Engineering Copilot
+            </h1>
+          </div>
         </div>
 
         <p className="u-datum hidden max-w-[52ch] border-l border-[rgba(238,240,236,0.16)] pl-5 text-[0.6875rem] leading-snug text-[rgba(238,240,236,0.45)] xl:block">
