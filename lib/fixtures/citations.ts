@@ -34,11 +34,23 @@ export const CITE = {
     pagina: "p. 2",
     texto_citado: "High Ambient & Clean or Dirty Conditions → DTS Cooling Units",
   },
+  /**
+   * ⚠ Re-anclado el 2026-07-25 tras verificar el corpus.
+   *
+   * Antes apuntaba al catálogo NA: "Electronics are typically most efficient in
+   * low humidity with a temperature around 95°". Esa frase habla del punto
+   * ÓPTIMO de eficiencia, NO de un máximo, así que no sostiene el default de
+   * 35 °C — un juez la tumba con una pregunta.
+   *
+   * PSS llama a 95 °F la temperatura máxima admisible dentro del gabinete, y
+   * 95 °F = 35 °C exactos. Citar a PSS es más fuerte: es la herramienta que
+   * alimentamos. Misma cita que `DEFAULTS.internal_temp_max_c`.
+   */
   tempInterna: {
-    documento: CAT,
-    pagina: "p. 2",
+    documento: "PSS Tutorial",
+    pagina: "Results",
     texto_citado:
-      "Electronics are typically most efficient in low humidity with a temperature around 95°",
+      "the ambient temperature selected (100°F) is higher than the maximum allowable temperature inside the enclosure (95°F)",
   },
   conveccionNatural: {
     documento: CAT,

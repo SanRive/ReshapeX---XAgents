@@ -1,49 +1,50 @@
 /**
- * EL VALIDADOR DE SOBRES — tarea A4. El corazón del diseño.
+ * A4 — EL VALIDADOR DE SOBRES. El que no se cae nunca.
  *
- * Corre DESPUÉS de cada llamada al LLM, sobre el objeto ya tipado. Es código
+ * Corre DESPUES de cada llamada al LLM, sobre el objeto ya tipado. Es codigo
  * determinista: no pregunta, no reintenta, no razona. Degrada.
  *
- * Consecuencia: el modelo no puede meter un número sin fundamento aunque
- * quiera. Eso vuelve el sistema independiente de la calidad del modelo.
+ * Consecuencia: el modelo no puede meter un numero sin fundamento aunque
+ * quiera. Eso vuelve el sistema independiente de la calidad del modelo, y es
+ * lo que se ensena cuando un juez pregunta si esta mockeado.
  *
- * Referencia: spec §7.2 (capa 1) y CLAUDE.md, regla 1.
+ * Firma fijada en `docs/contratos-de-modulo.md`.
  */
 
 import {
   DEFAULTS,
-  FIELD_KEYS,
-  NUMERIC_FIELD_KEYS,
-  type AnyField,
-  type ExtractedSpec,
-  type FieldKey,
+  NUMERIC_FIELDS,
+  isWhitelistedBasis,
+  type Field,
   type ProjectSpec,
 } from "../project-spec";
+import type { DecisionEntry } from "../turn";
 
-// ---------------------------------------------------------------------------
-// Normalización
-// ---------------------------------------------------------------------------
+/* ==========================================================================
+   Normalizacion
+   ========================================================================== */
 
 /**
- * Colapsa espacios y baja a minúsculas.
+ * Colapsa espacios y baja a minusculas.
  *
- * Sin esto, una cita CORRECTA que cruce un salto de línea del correo se lee
- * como inventada. Es un fallo real: lo cazamos el 2026-07-25 corriendo el
- * smoke test, donde los cuatro proveedores citaron bien y los cuatro fueron
- * marcados como fallo por un `\n`.
+ * El `trim()` no es cosmetico: sin el, una evidencia con espacios en los
+ * extremos produce " la zona ..." y deja de casar con el input.
+ *
+ * Y sin el colapso de espacios, una cita CORRECTA que cruce un salto de linea
+ * del correo se lee como inventada. Es un fallo real: lo cazamos el 2026-07-25
+ * corriendo el smoke test, donde los cuatro proveedores citaron bien y los
+ * cuatro fueron marcados como fallo por un `\n`.
  */
 export function norm(s: string): string {
-  // El trim() no es cosmético: sin él, una evidencia con espacios en los
-  // extremos produce " la zona ..." y deja de casar con el input.
   return s.trim().split(/\s+/).join(" ").toLowerCase();
 }
 
 /**
- * ¿Aparece este número en la evidencia como token propio?
+ * ¿Aparece este numero en la evidencia como token propio?
  *
  * Los bordes importan en las dos direcciones:
  *   value=380, evidence="llega a 38 °C"  → false  (el 380 inventado)
- *   value=38,  evidence="son 380 V"      → false  (no vale que esté DENTRO de otro)
+ *   value=38,  evidence="son 380 V"      → false  (no vale estar DENTRO de otro)
  */
 export function evidenceHasNumber(evidence: string, value: number): boolean {
   const forms = new Set<string>([String(value)]);
@@ -55,163 +56,186 @@ export function evidenceHasNumber(evidence: string, value: number): boolean {
   });
 }
 
-// ---------------------------------------------------------------------------
-// Resultado
-// ---------------------------------------------------------------------------
+/* ==========================================================================
+   El validador
+   ========================================================================== */
 
-export type DecisionEntry = ProjectSpec["decision_log"][number];
+const FIELD_KEYS = Object.keys(DEFAULTS); // solo para tipado laxo; se recorre el spec entero
 
-export interface ValidationResult {
-  spec: ExtractedSpec;
-  log: DecisionEntry[];
-  /** Cuántos campos degradó. Si es > 0, el guardrail actuó — y eso se enseña. */
-  degraded: number;
+function missingField(blocks: string | null | undefined): Field {
+  return { status: "missing", value: null, evidence: null, basis: null, blocks: blocks ?? null };
 }
 
-const MISSING: AnyField = { status: "missing", value: null, evidence: null, basis: null };
+function isFieldLike(v: unknown): v is Field {
+  return !!v && typeof v === "object" && "status" in (v as Record<string, unknown>);
+}
 
-// ---------------------------------------------------------------------------
-// El validador
-// ---------------------------------------------------------------------------
+export interface ValidateResult {
+  clean: ProjectSpec;
+  degraded: DecisionEntry[];
+}
 
 /**
- * Aplica las cuatro reglas a cada campo. Devuelve un spec saneado y el log.
+ * Aplica las cuatro reglas a cada sobre del spec.
  *
  *   declared → `evidence` substring literal del input (normalizado). Si no → missing.
- *   numérico → los dígitos de `value` en `evidence`. Caza el «38 °C → 380».
- *   inferred → `basis` en la lista blanca DEFAULTS. Si no → missing.
+ *   numerico → los digitos de `value` en `evidence`. Caza el «38 °C → 380».
+ *   inferred → `basis` tiene que ser LA cita documentada del campo. Si no → missing.
  *   missing  → `value`, `evidence` y `basis` a null.
+ *
+ * Devuelve el spec saneado y una entrada de log por cada intervencion. Ese log
+ * entra en el brief: es la prueba en papel de que el guardrail actuo.
  */
-export function validateExtraction(raw: ExtractedSpec, input: string): ValidationResult {
-  const normInput = norm(input);
-  const out = { ...raw } as Record<string, unknown>;
-  const log: DecisionEntry[] = [];
-  let degraded = 0;
+export function validate(raw: ProjectSpec, message: string): ValidateResult {
+  const normInput = norm(message);
+  const clean = { ...raw } as unknown as Record<string, unknown>;
+  const degraded: DecisionEntry[] = [];
 
-  const degrade = (key: FieldKey, reason: string, proposed: unknown) => {
-    out[key] = { ...MISSING };
-    log.push({ field: key, action: "degraded", reason, proposed: proposed == null ? null : String(proposed) });
-    degraded++;
-  };
+  for (const [key, value] of Object.entries(raw)) {
+    // component_list no es un sobre: se valida aparte, en sumComponentList.
+    if (!isFieldLike(value)) continue;
+    const f = value;
 
-  for (const key of FIELD_KEYS) {
-    const f = raw[key] as AnyField | undefined;
-
-    // El modelo devolvió algo que no es un sobre.
-    if (!f || typeof f !== "object" || !("status" in f)) {
-      degrade(key, "El modelo no devolvió un sobre {status, value, evidence, basis}.", f);
-      continue;
-    }
+    const drop = (text: string) => {
+      clean[key] = missingField(f.blocks);
+      degraded.push({ kind: "degraded", text });
+    };
 
     if (f.status === "missing") {
-      out[key] = { ...MISSING }; // fuerza value/evidence/basis a null
+      clean[key] = missingField(f.blocks); // fuerza value/evidence/basis a null
       continue;
     }
 
     if (f.status === "declared") {
       if (f.value === null) {
-        degrade(key, "status=declared sin valor.", null);
+        drop(`${key}: status=declared sin valor.`);
         continue;
       }
       if (!f.evidence || !f.evidence.trim()) {
-        degrade(key, "status=declared sin evidencia. La regla exige el fragmento literal que lo respalda.", f.value);
+        drop(
+          `${key}: status=declared sin evidencia. La regla exige el fragmento literal del cliente que lo respalda.`,
+        );
         continue;
       }
       if (!normInput.includes(norm(f.evidence))) {
-        degrade(key, "La evidencia no aparece literalmente en el texto del cliente.", f.evidence);
+        drop(`${key}: la evidencia citada no aparece literalmente en el texto del cliente.`);
         continue;
       }
-      if ((NUMERIC_FIELD_KEYS as readonly string[]).includes(key)) {
+      if (NUMERIC_FIELDS.includes(key)) {
         const n = typeof f.value === "number" ? f.value : Number(f.value);
         if (!Number.isFinite(n)) {
-          degrade(key, "Campo numérico con valor no numérico.", f.value);
+          drop(`${key}: campo numerico con valor no numerico (${String(f.value)}).`);
           continue;
         }
         if (!evidenceHasNumber(f.evidence, n)) {
-          degrade(
-            key,
-            `El valor ${n} no aparece en su propia evidencia. El dato citado no dice eso.`,
-            f.value,
+          drop(
+            `${key}: el valor ${n} no aparece en su propia evidencia — el fragmento citado no dice eso.`,
           );
           continue;
         }
-        out[key] = { ...f, value: n, basis: null };
+        clean[key] = { ...f, value: n, basis: null };
         continue;
       }
-      out[key] = { ...f, basis: null }; // declared no lleva basis
+      clean[key] = { ...f, basis: null }; // un declared no lleva basis
       continue;
     }
 
     if (f.status === "inferred") {
-      if (!f.basis || !(f.basis in DEFAULTS)) {
-        degrade(
-          key,
-          "status=inferred con una base que no está en la lista blanca de defaults documentados.",
-          f.basis,
+      if (!isWhitelistedBasis(key, f.basis)) {
+        drop(
+          `${key}: status=inferred con una base que no esta en la lista blanca de defaults documentados.`,
         );
         continue;
       }
-      const def = DEFAULTS[f.basis as keyof typeof DEFAULTS];
-      // El valor de un inferido lo pone la lista blanca, no el modelo.
-      out[key] = { status: "inferred", value: def.value, evidence: null, basis: f.basis };
+      const def = DEFAULTS[key]!;
+      const esClasificacion = def.value === undefined;
+
+      if (esClasificacion && f.value === null) {
+        drop(`${key}: regla de clasificacion invocada sin valor.`);
+        continue;
+      }
+
+      // En un default, el valor lo pone la lista blanca, no el modelo.
+      // En una clasificacion, el modelo elige — pero solo dentro del enum, que
+      // el schema Zod ya acoto, y solo con la cita documentada.
+      clean[key] = {
+        status: "inferred",
+        value: esClasificacion ? f.value : def.value!,
+        evidence: null,
+        basis: def.citation,
+        blocks: null,
+      };
+
+      if (esClasificacion) {
+        degraded.push({
+          kind: "default",
+          text: `${key}: clasificado como «${String(f.value)}» segun la regla documentada del catalogo.`,
+          citation: def.citation,
+        });
+        continue;
+      }
+
       if (f.value !== null && String(f.value) !== String(def.value)) {
-        log.push({
-          field: key,
-          action: "defaulted",
-          reason: `El modelo propuso ${f.value}; se aplica el valor documentado ${def.value}. ${def.cita}`,
-          proposed: String(f.value),
+        degraded.push({
+          kind: "default",
+          text: `${key}: el modelo propuso ${String(f.value)}; se aplica el valor documentado ${String(def.value)}.`,
+          citation: def.citation,
         });
       } else {
-        log.push({ field: key, action: "defaulted", reason: def.cita, proposed: null });
+        degraded.push({
+          kind: "default",
+          text: `${key}: sin dato declarado, se aplica el default documentado ${String(def.value)}.`,
+          citation: def.citation,
+        });
       }
       continue;
     }
 
-    degrade(key, `Estado desconocido: ${String((f as AnyField).status)}`, f.value);
+    drop(`${key}: estado desconocido «${String((f as Field).status)}».`);
   }
 
-  return { spec: out as unknown as ExtractedSpec, log, degraded };
+  return { clean: clean as unknown as ProjectSpec, degraded };
 }
 
-// ---------------------------------------------------------------------------
-// El camino alterno de la carga térmica — SUMA, no estimación
-// ---------------------------------------------------------------------------
+/* ==========================================================================
+   El camino alterno de la carga termica — SUMA, no estimacion
+   ========================================================================== */
 
 /**
  * Si el cliente da una lista de componentes con sus watts declarados, se SUMAN.
  *
- * Esto NO viola la regla 1: sumar valores declarados es aritmética, no
- * estimación. Lo que nunca se hace es derivar la disipación de la potencia
+ * Esto NO viola la regla 1: sumar valores declarados es aritmetica, no
+ * estimacion. Lo que nunca se hace es derivar la disipacion de la potencia
  * nominal — para eso el campo se queda `missing`.
  */
-export function sumComponentList(spec: ExtractedSpec): ValidationResult {
+export function sumComponentList(spec: ProjectSpec): ValidateResult {
   const list = spec.component_list;
-  if (!list || list.length === 0) return { spec, log: [], degraded: 0 };
-  if (spec.total_dissipation_w.status !== "missing") return { spec, log: [], degraded: 0 };
+  if (!list || list.length === 0) return { clean: spec, degraded: [] };
+  if (spec.total_dissipation_w.status !== "missing") return { clean: spec, degraded: [] };
 
   const total = list.reduce((acc, c) => acc + c.w * c.qty, 0);
-  if (!Number.isFinite(total) || total <= 0) return { spec, log: [], degraded: 0 };
+  if (!Number.isFinite(total) || total <= 0) return { clean: spec, degraded: [] };
 
   const detalle = list.map((c) => `${c.qty}×${c.name} ${c.w} W`).join(" + ");
 
   return {
-    spec: {
+    clean: {
       ...spec,
       total_dissipation_w: {
         status: "declared",
         value: total,
         evidence: null,
         basis: null,
-      } as ExtractedSpec["total_dissipation_w"],
+        blocks: null,
+      },
     },
-    log: [
+    degraded: [
       {
-        field: "total_dissipation_w",
-        action: "summed",
-        reason: `Suma de las disipaciones declaradas por componente: ${detalle} = ${total} W. Suma, no estimación.`,
-        proposed: null,
+        kind: "extract",
+        text: `Disipacion total por suma de lo declarado por componente: ${detalle} = ${total} W. Suma, no estimacion.`,
       },
     ],
-    degraded: 0,
   };
 }
+
+export { FIELD_KEYS };

@@ -239,6 +239,114 @@ export const NEMA_LABELS: Record<NemaType, string> = {
 };
 
 /* ==========================================================================
+   DEFAULTS — la lista blanca que hace cumplir la regla 3 del validador
+   --------------------------------------------------------------------------
+   Un `inferred` solo sobrevive si su campo esta aqui Y su `basis` es
+   exactamente la cita documentada. Sin esta tabla, el modelo puede inventar
+   una justificacion que suene creible y colarla como inferencia legitima.
+
+   ✅ Verificado por grep contra `corpus_txt/` el 2026-07-25. No anadir una
+   entrada sin comprobar que la cita existe textualmente.
+   ========================================================================== */
+
+export interface DefaultEntry {
+  /**
+   * Valor fijo del default. Si se omite, la entrada NO es un default sino una
+   * **regla de clasificacion documentada**: el modelo puede elegir el valor
+   * (el enum de Zod ya acota cuales son validos), pero no puede inventarse la
+   * regla — la cita tiene que ser exactamente esta.
+   *
+   * Ejemplo: el cliente dice «la zona se lava a presion». La matriz del
+   * catalogo tiene una fila «Very Harsh, Dirty». Clasificar ahi no es aplicar
+   * un default ni es inventar: es mapear texto declarado al vocabulario del
+   * catalogo con la regla del propio catalogo.
+   */
+  value?: Field["value"];
+  citation: Citation;
+}
+
+export const DEFAULTS: Record<string, DefaultEntry> = {
+  internal_temp_max_c: {
+    value: 35,
+    /**
+     * Re-anclado el 2026-07-25. El anclaje anterior era del catalogo NA
+     * ("Electronics are typically most efficient ... around 95°"), que habla
+     * del punto OPTIMO de eficiencia y no de un maximo: no sostiene el default
+     * y un juez lo tumba con una pregunta. PSS llama a 95 °F la temperatura
+     * maxima admisible, y 95 °F = 35 °C exactos. Citar a PSS es mas fuerte,
+     * porque PSS es la herramienta que alimentamos.
+     */
+    citation: {
+      documento: "PSS Tutorial",
+      pagina: "Results",
+      texto_citado:
+        "the ambient temperature selected (100°F) is higher than the maximum allowable temperature inside the enclosure (95°F)",
+    },
+  },
+  housing_material: {
+    value: "painted_steel",
+    citation: {
+      documento: "Thermal_Management_Catalog_12_Page-Final_2024",
+      pagina: "p. 7",
+      texto_citado: "Standard finishes: RAL 7035, ANSI 61, stainless steel",
+    },
+  },
+  housing_color: {
+    value: "RAL 7035",
+    citation: {
+      documento: "Thermal_Management_Catalog_12_Page-Final_2024",
+      pagina: "p. 7",
+      texto_citado: "Standard finishes: RAL 7035, ANSI 61, stainless steel",
+    },
+  },
+  enclosure_count: {
+    value: 1,
+    citation: {
+      documento: "spec §3.4",
+      pagina: "alcance",
+      texto_citado: "Un gabinete por analisis",
+    },
+  },
+
+  /**
+   * REGLA DE CLASIFICACION, no default: sin `value`.
+   *
+   * El cliente describe su entorno en prosa («se lava a presion», «hay mucho
+   * polvo de cemento»); la matriz del catalogo tiene tres filas. Mapear de una
+   * a otra es clasificar, no inventar — pero solo vale con la regla del
+   * catalogo, y el enum de Zod acota los valores posibles a tres.
+   */
+  air_quality: {
+    citation: {
+      documento: "Thermal_Management_Catalog_12_Page-Final_2024",
+      pagina: "p. 2",
+      texto_citado: "High Ambient and/or Very Harsh, Dirty Conditions → PWS Air/Water Heat Exchangers",
+    },
+  },
+};
+
+/**
+ * Campos numericos: sobre estos corre la regla de «los digitos de `value`
+ * tienen que aparecer en `evidence`». Se deriva de FIELD_UNITS para que no
+ * puedan desincronizarse: si un campo tiene unidad fisica, es numerico.
+ */
+export const NUMERIC_FIELDS: readonly string[] = Object.keys(FIELD_UNITS);
+
+/**
+ * ¿Es `basis` la cita documentada de este campo?
+ *
+ * No basta con que el campo tenga default: la cita tiene que ser LA cita. Si
+ * solo comprobaramos la existencia del campo, el modelo podria inferir el
+ * valor correcto con una fuente inventada, que es media mentira.
+ */
+export function isWhitelistedBasis(fieldKey: string, basis: Citation | null): boolean {
+  if (!basis) return false;
+  const def = DEFAULTS[fieldKey];
+  if (!def) return false;
+  return basis.texto_citado.trim() === def.citation.texto_citado.trim();
+}
+
+/* ==========================================================================
    Helpers de lectura — los usa la UI, no deciden nada
    ========================================================================== */
 
