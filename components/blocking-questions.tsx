@@ -1,4 +1,4 @@
-import { FIELD_LABELS } from "@/lib/project-spec";
+import { FIELD_LABELS } from "@/lib/format";
 import type { BlockingQuestion } from "@/lib/turn";
 import { CiteStamp } from "./cite";
 

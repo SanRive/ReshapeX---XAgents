@@ -1,28 +1,32 @@
 /**
  * D5 — el generador del brief.
  *
- * Lo ensambla CODIGO a partir de datos ya validados. El modelo no escribe aqui:
- * si un numero aparece en este documento es porque sobrevivio al validador de
- * evidencia o salio del motor de reglas con su cita.
+ * Lo ensambla CÓDIGO a partir de datos ya validados. El modelo no escribe aquí:
+ * si un número aparece en este documento es porque sobrevivió al validador de
+ * evidencia o salió del motor de reglas con su cita.
  *
  * El orden de las secciones copia el de los tabs de PSS —Enclosure, Environment,
- * Heat Dissipation— para que el ingeniero de aplicacion lo lea de arriba abajo
+ * Heat Dissipation— para que el ingeniero de aplicación lo lea de arriba abajo
  * mientras llena el wizard, sin traducir nada.
  */
 
 import {
-  BLOCKING_FIELDS,
+  missingForShortlist,
+  type AnyField,
+  type FieldKey,
+  type ProjectSpec,
+} from "../project-spec";
+import {
+  blockingFields,
   FIELD_LABELS,
   FIELD_UNITS,
-  NEMA_BY_LOCATION,
   NEMA_LABELS,
-  type Field,
-  type Location,
-  type ProjectSpec,
-  type ProjectSpecKey,
-} from "../project-spec";
-import { enumLabel, num } from "../format";
-import type { TurnResult } from "../turn";
+  basisCitation,
+  blocksText,
+  enumLabel,
+  num,
+} from "../format";
+import type { TurnResult, Verdict } from "../turn";
 
 const ENCLOSURE_FIELDS = [
   "height_mm",
@@ -33,7 +37,7 @@ const ENCLOSURE_FIELDS = [
   "housing_material",
   "housing_color",
   "supply_voltage",
-] as const satisfies readonly ProjectSpecKey[];
+] as const satisfies readonly FieldKey[];
 
 const ENVIRONMENT_FIELDS = [
   "location",
@@ -43,19 +47,21 @@ const ENVIRONMENT_FIELDS = [
   "wind_exposure",
   "installation",
   "air_quality",
-] as const satisfies readonly ProjectSpecKey[];
-
-const HEAT_FIELDS = [
-  "total_dissipation_w",
-  "measured_temp_inside_c",
-  "measured_temp_outside_c",
-] as const satisfies readonly ProjectSpecKey[];
+] as const satisfies readonly FieldKey[];
 
 const MARK = { declared: "✅", inferred: "⚠️", missing: "❌" } as const;
+const ACTION_MARK = {
+  degraded: "❌ degradado",
+  defaulted: "⚠️ default",
+  summed: "➕ sumado",
+  accepted: "✅ aceptado",
+} as const;
 
 export function generateBrief(turn: TurnResult, now = new Date()): string {
   const { spec } = turn;
   const out: string[] = [];
+  const blocking = blockingFields(spec).length;
+  const done = Math.max(0, blocking - missingForShortlist(spec).length);
 
   out.push(`# Brief técnico PSS-ready`);
   out.push("");
@@ -73,21 +79,25 @@ export function generateBrief(turn: TurnResult, now = new Date()): string {
   );
   out.push("");
   out.push(
-    `**Cobertura de datos:** ${countDone(spec)} de ${BLOCKING_FIELDS.length} campos bloqueantes cerrados.`,
+    `**Cobertura de datos:** ${done} de ${blocking} campos bloqueantes cerrados.`,
   );
 
   out.push(...tabSection("1 · Enclosure", ENCLOSURE_FIELDS, spec));
   out.push(...tabSection("2 · Environment", ENVIRONMENT_FIELDS, spec));
 
-  const nema = nemaFor(spec);
-  if (nema) {
+  if (spec.derived.nema_required) {
     out.push("");
     out.push(
-      `**NEMA requerido:** ${NEMA_LABELS[nema]} — derivado de la ubicación declarada (PSS Tutorial, tab Environment).`,
+      `**NEMA requerido:** ${NEMA_LABELS[spec.derived.nema_required]} — derivado de la ubicación declarada (PSS Tutorial, tab Environment).`,
+    );
+  }
+  if (spec.derived.available_mounting_faces !== null) {
+    out.push(
+      `**Caras libres para montar:** ${spec.derived.available_mounting_faces} — derivado de la instalación declarada.`,
     );
   }
 
-  out.push(...tabSection("3 · Heat Dissipation", HEAT_FIELDS, spec));
+  out.push(...tabSection("3 · Heat Dissipation", ["total_dissipation_w"], spec));
 
   if (spec.component_list?.length) {
     out.push("");
@@ -100,6 +110,23 @@ export function generateBrief(turn: TurnResult, now = new Date()): string {
     }
     const total = spec.component_list.reduce((a, c) => a + c.w * c.qty, 0);
     out.push(`| **Total** | | | **${total}** |`);
+  }
+
+  out.push("");
+  out.push(
+    spec.measured_temps
+      ? `**Temperaturas registradas:** interior ${spec.measured_temps.inside_c} °C · exterior ${spec.measured_temps.outside_c} °C. ` +
+          `Es el tercer camino de PSS: se detecta y se deriva, el cálculo no lo implementamos.`
+      : `**Temperaturas registradas:** no declaradas. Es el tercer camino de PSS; si existieran, el cálculo lo hace PSS.`,
+  );
+
+  if (spec.derived.required_capacity_btuh !== null) {
+    out.push("");
+    out.push(
+      `**Capacidad requerida:** ${num(spec.derived.required_w ?? 0)} W = ` +
+        `**${num(spec.derived.required_capacity_btuh)} Btu/h**, aplicando el margen del 10 % ` +
+        `documentado en DTS_2017.`,
+    );
   }
 
   if (turn.gate) {
@@ -123,11 +150,7 @@ export function generateBrief(turn: TurnResult, now = new Date()): string {
     const s = turn.shortlist;
     out.push(`## Shortlist · Cooling Units`);
     out.push("");
-    out.push(
-      `Disipación declarada **${num(s.total_dissipation_w)} W** × 1.10 de margen = ` +
-        `**${num(s.required_w)} W** = **${num(s.required_btuh)} Btu/h** requeridos. ` +
-        `${s.units_needed} unidades.`,
-    );
+    out.push(`${s.units_needed} unidades, una por gabinete.`);
     out.push("");
     out.push(`| Modelo | Btu/h | Voltajes | NEMA | Montaje | Alto mm | Veredicto |`);
     out.push(`|---|---|---|---|---|---:|---|`);
@@ -170,11 +193,13 @@ export function generateBrief(turn: TurnResult, now = new Date()): string {
 
   out.push(`## Log de decisiones`);
   out.push("");
-  for (const d of turn.decisions) {
-    const cite = d.citation
-      ? ` _(${d.citation.documento} · ${d.citation.pagina})_`
-      : "";
-    out.push(`- \`${d.kind}\` ${d.text}${cite}`);
+  out.push(
+    `Escrito por el validador, no por el modelo. Es la prueba en papel de que el guardrail actuó.`,
+  );
+  out.push("");
+  for (const d of spec.decision_log) {
+    const proposed = d.proposed !== null ? ` Propuesto: \`${d.proposed}\`.` : "";
+    out.push(`- ${ACTION_MARK[d.action]} \`${d.field}\` — ${d.reason}${proposed}`);
   }
   out.push("");
 
@@ -198,22 +223,29 @@ export function generateBrief(turn: TurnResult, now = new Date()): string {
 
 function tabSection(
   title: string,
-  keys: readonly ProjectSpecKey[],
+  keys: readonly FieldKey[],
   spec: ProjectSpec,
 ): string[] {
-  const out = ["", `## ${title}`, "", `| Campo | Valor | Estado | Respaldo |`, `|---|---|---|---|`];
+  const out = [
+    "",
+    `## ${title}`,
+    "",
+    `| Campo | Valor | Estado | Respaldo |`,
+    `|---|---|---|---|`,
+  ];
   for (const key of keys) {
-    const f = spec[key] as Field;
-    const blank = f.status === "missing" && !f.blocks;
+    const f = spec[key] as AnyField;
+    const blocks = blocksText(key, spec);
+    const blank = f.status === "missing" && !blocks;
     const mark = blank ? "· sin dato" : `${MARK[f.status]} ${f.status}`;
     out.push(
-      `| ${FIELD_LABELS[key] ?? key} \`${key}\` | ${value(key, f)} | ${mark} | ${support(f)} |`,
+      `| ${FIELD_LABELS[key] ?? key} \`${key}\` | ${value(key, f)} | ${mark} | ${support(f, blocks)} |`,
     );
   }
   return out;
 }
 
-function value(key: string, f: Field): string {
+function value(key: string, f: AnyField): string {
   if (f.value === null) return "—";
   if (typeof f.value === "boolean") return f.value ? "sí" : "no";
   if (typeof f.value === "number") {
@@ -223,43 +255,26 @@ function value(key: string, f: Field): string {
   return enumLabel(f.value);
 }
 
-function support(f: Field): string {
+function support(f: AnyField, blocks: string | null): string {
   if (f.status === "declared" && f.evidence) return `«${f.evidence}»`;
-  if (f.status === "inferred" && f.basis) {
-    return `${f.basis.documento} · ${f.basis.pagina}: «${f.basis.texto_citado}»`;
+  if (f.status === "inferred") {
+    return basisCitation(f) ?? `default sin respaldo · basis \`${f.basis}\``;
   }
-  if (f.status === "missing") return f.blocks ? `traba: ${f.blocks}` : "pendiente-PSS";
-  return "";
+  return blocks ? `traba: ${blocks}` : "pendiente-PSS";
 }
 
-function plain(f: Field): string {
-  if (f.value === null) return "—";
-  return String(f.value);
+function plain(f: AnyField): string {
+  return f.value === null ? "—" : String(f.value);
 }
 
-function countDone(spec: ProjectSpec): number {
-  return BLOCKING_FIELDS.filter((k) => {
-    const f = spec[k] as Field;
-    return f.status !== "missing" && f.value !== null;
-  }).length;
-}
-
-function verdictMark(v: "viable" | "conditional" | "rejected"): string {
+function verdictMark(v: Verdict): string {
   return v === "viable" ? "✅" : v === "conditional" ? "⚠️" : "❌";
-}
-
-function nemaFor(spec: ProjectSpec) {
-  const loc = spec.location;
-  if (loc.status === "missing" || typeof loc.value !== "string") return null;
-  return NEMA_BY_LOCATION[loc.value as Location] ?? null;
 }
 
 /** Nombre de archivo estable para la descarga. */
 export function briefFilename(spec: ProjectSpec, now = new Date()): string {
   const name =
-    typeof spec.project_name.value === "string"
-      ? spec.project_name.value
-      : "brief";
+    typeof spec.project_name.value === "string" ? spec.project_name.value : "brief";
   const slug = name
     .toLowerCase()
     .normalize("NFD")

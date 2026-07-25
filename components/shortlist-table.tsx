@@ -1,4 +1,5 @@
 import { num, VERDICT_CHIP, VERDICT_GLYPH, VERDICT_WORD } from "@/lib/format";
+import type { AnyField, ProjectSpec } from "@/lib/project-spec";
 import type { ModelCandidate, Shortlist } from "@/lib/turn";
 import { CiteStamp } from "./cite";
 
@@ -13,9 +14,18 @@ import { CiteStamp } from "./cite";
  * Los descartados no se esconden: van en la misma tabla, con la barra en gris y
  * su razon. Enseñar lo que se descarto y por que es la mitad del producto.
  */
-export function ShortlistTable({ shortlist }: { shortlist: Shortlist }) {
+export function ShortlistTable({
+  shortlist,
+  spec,
+}: {
+  shortlist: Shortlist;
+  spec: ProjectSpec;
+}) {
+  // Las cifras vienen del contrato: `derived` lo calcula código, nunca el modelo.
+  const required = spec.derived.required_capacity_btuh ?? 0;
+  const totalW = (spec.total_dissipation_w as AnyField).value;
   const all = [...shortlist.candidates, ...shortlist.rejected];
-  const domain = computeDomain(all, shortlist.required_btuh);
+  const domain = computeDomain(all, required);
 
   return (
     <section className="plate" aria-labelledby="shortlist-title">
@@ -31,13 +41,15 @@ export function ShortlistTable({ shortlist }: { shortlist: Shortlist }) {
 
       <div className="border-b border-[var(--color-hairline-soft)] px-3.5 py-2.5">
         <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
-          <Figure label="Disipación declarada" value={`${num(shortlist.total_dissipation_w)} W`} />
-          <Figure label="× 1.10 margen" value={`${num(shortlist.required_w)} W`} />
           <Figure
-            label="Requerido"
-            value={`${num(shortlist.required_btuh)} Btu/h`}
-            strong
+            label="Disipación declarada"
+            value={typeof totalW === "number" ? `${num(totalW)} W` : "—"}
           />
+          <Figure
+            label="× 1.10 margen"
+            value={`${num(spec.derived.required_w ?? 0)} W`}
+          />
+          <Figure label="Requerido" value={`${num(required)} Btu/h`} strong />
           <Figure label="Unidades" value={`${shortlist.units_needed}`} />
         </div>
       </div>
@@ -46,7 +58,7 @@ export function ShortlistTable({ shortlist }: { shortlist: Shortlist }) {
         <table className="qs-table min-w-[46rem]">
           <caption className="sr-only">
             Modelos de cooling unit evaluados contra una capacidad requerida de{" "}
-            {num(shortlist.required_btuh)} Btu/h.
+            {num(required)} Btu/h.
           </caption>
           <thead>
             <tr>
@@ -60,7 +72,7 @@ export function ShortlistTable({ shortlist }: { shortlist: Shortlist }) {
                     aria-hidden
                   />
                   <span className="normal-case tracking-normal">
-                    {num(shortlist.required_btuh)}
+                    {num(required)}
                   </span>
                 </span>
               </th>
@@ -75,7 +87,7 @@ export function ShortlistTable({ shortlist }: { shortlist: Shortlist }) {
                 key={c.model}
                 candidate={c}
                 domain={domain}
-                required={shortlist.required_btuh}
+                required={required}
               />
             ))}
           </tbody>

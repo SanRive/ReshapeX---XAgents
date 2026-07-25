@@ -2,15 +2,18 @@
  * Citas del corpus que necesitan los fixtures y la UI.
  *
  * Transcritas a mano del catalogo con su pagina (spec §4.2 y §4.2.b). Cuando la
- * pista B publique `lib/rules/catalog-data.ts`, este archivo pasa a re-exportar
- * de alli y deja de ser fuente. Hasta entonces es lo que permite que la UI
- * arranque sin esperar al motor de reglas.
+ * pista B publique `lib/rules/catalog-data.ts`, este archivo se borra y las
+ * citas salen de alli. Hasta entonces es lo que permite que la UI arranque sin
+ * esperar al motor de reglas.
+ *
+ * No confundir con `DEFAULTS` del contrato: eso justifica valores por defecto y
+ * `basis` es una clave suya. Esto justifica veredictos y descartes.
  *
  * ⚠ Pendiente del spec §6: verificar la numeracion de pagina real del catalogo
  * NA de 12 paginas antes de citarla frente a un juez.
  */
 
-import type { Citation } from "../project-spec";
+import type { Citation } from "../turn";
 
 const CAT = "Thermal_Management_Catalog_12_Page-Final_2024";
 const PSS = "PSS Tutorial";

@@ -1,12 +1,11 @@
 # Contratos de módulo — lo que falta implementar
 
-La web está construida y corre contra el fixture del caso §5. Este documento es
-lo que **falta**, con la firma exacta que cada pista tiene que cumplir para que
-la UI no se toque.
+La web está construida y corre contra los fixtures del contrato. Este documento
+es lo que **falta**, con la firma exacta que cada pista tiene que cumplir para
+que la UI no se toque.
 
-**Regla de oro que sigue en pie:** cada tarea es dueña de archivos distintos.
-Los tipos ya existen en `lib/project-spec.ts` y `lib/turn.ts` — nadie los
-reescribe, todos los importan.
+**El contrato es `lib/project-spec.ts` (T0.2).** Nadie lo reescribe: todos lo
+importan. Los tipos salen de `z.infer<>`.
 
 ---
 
@@ -14,14 +13,47 @@ reescribe, todos los importan.
 
 | Qué | Dónde | Verificado |
 |---|---|---|
-| El contrato Zod `Field` / `ProjectSpec` (T0.2) | `lib/project-spec.ts` | compila |
-| Fixtures del caso §5 y del fuera de alcance | `lib/fixtures/` | pintan la UI entera |
+| El contrato Zod, `DEFAULTS`, umbrales y helpers (T0.2) | `lib/project-spec.ts` | 21 tests |
+| Fixtures de Barranquilla y del fuera de alcance | `lib/fixtures/` | evidencia comprobada literal |
 | Chat + ficha de tres estados + vista ingeniero (D1–D4) | `app/page.tsx`, `components/` | `npm run build` |
 | Generador de brief + descarga .md (D5) | `lib/brief/generate.ts` | descarga |
-| Fallback de proveedor con **rotación de claves** (A2) | `lib/llm/providers.ts`, `lib/llm/key-pool.ts` | 14 tests en verde |
+| Fallback de proveedor con **rotación de claves** (A2) | `lib/llm/` | 14 tests |
 | Guardrail de fuera de alcance (I3) | `lib/fixtures/out-of-scope.ts`, `app/api/turn/route.ts` | responde por HTTP |
 
 `POST /api/turn` ya devuelve el guardrail y devuelve **501** para todo lo demás.
+
+### Andamio que se borra
+
+`lib/demo/` es de la pista D y **no es parte del contrato**: contiene el estado
+del turno 2, los veredictos de la compuerta, el shortlist, las citas del
+catálogo y el guion de la demo. Todo eso son salidas de A, B y C simuladas para
+que la UI se pueda enseñar hoy. Cuando esas pistas aterricen, la carpeta entera
+desaparece.
+
+---
+
+## Cómo se lee un campo
+
+```ts
+type AnyField = {
+  status: "declared" | "inferred" | "missing";
+  value: string | number | boolean | null;
+  evidence: string | null;   // substring literal del input · solo si declared
+  basis: string | null;      // CLAVE de DEFAULTS   · solo si inferred
+};
+```
+
+**`basis` es una clave, no un texto.** El texto de la cita sale de
+`DEFAULTS[basis].cita`. Eso es lo que impide que el modelo invente una
+justificación creíble: si la clave no está en la lista blanca, el validador
+degrada el campo. La UI usa `basisCitation()` de `lib/format.ts` para resolverlo.
+
+**No hay campo `blocks`.** Qué traba un campo se deriva de los umbrales
+(`GATE_REQUIRED`, `SHORTLIST_REQUIRED`, `missingForShortlist`). El texto legible
+vive en `blocksText()` de `lib/format.ts`, que es de la pista D.
+
+**El `decision_log` vive dentro del `ProjectSpec`**, escrito por el validador.
+No hay un segundo log: la vista ingeniero pinta ese y solo ese.
 
 ---
 
@@ -30,44 +62,54 @@ reescribe, todos los importan.
 ### `lib/extract/extract.ts`
 
 ```ts
-import { ProjectSpecSchema, type ProjectSpec } from "@/lib/project-spec";
+import { ExtractedSpecSchema, type ExtractedSpec } from "@/lib/project-spec";
 import { withProviderFallback } from "@/lib/llm/providers";
 import type { ProviderTrace } from "@/lib/turn";
 
 export async function extract(
   message: string,
-  current: ProjectSpec,
-): Promise<{ raw: ProjectSpec; trace: ProviderTrace }>;
+  current: ExtractedSpec,
+): Promise<{ raw: ExtractedSpec; trace: ProviderTrace }>;
 ```
 
-Usa `withProviderFallback`, que ya resuelve la cadena y la rotación de claves.
-El callback recibe `{ apiKey, config, signal }` y devuelve lo que produzca
-`generateObject`; el `trace` que sale es el que la UI pinta debajo del mensaje.
+Se le pasa `ExtractedSpecSchema` a `generateObject`, no `ProjectSpecSchema`: el
+modelo no debe poder escribir `derived` ni `decision_log`.
 
-Lanzar `ProviderCallError(message, status)` cuando el proveedor responda mal —
-es lo que le dice al pool si quemar la clave o no.
+`withProviderFallback` ya resuelve la cadena y la rotación de claves. El callback
+recibe `{ apiKey, config, signal }`. Lanzar `ProviderCallError(message, status)`
+cuando el proveedor responda mal — es lo que le dice al pool si quemar la clave.
 
 ### `lib/extract/validate.ts` — **A4, el que no se cae nunca**
 
 ```ts
 export function validate(
-  raw: ProjectSpec,
+  raw: ExtractedSpec,
   message: string,
-): { clean: ProjectSpec; degraded: DecisionEntry[] };
+): { clean: ExtractedSpec; log: ProjectSpec["decision_log"] };
 ```
 
-Las cuatro reglas, tal como están en `lib/project-spec.ts`:
+Las cuatro reglas están escritas en el docblock de `field()` en el contrato.
+`NUMERIC_FIELD_KEYS` ya lista sobre qué campos corre la regla de los dígitos.
 
-- `declared` → `evidence` debe ser substring literal del input **normalizando
-  espacios y mayúsculas**. Si no → `missing`.
-- Campo numérico → los dígitos de `value` deben aparecer en `evidence`. Aquí
-  muere el `22 kW → 22000` y el `38 → 380`.
-- `inferred` → `basis` debe coincidir con una entrada de la lista blanca
-  `DEFAULTS`. Si no → `missing`.
-- `missing` → `value` se fuerza a `null`.
+Cada degradación escribe una entrada con `action: "degraded"` y el valor
+propuesto en `proposed`. **Eso se ve en pantalla**: la ficha lo pinta debajo del
+campo y el brief lo lleva entero. Es la prueba de que el guardrail actuó.
 
-Cada degradación devuelve un `DecisionEntry` de `kind: "degraded"`. **Ese log
-entra en el brief**: la UI ya lo pinta y es la prueba de que el guardrail actuó.
+> ### ⚠️ Decisión pendiente: el camino de la suma
+>
+> Cuando hay `component_list`, `total_dissipation_w` se calcula sumando. El
+> resultado (1 350) **no aparece literal en ningún mensaje**, así que la regla de
+> los dígitos lo degradaría y el shortlist no saldría nunca.
+>
+> El contrato ya trae `action: "summed"` en el log, lo que sugiere que el camino
+> queda exento — el valor lo escribe código, no el modelo. El fixture del turno 2
+> está construido con esa premisa y hay un test que lo deja por escrito:
+> `lib/demo/__tests__/fixtures.test.ts` → *"la suma es literal en sus términos,
+> no en su resultado"*.
+>
+> **Si A decide lo contrario, ese test es el que hay que cambiar, y el shortlist
+> deja de salir en la demo.** Conviene cerrarlo por voz antes de escribir
+> `validate.ts`.
 
 ### `lib/extract/post-check.ts` — A6
 
@@ -79,9 +121,18 @@ export function postCheck(
 ): { text: string; replaced: boolean };
 ```
 
-Todo número de la prosa tiene que existir en el spec validado o en un resultado
-de tool de ese turno. Si no, se sustituye por la narración plantilla y se marca.
 La UI ya lee `ChatMessage.postCheckReplaced` y pinta el aviso.
+
+### Derivados
+
+Los calcula código, nunca el modelo:
+
+```ts
+required_w              = total_dissipation_w * 1.10   // margen citado, DTS_2017
+required_capacity_btuh  = required_w * 3.412           // conversión de unidades
+nema_required           ← location                     // PSS Tutorial, Environment
+available_mounting_faces ← installation
+```
 
 ---
 
@@ -91,21 +142,23 @@ La UI ya lee `ChatMessage.postCheckReplaced` y pinta el aviso.
 
 Matriz de tecnología (§4.1), tablas DTS/DTI/DTT (§4.3) y las citas textuales
 (§4.2), cada entrada con `{ documento, pagina, texto_citado }` — el tipo
-`Citation` de `lib/project-spec.ts`.
+`Citation` de `lib/turn.ts`.
 
-> Mientras esto no exista, las citas que usa la UI viven en
-> `lib/fixtures/citations.ts`. Cuando B publique `catalog-data.ts`, ese archivo
-> pasa a re-exportar de allí y deja de ser fuente.
+> Mientras no exista, las citas que usa la UI viven en `lib/demo/citations.ts`.
+> Cuando B publique `catalog-data.ts`, ese archivo se borra.
+>
+> No confundir con `DEFAULTS` del contrato: eso justifica **valores por defecto**
+> y `basis` es una clave suya. Esto justifica **veredictos y descartes**.
 
 ### `lib/rules/gate.ts` — B2
 
 ```ts
 import type { FamilyVerdict } from "@/lib/turn";
-export function gate(spec: ProjectSpec): FamilyVerdict[];
+export function gate(spec: ExtractedSpec): FamilyVerdict[];
 ```
 
 Las cuatro familias siempre, **incluido el caso negativo argumentado**. Sin cita
-no sale a la UI.
+no sale a la UI. Precondición: `missingForGate(spec).length === 0`.
 
 ### `lib/rules/shortlist.ts` — B3
 
@@ -114,20 +167,22 @@ import type { Shortlist } from "@/lib/turn";
 export function shortlist(spec: ProjectSpec): Shortlist;
 ```
 
-Margen del 10 % citado, filtro por capacidad / voltaje / NEMA / montaje, y los
-descartes con razón. Regresión gratis: `PD 1350 → 5 067 Btu/h` tiene que dar
-DTS 31X5 ⚠, DTS 32X1 ⚠ y tres rechazados — está resuelto a mano en
-`lib/fixtures/barranquilla.ts` y ese objeto sirve de caso de prueba tal cual.
+Lee `spec.derived.required_capacity_btuh`; no recalcula el margen. Devuelve
+candidatos y rechazados con razón. Precondición:
+`missingForShortlist(spec).length === 0`.
+
+Regresión gratis: `PD 1350 → 5 067 Btu/h` tiene que dar DTS 31X5 ⚠, DTS 32X1 ⚠ y
+tres rechazados. Está resuelto a mano en `lib/demo/turns.ts`.
 
 ### `lib/rules/field-guide.ts` — B5
 
 ```ts
 import type { BlockingQuestion } from "@/lib/turn";
-export const FIELD_GUIDE: Record<string, BlockingQuestion>;
+export const FIELD_GUIDE: Record<FieldKey, BlockingQuestion>;
 ```
 
-Ocho filas. El campo `antipattern` es el que hace el trabajo — ver las tres que
-ya están escritas en el fixture.
+Ocho filas. El campo `antipattern` es el que hace el trabajo — hay tres escritas
+en `lib/demo/turns.ts` que sirven de plantilla.
 
 ---
 
@@ -146,9 +201,9 @@ mete señalización y chillers en el retrieval y arruina la precisión.
 
 El índice va en `lib/tools/corpus-index.ts`, troceado con `{ documento, pagina }`.
 
-`specs_modelo` es el que cierra el hueco visible del shortlist: la UI ya reserva
-`current_a` y `article_no` en `ModelCandidate` y hoy muestra un pie diciendo que
-esa cifra la resuelve esta tool.
+`specs_modelo` cierra el hueco visible del shortlist: `ModelCandidate` ya reserva
+`current_a` y `article_no`, y la tabla muestra hoy un pie diciendo que esa cifra
+la resuelve esta tool.
 
 ---
 
@@ -160,7 +215,7 @@ El esqueleto ya está, con el guardrail de fuera de alcance corriendo antes del
 LLM. Falta la espina, en este orden fijo:
 
 ```
-extract → validate → merge → gate → shortlist → loop (maxSteps: 5) → postCheck
+extract → validate → merge → derive → gate → shortlist → loop (maxSteps: 5) → postCheck
 ```
 
 y devolver un `TurnResult`. **Que lo abra una sola persona.**

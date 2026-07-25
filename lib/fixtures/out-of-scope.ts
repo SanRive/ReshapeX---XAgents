@@ -1,44 +1,48 @@
 /**
- * Fixture del caso fuera de alcance.
+ * FIXTURE — el caso fuera de alcance.
  *
- * El guardrail corre ANTES de llamar al LLM: keywords sobre el mensaje del
- * cliente → respuesta fija y citada, sin gastar una llamada (spec §7.4). Abrir
- * la demo con esto demuestra que el agente sabe lo que NO sabe, que es la parte
- * que un chatbot suelto no puede enseñar.
+ * Abre la demo: 15 segundos que demuestran que el agente sabe lo que NO sabe.
+ * El guardrail lo caza por keywords ANTES de llamar al LLM, así que este spec
+ * se queda enteramente vacío: no se gasta una llamada ni se extrae nada.
  */
 
+import { emptySpec, type ProjectSpec } from "../project-spec";
+
+export const FUERA_DE_ALCANCE_INPUT = `Buenos días,
+
+Necesitamos sirenas y balizas para señalización de emergencia en una subestación eléctrica. ¿Qué modelos manejan y qué nivel sonoro alcanzan?
+
+Gracias.`;
+
+/**
+ * Dominios que el agente rechaza. Pfannenberg los fabrica, pero están fuera del
+ * alcance del MVP (spec §3.4) y meterlos en el retrieval arruina la precisión.
+ */
 export const OUT_OF_SCOPE_KEYWORDS = [
-  "sirena",
-  "sirenas",
-  "baliza",
-  "señalización",
-  "senalizacion",
-  "estrobo",
-  "chiller",
-  "chillers",
-  "calefacción",
-  "calefaccion",
-  "calefactor",
-  "resistencia calefactora",
-  "alarma sonora",
+  // señalización
+  "sirena", "sirenas", "baliza", "balizas", "señalización", "senalizacion",
+  "estrobo", "sounder", "beacon", "siren", "signaling", "alarma sonora",
+  // refrigeración de proceso
+  "chiller", "chillers", "enfriador de proceso", "process cooling",
+  // calefacción
+  "calefactor", "calefacción", "calefaccion", "resistencia calefactora", "heater",
+  // detección de gas
+  "detección de gas", "deteccion de gas", "gas alarm",
 ] as const;
 
-export const MESSAGE_OUT_OF_SCOPE =
-  "Necesito sirenas para una subestación, ¿qué me recomiendan?";
+export const FUERA_DE_ALCANCE_RESPUESTA = `Eso queda fuera de lo que puedo resolver.
 
-export const RESPONSE_OUT_OF_SCOPE = `Eso está fuera de lo que puedo responder con fundamento.
+Trabajo solo sobre **climatización de gabinetes eléctricos** — filterfans, intercambiadores de calor y unidades de refrigeración. La señalización de emergencia es otra línea de Pfannenberg y no tengo su catálogo cargado, así que cualquier modelo o nivel sonoro que te diera me lo estaría inventando.
 
-Este copiloto cubre **thermal management de gabinetes**: las cuatro familias de la matriz de tecnología del catálogo — filterfans, intercambiadores aire/aire, cooling units e intercambiadores aire/agua — y el brief que alimenta a PSS.
+Para eso te tiene que atender un comercial de la línea de señalización.
 
-La señalización acústica y visual es otra línea de producto de Pfannenberg, con su propio catálogo y sus propios criterios de selección. No indexé ese material, así que cualquier recomendación que le diera sería inventada. Eso lo ve un ingeniero de aplicación con el catálogo de señalización delante.
+Si además necesitas climatizar los tableros de esa subestación, eso sí lo veo: cuéntame la temperatura ambiente, si es interior o intemperie, y cómo de sucio es el entorno.`;
 
-Si el tablero de esa subestación tiene un problema de temperatura, eso sí lo trabajo: cuénteme el ambiente, la ubicación y qué hay dentro del gabinete.`;
+/** El spec no se toca: el guardrail corta antes de extraer nada. */
+export const FUERA_DE_ALCANCE_SPEC: ProjectSpec = emptySpec();
 
-/** Deteccion determinista. La usa el guardrail antes del LLM y la UI para el
- *  ejemplo precargado. No es una heuristica del modelo. */
+/** Devuelve la keyword que disparó el rechazo, o null si el mensaje está en alcance. */
 export function detectOutOfScope(input: string): string | null {
-  const haystack = input.toLowerCase();
-  return (
-    OUT_OF_SCOPE_KEYWORDS.find((k) => haystack.includes(k.toLowerCase())) ?? null
-  );
+  const norm = input.toLowerCase();
+  return OUT_OF_SCOPE_KEYWORDS.find((k) => norm.includes(k)) ?? null;
 }

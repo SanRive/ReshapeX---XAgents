@@ -1,397 +1,298 @@
 /**
- * T0.2 — EL CONTRATO.
+ * EL CONTRATO — tarea T0.2 del plan de implementación.
  *
- * Fuente unica de verdad de la forma del objeto que comparten las cuatro pistas.
- * Se escribe en Zod y los tipos TS salen de `z.infer<>`. No duplicar esto como
- * `interface` en ningun otro archivo: `generateObject` consume el schema Zod
- * directamente y el validador de sobres (A4) corre sobre el objeto ya tipado.
+ * Es la frontera entre las cuatro pistas. Si A y D no coinciden en la forma
+ * de este objeto, se pierde media hora en el merge.
  *
- * Referencia: spec §3.5 (contrato de datos) y §3.6 (los dos umbrales).
+ * Escrito en Zod y NO como `interface`: el mismo schema alimenta a
+ * `generateObject` del AI SDK y produce los tipos TS por `z.infer<>`. Una sola
+ * definición, imposible que se desincronice.
+ *
+ * Referencia: spec §3.5 (contrato de datos) y §7 (agente conversacional).
  */
 
 import { z } from "zod";
 
-/* ==========================================================================
-   Cita — nada sale a la UI sin ella
-   ========================================================================== */
+// ---------------------------------------------------------------------------
+// El sobre por campo — el corazón del diseño
+// ---------------------------------------------------------------------------
 
-export const CitationSchema = z.object({
-  documento: z.string(),
-  pagina: z.string(),
-  texto_citado: z.string(),
+export const FieldStatus = z.enum(["declared", "inferred", "missing"]);
+export type FieldStatus = z.infer<typeof FieldStatus>;
+
+/**
+ * Construye el sobre de un campo con su tipo de valor concreto.
+ *
+ * Reglas que el validador determinista impone DESPUÉS de la llamada al LLM
+ * (ver `lib/extract/validate.ts`). El modelo no las cumple por buena fe:
+ *
+ *   declared → `evidence` tiene que ser substring LITERAL del input,
+ *              normalizando espacios y mayúsculas. Si no → missing.
+ *   numérico → los dígitos de `value` tienen que aparecer en `evidence`.
+ *              Esto es lo que caza el «38 °C → 380».
+ *   inferred → `basis` tiene que coincidir con una entrada de DEFAULTS.
+ *              Si no → missing.
+ *   missing  → `value` se fuerza a null.
+ */
+export function field<T extends z.ZodTypeAny>(value: T) {
+  return z.object({
+    status: FieldStatus,
+    value: value.nullable(),
+    /** Substring literal del input. Solo si status === "declared". */
+    evidence: z.string().nullable(),
+    /** Clave de DEFAULTS que justifica el valor. Solo si status === "inferred". */
+    basis: z.string().nullable(),
+  });
+}
+
+/** Sobre genérico, para código que opera sobre cualquier campo sin importar el tipo. */
+export type AnyField = {
+  status: FieldStatus;
+  value: string | number | boolean | null;
+  evidence: string | null;
+  basis: string | null;
+};
+
+// ---------------------------------------------------------------------------
+// Vocabulario — copia el del catálogo para que las citas mapeen 1:1
+// ---------------------------------------------------------------------------
+
+export const Location = z.enum(["indoor", "outdoor", "washdown"]);
+export const AirQuality = z.enum(["clean_or_slightly_dirty", "dirty", "very_harsh"]);
+export const HousingMaterial = z.enum(["painted_steel", "stainless_steel"]);
+export const SupplyVoltage = z.enum(["115V", "230V", "400_460V_3ph"]);
+export const Installation = z.enum(["free_standing", "wall_mounted", "recessed_in_line"]);
+export const NemaType = z.enum(["12", "3R_4", "4_4X"]);
+
+export type Location = z.infer<typeof Location>;
+export type AirQuality = z.infer<typeof AirQuality>;
+export type HousingMaterial = z.infer<typeof HousingMaterial>;
+export type SupplyVoltage = z.infer<typeof SupplyVoltage>;
+export type Installation = z.infer<typeof Installation>;
+export type NemaType = z.infer<typeof NemaType>;
+
+// ---------------------------------------------------------------------------
+// Lista blanca de defaults — `basis` DEBE ser una de estas claves
+// ---------------------------------------------------------------------------
+
+/**
+ * Un `inferred` cuyo `basis` no esté aquí se degrada a `missing`.
+ * Esto es lo que impide que el modelo invente una justificación creíble.
+ *
+ * ⚠️ Pendiente de verificar contra el corpus antes de la demo (pista B):
+ * la cita de `internal_temp_max_c` puede estar anclada a una frase sobre
+ * EFICIENCIA y no sobre temperatura MÁXIMA. Si es así, hay que cambiar el
+ * texto de la cita — no el valor.
+ */
+export const DEFAULTS = {
+  internal_temp_max_c: {
+    value: 35.0,
+    cita: 'Catálogo NA p.2 — "Electronics are typically most efficient in low humidity with a temperature around 95°"',
+  },
+  housing_material: {
+    value: "painted_steel" as HousingMaterial,
+    cita: "Catálogo NA — acabado estándar de la serie DTS (RAL 7035)",
+  },
+  housing_color: {
+    value: "RAL 7035",
+    cita: "Catálogo NA p.7 — acabados disponibles: RAL 7035, ANSI 61, inoxidable",
+  },
+  enclosure_count: {
+    value: 1,
+    cita: "Alcance del MVP: un gabinete por análisis (spec §3.4)",
+  },
+} as const;
+
+export type DefaultKey = keyof typeof DEFAULTS;
+
+// ---------------------------------------------------------------------------
+// Lo que el LLM puede rellenar — y nada más
+// ---------------------------------------------------------------------------
+
+/**
+ * El modelo SOLO devuelve esto. Los derivados los calcula código puro, y por
+ * eso no aparecen aquí: si el modelo no puede escribirlos, no puede inventarlos.
+ */
+export const ExtractedSpecSchema = z.object({
+  // A · Identificación — no bloquea nada
+  project_name: field(z.string()),
+  customer: field(z.string()),
+
+  // B · Gabinete — tab Enclosure de PSS
+  height_mm: field(z.number()),
+  width_mm: field(z.number()),
+  depth_mm: field(z.number()),
+  internal_temp_max_c: field(z.number()),
+  internal_temp_min_c: field(z.number()),
+  housing_material: field(HousingMaterial),
+  housing_color: field(z.string()),
+  supply_voltage: field(SupplyVoltage),
+
+  // C · Entorno — tab Environment de PSS
+  location: field(Location),
+  ambient_temp_max_c: field(z.number()),
+  ambient_temp_min_c: field(z.number()),
+  solar_load: field(z.boolean()),
+  wind_exposure: field(z.boolean()),
+  installation: field(Installation),
+  air_quality: field(AirQuality),
+
+  // D · Carga térmica — tab Heat Dissipation de PSS
+  /** BLOQUEANTE DURO del shortlist. NUNCA se estima. Ver regla 1. */
+  total_dissipation_w: field(z.number()),
+  /** Camino alterno: si dan lista de componentes con W, se SUMAN. Suma, no estimación. */
+  component_list: z
+    .array(z.object({ name: z.string(), w: z.number(), qty: z.number() }))
+    .nullable(),
+  /** Tercer camino de PSS. Se DETECTA y se deriva a PSS; no se implementa el cálculo. */
+  measured_temps: z
+    .object({ inside_c: z.number(), outside_c: z.number() })
+    .nullable(),
+
+  /** Cuántos gabinetes iguales. Fuera del alcance analizar más de uno, pero se cita. */
+  enclosure_count: field(z.number()),
 });
 
-export type Citation = z.infer<typeof CitationSchema>;
+export type ExtractedSpec = z.infer<typeof ExtractedSpecSchema>;
 
-/* ==========================================================================
-   Field — el sobre por campo
-   --------------------------------------------------------------------------
-   El validador determinista (A4) es quien decide el `status` final:
-     declared -> `evidence` debe ser substring literal del input, normalizando
-                 espacios y mayusculas. Si no lo es, degrada a missing.
-     numerico -> los digitos de `value` deben aparecer en `evidence`. Aqui es
-                 donde muere el "22 kW -> 22000 W".
-     inferred -> `basis` debe coincidir con una entrada de la lista blanca
-                 DEFAULTS. Si no, degrada a missing.
-     missing  -> `value` se fuerza a null.
-   ========================================================================== */
+/** Las claves de los campos que son sobres (excluye component_list y measured_temps). */
+export const FIELD_KEYS = [
+  "project_name", "customer",
+  "height_mm", "width_mm", "depth_mm",
+  "internal_temp_max_c", "internal_temp_min_c",
+  "housing_material", "housing_color", "supply_voltage",
+  "location", "ambient_temp_max_c", "ambient_temp_min_c",
+  "solar_load", "wind_exposure", "installation", "air_quality",
+  "total_dissipation_w", "enclosure_count",
+] as const;
 
-export const FieldStatusSchema = z.enum(["declared", "inferred", "missing"]);
-export type FieldStatus = z.infer<typeof FieldStatusSchema>;
+export type FieldKey = (typeof FIELD_KEYS)[number];
 
-export const FieldSchema = z.object({
-  status: FieldStatusSchema,
-  value: z.union([z.number(), z.string(), z.boolean(), z.null()]),
-  /** Substring LITERAL del input. Solo cuando status = declared. */
-  evidence: z.string().nullable(),
-  /** Cita del catalogo que respalda el default. Solo cuando status = inferred. */
-  basis: CitationSchema.nullable(),
-  /** Que decision queda trabada si falta. Solo cuando status = missing. */
-  blocks: z.string().nullable().optional(),
+/** Campos numéricos: sobre estos corre la regla de «los dígitos en la evidencia». */
+export const NUMERIC_FIELD_KEYS: readonly FieldKey[] = [
+  "height_mm", "width_mm", "depth_mm",
+  "internal_temp_max_c", "internal_temp_min_c",
+  "ambient_temp_max_c", "ambient_temp_min_c",
+  "total_dissipation_w", "enclosure_count",
+];
+
+// ---------------------------------------------------------------------------
+// Derivados — los calcula código, nunca el modelo
+// ---------------------------------------------------------------------------
+
+export const DerivedSchema = z.object({
+  /** Conversión de unidades, no ingeniería: W × 3.412 */
+  required_capacity_btuh: z.number().nullable(),
+  /** Margen documentado: PD × 1.10 — DTS_2017, "should exceed ... by approximately 10%" */
+  required_w: z.number().nullable(),
+  /** location → NEMA. PSS Tutorial: Indoor→12 · Outdoor→3R/4 · Washdown→4/4X */
+  nema_required: NemaType.nullable(),
+  /** installation → caras libres para montar la unidad */
+  available_mounting_faces: z.number().nullable(),
 });
 
-export type Field = z.infer<typeof FieldSchema>;
+export type Derived = z.infer<typeof DerivedSchema>;
 
-const field = () => FieldSchema;
+// ---------------------------------------------------------------------------
+// El objeto completo que viaja entre capas
+// ---------------------------------------------------------------------------
 
-/* ==========================================================================
-   Enums — el vocabulario copia al del catalogo para que las citas mapeen 1:1
-   ========================================================================== */
-
-export const LocationSchema = z.enum(["indoor", "outdoor", "washdown"]);
-export const AirQualitySchema = z.enum([
-  "clean_or_slightly_dirty",
-  "dirty",
-  "very_harsh",
-]);
-export const InstallationSchema = z.enum([
-  "free_standing",
-  "wall_mounted",
-  "recessed_in_line",
-]);
-export const HousingMaterialSchema = z.enum(["painted_steel", "stainless_steel"]);
-export const SupplyVoltageSchema = z.enum(["115V", "230V", "400_460V_3ph"]);
-export const NemaTypeSchema = z.enum(["12", "3R_4", "4_4X"]);
-
-export type Location = z.infer<typeof LocationSchema>;
-export type AirQuality = z.infer<typeof AirQualitySchema>;
-export type Installation = z.infer<typeof InstallationSchema>;
-export type SupplyVoltage = z.infer<typeof SupplyVoltageSchema>;
-export type NemaType = z.infer<typeof NemaTypeSchema>;
-
-/* ==========================================================================
-   ProjectSpec
-   ========================================================================== */
-
-export const ComponentEntrySchema = z.object({
-  name: z.string(),
-  w: z.number(),
-  qty: z.number().int().positive(),
+export const ProjectSpecSchema = ExtractedSpecSchema.extend({
+  derived: DerivedSchema,
   /**
-   * Fragmento LITERAL del cliente que respalda esta linea.
-   *
-   * `component_list` no es un sobre y por tanto esquiva el bucle principal del
-   * validador. Sin esta evidencia, el modelo puede inventarse una cantidad y su
-   * producto entra como disipacion "declarada".
-   *
-   * Paso en vivo el 2026-07-25: el modelo puso `qty: 4` para los variadores
-   * —confundiendo los 4 gabinetes con las 2 unidades por gabinete— y la suma
-   * dio 2 650 W en vez de 1 350 W. Comprobar los digitos contra la conversacion
-   * entera no bastaba: el «4» existia, solo que significando otra cosa. Tiene
-   * que estar en ESTE fragmento.
+   * Log de decisiones del validador. Cada vez que degrada un campo escribe aquí.
+   * Va al brief: es la prueba en papel de que el guardrail actuó.
    */
-  evidence: z.string().nullable(),
-});
-
-export type ComponentEntry = z.infer<typeof ComponentEntrySchema>;
-
-export const ProjectSpecSchema = z.object({
-  /* A · Identificacion — no bloquea nada */
-  project_name: field(),
-  customer: field(),
-  enclosure_count: field(),
-
-  /* B · Gabinete (tab Enclosure de PSS) */
-  height_mm: field(),
-  width_mm: field(),
-  depth_mm: field(),
-  internal_temp_max_c: field(),
-  internal_temp_min_c: field(),
-  housing_material: field(),
-  housing_color: field(),
-  supply_voltage: field(),
-
-  /* C · Entorno (tab Environment de PSS) */
-  location: field(),
-  ambient_temp_max_c: field(),
-  ambient_temp_min_c: field(),
-  solar_load: field(),
-  wind_exposure: field(),
-  installation: field(),
-  air_quality: field(),
-
-  /* D · Carga termica (tab Heat Dissipation de PSS) — los tres caminos */
-  total_dissipation_w: field(),
-  component_list: z.array(ComponentEntrySchema).nullable(),
-  measured_temp_inside_c: field(),
-  measured_temp_outside_c: field(),
+  decision_log: z.array(
+    z.object({
+      field: z.string(),
+      action: z.enum(["degraded", "defaulted", "summed", "accepted"]),
+      reason: z.string(),
+      proposed: z.string().nullable(),
+    }),
+  ),
 });
 
 export type ProjectSpec = z.infer<typeof ProjectSpecSchema>;
-export type ProjectSpecKey = keyof ProjectSpec;
 
-/* ==========================================================================
-   Los dos umbrales (§3.6)
-   --------------------------------------------------------------------------
-   La compuerta corre antes y con menos datos que el shortlist. Ese orden es la
-   afirmacion central del producto y la UI lo dibuja tal cual.
-   ========================================================================== */
+// ---------------------------------------------------------------------------
+// Umbrales — spec §3.6
+// ---------------------------------------------------------------------------
 
-/** Umbral 1 · abre la compuerta de 4 familias. `internal_temp_max_c` ya tiene default citado. */
-export const GATE_FIELDS = [
+/**
+ * Umbral 1 · correr la compuerta de 4 familias.
+ * Con esto el agente ya entrega valor sin conocer la carga térmica:
+ * «necesitas lazo cerrado y esta es la razón física».
+ */
+export const GATE_REQUIRED: readonly FieldKey[] = [
   "ambient_temp_max_c",
   "location",
   "air_quality",
-] as const satisfies readonly ProjectSpecKey[];
+];
 
-/** Umbral 2 · abre el shortlist de modelos. Los 3 anteriores mas estos. */
-export const SHORTLIST_FIELDS = [
+/** Umbral 2 · shortlist de modelos. Los 3 de arriba más estos. */
+export const SHORTLIST_REQUIRED: readonly FieldKey[] = [
   "total_dissipation_w",
   "supply_voltage",
   "height_mm",
   "width_mm",
   "depth_mm",
-] as const satisfies readonly ProjectSpecKey[];
+];
 
-/** Los 8 campos bloqueantes, en el orden en que la ficha los pinta. */
-export const BLOCKING_FIELDS = [
-  ...GATE_FIELDS,
-  ...SHORTLIST_FIELDS,
-] as const satisfies readonly ProjectSpecKey[];
-
-/** Etiqueta legible por campo. La ficha muestra el nombre tecnico ademas, porque
- *  es el que el ingeniero va a buscar en PSS. */
-export const FIELD_LABELS: Record<string, string> = {
-  project_name: "Proyecto",
-  customer: "Cliente",
-  enclosure_count: "Gabinetes",
-  height_mm: "Alto",
-  width_mm: "Ancho",
-  depth_mm: "Fondo",
-  internal_temp_max_c: "Temp. interna objetivo",
-  internal_temp_min_c: "Temp. interna mínima",
-  housing_material: "Material del gabinete",
-  housing_color: "Color",
-  supply_voltage: "Tensión de alimentación",
-  location: "Ubicación",
-  ambient_temp_max_c: "Temp. ambiente máxima",
-  ambient_temp_min_c: "Temp. ambiente mínima",
-  solar_load: "Carga solar",
-  wind_exposure: "Exposición al viento",
-  installation: "Instalación",
-  air_quality: "Calidad del aire",
-  total_dissipation_w: "Disipación total",
-  measured_temp_inside_c: "Temp. medida interior",
-  measured_temp_outside_c: "Temp. medida exterior",
-};
-
-/** Unidad por campo, para pintar el valor sin que el LLM la invente. */
-export const FIELD_UNITS: Record<string, string> = {
-  height_mm: "mm",
-  width_mm: "mm",
-  depth_mm: "mm",
-  internal_temp_max_c: "°C",
-  internal_temp_min_c: "°C",
-  ambient_temp_max_c: "°C",
-  ambient_temp_min_c: "°C",
-  total_dissipation_w: "W",
-  measured_temp_inside_c: "°C",
-  measured_temp_outside_c: "°C",
-};
-
-/* ==========================================================================
-   Derivados — conversion de unidades, no ingenieria
-   ========================================================================== */
-
-/** Margen documentado en DTS_2017: la capacidad debe exceder la disipacion ~10%. */
-export const MARGIN_FACTOR = 1.1;
-export const BTU_PER_W = 3.412;
-
-export const MARGIN_CITATION: Citation = {
-  documento: "DTS_2017",
-  pagina: "sizing",
-  texto_citado:
-    "The refrigeration capacity should exceed the dissipation loss from the installed components by approximately 10%.",
-};
-
-export const DIN_RATING_CITATION: Citation = {
-  documento: "DTS_2017",
-  pagina: "rating basis",
-  texto_citado:
-    "Pfannenberg utilizes the DIN standard 35/35 °C when rating our cooling units. Many other companies use 50/50 °C, which provides a higher, non-usable value.",
-};
-
-export function requiredWatts(totalDissipationW: number): number {
-  return totalDissipationW * MARGIN_FACTOR;
-}
-
-export function wattsToBtuh(w: number): number {
-  return w * BTU_PER_W;
-}
-
-/** Mapeo location -> NEMA, citado del tutorial de PSS (tab Environment). */
-export const NEMA_BY_LOCATION: Record<Location, NemaType> = {
-  indoor: "12",
-  outdoor: "3R_4",
-  washdown: "4_4X",
-};
-
-export const NEMA_LABELS: Record<NemaType, string> = {
-  "12": "NEMA Type 12",
-  "3R_4": "NEMA Type 3R/4",
-  "4_4X": "NEMA Type 4/4X",
-};
-
-/* ==========================================================================
-   DEFAULTS — la lista blanca que hace cumplir la regla 3 del validador
-   --------------------------------------------------------------------------
-   Un `inferred` solo sobrevive si su campo esta aqui Y su `basis` es
-   exactamente la cita documentada. Sin esta tabla, el modelo puede inventar
-   una justificacion que suene creible y colarla como inferencia legitima.
-
-   ✅ Verificado por grep contra `corpus_txt/` el 2026-07-25. No anadir una
-   entrada sin comprobar que la cita existe textualmente.
-   ========================================================================== */
-
-export interface DefaultEntry {
-  /**
-   * Valor fijo del default. Si se omite, la entrada NO es un default sino una
-   * **regla de clasificacion documentada**: el modelo puede elegir el valor
-   * (el enum de Zod ya acota cuales son validos), pero no puede inventarse la
-   * regla — la cita tiene que ser exactamente esta.
-   *
-   * Ejemplo: el cliente dice «la zona se lava a presion». La matriz del
-   * catalogo tiene una fila «Very Harsh, Dirty». Clasificar ahi no es aplicar
-   * un default ni es inventar: es mapear texto declarado al vocabulario del
-   * catalogo con la regla del propio catalogo.
-   */
-  value?: Field["value"];
-  citation: Citation;
-}
-
-export const DEFAULTS: Record<string, DefaultEntry> = {
-  internal_temp_max_c: {
-    value: 35,
-    /**
-     * Re-anclado el 2026-07-25. El anclaje anterior era del catalogo NA
-     * ("Electronics are typically most efficient ... around 95°"), que habla
-     * del punto OPTIMO de eficiencia y no de un maximo: no sostiene el default
-     * y un juez lo tumba con una pregunta. PSS llama a 95 °F la temperatura
-     * maxima admisible, y 95 °F = 35 °C exactos. Citar a PSS es mas fuerte,
-     * porque PSS es la herramienta que alimentamos.
-     */
-    citation: {
-      documento: "PSS Tutorial",
-      pagina: "Results",
-      texto_citado:
-        "the ambient temperature selected (100°F) is higher than the maximum allowable temperature inside the enclosure (95°F)",
-    },
-  },
-  housing_material: {
-    value: "painted_steel",
-    citation: {
-      documento: "Thermal_Management_Catalog_12_Page-Final_2024",
-      pagina: "p. 7",
-      texto_citado: "Standard finishes: RAL 7035, ANSI 61, stainless steel",
-    },
-  },
-  housing_color: {
-    value: "RAL 7035",
-    citation: {
-      documento: "Thermal_Management_Catalog_12_Page-Final_2024",
-      pagina: "p. 7",
-      texto_citado: "Standard finishes: RAL 7035, ANSI 61, stainless steel",
-    },
-  },
-  enclosure_count: {
-    value: 1,
-    citation: {
-      documento: "spec §3.4",
-      pagina: "alcance",
-      texto_citado: "Un gabinete por analisis",
-    },
-  },
-
-  /**
-   * REGLA DE CLASIFICACION, no default: sin `value`.
-   *
-   * El cliente describe su entorno en prosa («se lava a presion», «hay mucho
-   * polvo de cemento»); la matriz del catalogo tiene tres filas. Mapear de una
-   * a otra es clasificar, no inventar — pero solo vale con la regla del
-   * catalogo, y el enum de Zod acota los valores posibles a tres.
-   */
-  air_quality: {
-    citation: {
-      documento: "Thermal_Management_Catalog_12_Page-Final_2024",
-      pagina: "p. 2",
-      texto_citado: "High Ambient and/or Very Harsh, Dirty Conditions → PWS Air/Water Heat Exchangers",
-    },
-  },
-};
-
-/**
- * Campos numericos: sobre estos corre la regla de «los digitos de `value`
- * tienen que aparecer en `evidence`». Se deriva de FIELD_UNITS para que no
- * puedan desincronizarse: si un campo tiene unidad fisica, es numerico.
- */
-export const NUMERIC_FIELDS: readonly string[] = Object.keys(FIELD_UNITS);
-
-/**
- * ¿Es `basis` la cita documentada de este campo?
- *
- * No basta con que el campo tenga default: la cita tiene que ser LA cita. Si
- * solo comprobaramos la existencia del campo, el modelo podria inferir el
- * valor correcto con una fuente inventada, que es media mentira.
- */
-export function isWhitelistedBasis(fieldKey: string, basis: Citation | null): boolean {
-  if (!basis) return false;
-  const def = DEFAULTS[fieldKey];
-  if (!def) return false;
-  return basis.texto_citado.trim() === def.citation.texto_citado.trim();
-}
-
-/* ==========================================================================
-   Helpers de lectura — los usa la UI, no deciden nada
-   ========================================================================== */
-
-export function isSatisfied(f: Field | undefined): boolean {
+/** Un campo cuenta como resuelto si está declarado o inferido con base válida. */
+export function isResolved(f: AnyField | undefined): boolean {
   return !!f && f.status !== "missing" && f.value !== null;
 }
 
-export function gateReady(spec: ProjectSpec): boolean {
-  return GATE_FIELDS.every((k) => isSatisfied(spec[k] as Field));
+/** Qué falta para poder correr la compuerta. Array vacío = se puede correr. */
+export function missingForGate(spec: ExtractedSpec): FieldKey[] {
+  return GATE_REQUIRED.filter((k) => !isResolved(spec[k] as AnyField));
 }
 
-export function shortlistReady(spec: ProjectSpec): boolean {
-  return (
-    gateReady(spec) && SHORTLIST_FIELDS.every((k) => isSatisfied(spec[k] as Field))
-  );
+/**
+ * Qué falta para poder emitir el shortlist. Array vacío = se puede emitir.
+ *
+ * `housing_material` solo bloquea **si el entorno es washdown** (spec §3.6):
+ * en indoor el material es cosmético, en washdown decide si el modelo existe
+ * en inoxidable y por tanto si es elegible.
+ */
+export function missingForShortlist(spec: ExtractedSpec): FieldKey[] {
+  const required: FieldKey[] = [...GATE_REQUIRED, ...SHORTLIST_REQUIRED];
+
+  if (spec.location.status !== "missing" && spec.location.value === "washdown") {
+    required.push("housing_material");
+  }
+
+  return required.filter((k) => !isResolved(spec[k] as AnyField));
 }
 
-export function countSatisfied(
-  spec: ProjectSpec,
-  keys: readonly ProjectSpecKey[],
-): number {
-  return keys.filter((k) => isSatisfied(spec[k] as Field)).length;
-}
+// ---------------------------------------------------------------------------
+// Constructor de un spec vacío
+// ---------------------------------------------------------------------------
 
-/** Sobre vacio. Sirve de base para los fixtures y para el estado inicial. */
-export function emptyField(blocks?: string): Field {
+const emptyField = (): AnyField => ({
+  status: "missing",
+  value: null,
+  evidence: null,
+  basis: null,
+});
+
+/** Spec en blanco: todo `missing`. Es el estado inicial de una conversación. */
+export function emptySpec(): ProjectSpec {
+  const base = Object.fromEntries(
+    FIELD_KEYS.map((k) => [k, emptyField()]),
+  ) as unknown as ExtractedSpec;
+
   return {
-    status: "missing",
-    value: null,
-    evidence: null,
-    basis: null,
-    blocks: blocks ?? null,
+    ...base,
+    component_list: null,
+    measured_temps: null,
+    derived: {
+      required_capacity_btuh: null,
+      required_w: null,
+      nema_required: null,
+      available_mounting_faces: null,
+    },
+    decision_log: [],
   };
 }

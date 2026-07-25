@@ -2,9 +2,9 @@
 
 import { Fragment, useEffect, useRef, useState } from "react";
 import type { ProviderTrace } from "@/lib/turn";
-import type { ProjectSpec } from "@/lib/project-spec";
+import type { ExtractedSpec } from "@/lib/project-spec";
 import { evidenceStrings, segmentByEvidence } from "@/lib/highlight";
-import type { ScriptedTurn } from "@/lib/fixtures/conversation";
+import type { ScriptedTurn } from "@/lib/demo/turns";
 import { BlockingQuestions } from "./blocking-questions";
 import { GateVerdicts } from "./gate-verdicts";
 import { ShortlistTable } from "./shortlist-table";
@@ -145,7 +145,7 @@ function Intake() {
   );
 }
 
-function ClientBubble({ text, spec }: { text: string; spec: ProjectSpec }) {
+function ClientBubble({ text, spec }: { text: string; spec: ExtractedSpec }) {
   const segments = segmentByEvidence(text, evidenceStrings(spec));
 
   return (
@@ -193,7 +193,9 @@ function AgentTurn({ turn }: { turn: ScriptedTurn["result"] }) {
       {turn.questions.length > 0 && (
         <BlockingQuestions questions={turn.questions} />
       )}
-      {turn.shortlist && <ShortlistTable shortlist={turn.shortlist} />}
+      {turn.shortlist && (
+        <ShortlistTable shortlist={turn.shortlist} spec={turn.spec} />
+      )}
     </div>
   );
 }
