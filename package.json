@@ -1,0 +1,24 @@
+{
+  "name": "engineering-copilot-pfannenberg",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Engineering Copilot Pfannenberg — motor de reglas determinista (Pista B)",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "ai": "^7.0.37",
+    "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.32.0",
+    "@types/node": "^22.10.0",
+    "eslint": "^9.32.0",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.38.0",
+    "vitest": "^3.2.4"
+  }
+}
