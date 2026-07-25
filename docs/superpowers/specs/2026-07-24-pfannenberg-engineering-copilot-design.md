@@ -237,14 +237,14 @@ Tienen que **funcionar**, no estar nombrados.
 
 | Fuente | Cita |
 |---|---|
-| Cat. NA p.2 | *"Electronics are typically most efficient in low humidity with a temperature around 95°"* → default `internal_temp_max_c = 35 °C` |
+| ~~Cat. NA p.2~~ **PSS Tutorial · Results** | ⚠️ **Re-anclado el 2026-07-25.** La cita del catálogo NA (*"Electronics are typically most efficient in low humidity with a temperature around 95°"*) habla del punto **óptimo de eficiencia**, no de un máximo — no sostiene el default y un juez la tumba con una pregunta. El anclaje correcto es PSS: *"higher than the **maximum allowable temperature inside the enclosure** (95°F)"*. 95 °F = 35 °C exactos. Citar a PSS es más fuerte: es la herramienta que alimentamos. |
 | Cat. NA p.4 | *"If the ambient temperature is always lower than the required temperature in the electrical enclosure, then this method is an economical solution."* (exhaust filters / convección natural) |
 | Cat. NA p.6 | *"If the ambient temperature is greater than the target internal temperature of the enclosure, active cooling is required."* |
 | Cat. NA p.6 | *"If a NEMA Type 12/3R/4/4x rating is required — closed loop systems can maintain the NEMA Type rating of the cabinet."* |
 | Cat. NA p.6 | *"Best suited for clean or dirty environments where the ambient temperature is greater than the target internal temperature of enclosure."* (encabezado COOLING UNITS) |
 | Cat. NA p.7 | DTS: *"Also available in Outdoor (Type 3R/4) and Washdown (Type 4/4x)."* |
 | Cat. NA p.7 | *"DTT Series Top Mount **Type 12** Cooling Units"* → **DTT no tiene variante washdown documentada. Regla de descarte por rating.** |
-| Cat. NA | *"avoid costly oversizing or dangerous undersizing"* → regla de sobredimensionamiento |
+| ~~Cat. NA~~ | ❌ **CITA FALSA — ELIMINADA el 2026-07-25.** *"avoid costly oversizing or dangerous undersizing"* **no existe en el catálogo NA.** Lo verificado por grep: `Automotive_2015eng.txt:573` dice *"the software, you can avoid oversizing (expensive) and undersizing (hazardous)"* — brochure de automoción, **fuera de alcance**, y habla de PSS, no del catálogo. Y `flyer_en54-23_eng.txt:278` es de señalización, fuera de alcance y gitignored. **No atribuir ninguna al catálogo NA.** |
 | PSS Tutorial · Results | *"filter fan and air/air heat exchanger are not possible, this is because the ambient temperature selected (100 °F) is higher than the maximum allowable temperature inside the enclosure (95 °F)"* → **la compuerta lógica, confirmada por el propio PSS** |
 | PSS Tutorial · Environment | *"Indoor (NEMA Type 12), Outdoor (NEMA Type 3R/4), or Washdown (NEMA Type 4/4X)"* → mapeo `location` → `nema_required` |
 | PSS Tutorial · Enclosure | *"Supply Voltage … Please note this can change which units show in the final solution page."* → justifica que `supply_voltage` sea bloqueante |
@@ -291,7 +291,16 @@ Toda la serie DTS: Type 12 indoor, con variantes Outdoor 3R/4 y Washdown 4/4X. A
 
 **Integrated/recessed (DTI) y top mount (DTT):** DTI 6201C 3 000–4 000 · DTI 6301C 5 000–6 000 · DTI 6201/6301/6401/6501/6801 Green Series 3 000–16 000 · DTT 6101 1 200–2 000 · DTT 6201 2 500–4 000 · DTT 6301 4 000–5 500 · DTT 6401 5 500–7 000 · DTT 6601 7 000–10 000. **DTT figura solo como Type 12.**
 
-**Filterfans y exhaust filters:** series PF / PFA con caudal en m³/h, voltajes 230 V AC / 24 V DC / 400-460 V 3~, y dimensiones de recorte (92×92 … 292×292 mm).
+**Filterfans y exhaust filters:** series PF / PFA, voltajes 230 V AC / 24 V DC / 400-460 V 3~.
+
+> ⚠️ **TRAMPA DE UNIDADES — verificado el 2026-07-25.** El caudal aparece en **dos sistemas según el documento**, y mezclarlos es un error silencioso:
+>
+> | Fuente | Caudal | Dimensiones |
+> |---|---|---|
+> | `Thermal_Management_Catalog_12_Page-Final_2024:146` (quick selection chart) | **CFM** | **pulgadas** (mm entre paréntesis) |
+> | `180417_Broschure_Filterlufter_ENG_RZ` (brochure europeo) | **m³/h** | mm |
+>
+> Las dos son correctas por separado. La pista B transcribe del **quick selection chart del catálogo NA**, así que ahí la unidad es **CFM**, no m³/h. Si se toma un dato de cada fuente sin convertir, el filtro de producto compara peras con manzanas y nadie lo nota hasta el Q&A.
 
 **Otras fuentes útiles:**
 - `Pfannenberg_Compact_catalogue_30_en.pdf` — capacidades en **W** (no Btu/h) y **números de artículo reales** por modelo y voltaje. Útil para dar referencia comercial exacta en el brief.
@@ -334,7 +343,7 @@ Escenario: planta de envasado en Barranquilla, línea de llenado, 4 gabinetes 20
 | Modelo | Capacidad | Veredicto |
 |---|---|---|
 | **DTS 31X5** Washdown | 5 000 – 7 000 Btu/h · 460 V · side mount | ⚠️ **Recomendado con verificación.** El extremo bajo del rango (5 000) queda 1.3% por debajo de lo requerido. Como el rango varía **por voltaje y configuración**, hay que confirmar el valor específico a 460 V. Disponible en 4/4X e inoxidable. |
-| DTS 32X1 | 7 000 – 8 500 | ⚠️ Alternativa con margen, sin necesidad de verificar. 38% sobre lo requerido en el extremo bajo — aceptable, pero el catálogo advierte contra *"costly oversizing"*. |
+| DTS 32X1 | 7 000 – 8 500 | ⚠️ Alternativa con margen, sin necesidad de verificar. 38% sobre lo requerido en el extremo bajo. *(Aquí había una advertencia atribuida al catálogo sobre "costly oversizing": **cita falsa, eliminada**. El argumento de no sobredimensionar se sostiene solo por coste y consumo, sin necesidad de citar nada.)* |
 | DTS 31X1 SL | 3 000 – 5 000 | ❌ El techo del rango queda por debajo de lo requerido |
 | DTS 31X1 | 3 000 – 4 000 | ❌ Insuficiente |
 | DTT 6301 | 4 000 – 5 500 | ❌ La serie DTT figura solo como Type 12. Descartado por rating, independientemente de la capacidad. |

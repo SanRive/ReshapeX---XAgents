@@ -79,15 +79,20 @@ export type NemaType = z.infer<typeof NemaType>;
  * Un `inferred` cuyo `basis` no esté aquí se degrada a `missing`.
  * Esto es lo que impide que el modelo invente una justificación creíble.
  *
- * ⚠️ Pendiente de verificar contra el corpus antes de la demo (pista B):
- * la cita de `internal_temp_max_c` puede estar anclada a una frase sobre
- * EFICIENCIA y no sobre temperatura MÁXIMA. Si es así, hay que cambiar el
- * texto de la cita — no el valor.
+ * ✅ Verificado contra el corpus el 2026-07-25. Toda cita de esta tabla se
+ * comprobó con grep sobre `corpus_txt/`. No añadir una entrada sin hacerlo.
  */
 export const DEFAULTS = {
   internal_temp_max_c: {
     value: 35.0,
-    cita: 'Catálogo NA p.2 — "Electronics are typically most efficient in low humidity with a temperature around 95°"',
+    /**
+     * Re-anclado el 2026-07-25. La cita anterior era del catálogo NA
+     * ("most efficient ... around 95°") y hablaba del punto ÓPTIMO de
+     * eficiencia, no de un máximo — un juez lo tumbaba con una pregunta.
+     * PSS llama a 95 °F la temperatura máxima admisible, y 95 °F = 35 °C
+     * exactos. Citar a PSS es más fuerte: es la herramienta que alimentamos.
+     */
+    cita: 'PSS Tutorial, Results — "the ambient temperature selected (100°F) is higher than the maximum allowable temperature inside the enclosure (95°F)" → 95 °F = 35 °C',
   },
   housing_material: {
     value: "painted_steel" as HousingMaterial,
