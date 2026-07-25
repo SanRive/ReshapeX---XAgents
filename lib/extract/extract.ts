@@ -2,7 +2,7 @@ import "server-only";
 
 import { z } from "zod";
 
-import { ProjectSpecSchema, FieldSchema, DEFAULTS, type ProjectSpec } from "../project-spec";
+import { ExtractedSpecSchema, DEFAULTS, type ExtractedSpec, type ProjectSpec } from "../project-spec";
 import { withProviderFallback, ProviderCallError } from "../llm/providers";
 import type { ProviderTrace } from "../turn";
 
@@ -23,29 +23,11 @@ import type { ProviderTrace } from "../turn";
    ========================================================================== */
 
 /**
- * El sobre que el modelo rellena, SIN `blocks`.
- *
- * `blocks` dice que decision queda trabada si el campo falta. Eso lo decide el
- * FIELD_GUIDE del motor de reglas, no una inferencia del modelo — no tiene por
- * que verlo, y ademas es `.optional()`, lo que rompe el modo estricto: Groq
- * exige que TODA propiedad de `properties` este listada en `required`.
- */
-const ExtractionFieldSchema = FieldSchema.omit({ blocks: true });
-
-/**
  * Derivado del contrato Zod, no escrito a mano: si `ProjectSpecSchema` cambia,
  * el schema que ve el modelo cambia con el. Duplicarlo a mano es justo la
  * desincronizacion que T0.2 existe para impedir.
  */
-export const ExtractionSpecSchema = z.object(
-  Object.fromEntries(
-    Object.entries(ProjectSpecSchema.shape).map(([key, schema]) => [
-      key,
-      // component_list no es un sobre: es la lista de componentes con sus watts.
-      key === "component_list" ? schema : ExtractionFieldSchema,
-    ]),
-  ),
-);
+export const ExtractionSpecSchema = ExtractedSpecSchema;
 
 /**
  * `json_schema` estricto exige `additionalProperties: false` y `required` con
@@ -74,10 +56,15 @@ export const EXTRACTION_JSON_SCHEMA = hardenForStrictMode(
    El prompt — la primera linea de defensa (la segunda es el validador)
    ========================================================================== */
 
-const CITAS_PERMITIDAS = Object.entries(DEFAULTS)
+const CITAS_PERMITIDAS = Object.entries(
+  DEFAULTS as Record<string, { value?: unknown; cita: string }>,
+)
   .map(([campo, d]) => {
-    const valor = d.value === undefined ? "(clasificas tu el valor)" : `valor fijo ${String(d.value)}`;
-    return `  - ${campo}: ${valor}\n      basis EXACTO: ${JSON.stringify(d.citation)}`;
+    const valor =
+      d.value === undefined
+        ? "clasificas tu el valor (dentro del enum)"
+        : `valor fijo ${String(d.value)}`;
+    return `  - basis="${campo}" → ${valor}\n      fuente: ${d.cita}`;
   })
   .join("\n");
 
@@ -107,8 +94,9 @@ REGLAS ABSOLUTAS
    deduzcas cantidades de otras cifras del texto: "4 gabinetes" no dice cuantos
    variadores hay por gabinete.
 
-5. status="inferred" SOLO para los campos de esta lista, y con el objeto "basis"
-   copiado EXACTAMENTE como aparece aqui. Cualquier otra cita se descarta:
+5. status="inferred" SOLO para los campos de esta lista, y "basis" tiene que ser
+   EXACTAMENTE la clave indicada — una cadena, no un objeto. Cualquier otra
+   cadena se descarta y el campo se degrada a "missing":
 ${CITAS_PERMITIDAS}
 
 6. Preferir "missing" antes que adivinar. Un numero inventado es peor que un dato
@@ -128,7 +116,7 @@ interface ChatCompletionResponse {
 }
 
 export interface ExtractResult {
-  raw: ProjectSpec;
+  raw: ExtractedSpec;
   trace: ProviderTrace;
 }
 
@@ -193,16 +181,7 @@ export async function extract(message: string, current: ProjectSpec): Promise<Ex
       );
     }
 
-    // Re-inyecta `blocks` desde el estado actual: es metadato de la ficha, no
-    // sale del modelo y no debe perderse al pasar por la extraccion.
-    const out = { ...check.data } as Record<string, unknown>;
-    for (const [key, prev] of Object.entries(current)) {
-      const next = out[key];
-      if (!prev || typeof prev !== "object" || !("blocks" in prev)) continue;
-      if (!next || typeof next !== "object") continue;
-      out[key] = { ...(next as object), blocks: (prev as { blocks?: string | null }).blocks ?? null };
-    }
-    return out as unknown as ProjectSpec;
+    return check.data;
   });
 
   return { raw: value, trace };

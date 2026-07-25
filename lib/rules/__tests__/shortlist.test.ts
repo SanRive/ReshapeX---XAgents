@@ -76,8 +76,8 @@ describe("resolución de PD", () => {
   it("suma la lista de componentes — es suma, no estimación", () => {
     const spec = emptyProjectSpec();
     spec.component_list = [
-      { name: "Variador", w: 650, qty: 2 },
-      { name: "PLC", w: 50, qty: 1 },
+      { name: "Variador", w: 650, qty: 2, evidence: "2 variadores 650 W" },
+      { name: "PLC", w: 50, qty: 1, evidence: "1 PLC 50 W" },
     ];
     const { totalDissipationW, source } = resolveTotalDissipationW(spec);
     expect(totalDissipationW).toBe(1350);

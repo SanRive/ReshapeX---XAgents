@@ -59,8 +59,17 @@ export const SPEC_TURNO_2: ProjectSpec = {
     basis: null,
   },
   component_list: [
-    { name: "Variador de frecuencia", w: 650, qty: 2 },
-    { name: "PLC", w: 50, qty: 1 },
+    // Cada línea con su fragmento literal, y sus DOS cifras dentro de él.
+    // Comprobarlas contra la conversación entera no basta: el «4» de
+    // «4 gabinetes» validaría un qty:4 de variadores que nadie declaró.
+    // La cantidad viene del correo inicial; las pérdidas, de la respuesta.
+    {
+      name: "Variador de frecuencia",
+      w: 650,
+      qty: 2,
+      evidence: "2 variadores de 22 kW",
+    },
+    { name: "PLC", w: 50, qty: 1, evidence: "y un PLC" },
   ],
   /**
    * El camino alterno de §3.5: hay lista de componentes con W declarados, así

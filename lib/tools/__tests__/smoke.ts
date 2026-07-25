@@ -1,6 +1,6 @@
 import path from "path";
-import { cargarCorpus } from "../corpus-index";
-import { buscar_catalogo } from "../search-catalog";
+import { cargarCorpus } from "../bm25-index";
+import { buscar_catalogo } from "../bm25-search";
 
 const corpusRoot = path.join(process.cwd(), "corpus_txt");
 

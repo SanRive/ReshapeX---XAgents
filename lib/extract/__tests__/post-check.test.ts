@@ -8,19 +8,20 @@
 
 import { describe, test, expect } from "vitest";
 
-import { postCheck, buildAllowedValues, numbersIn, parseNumberForms } from "../post-check";
-import { SPEC_TURNO_1, SPEC_TURNO_2 } from "../../fixtures/barranquilla";
-import { emptyField, type ProjectSpec } from "../../project-spec";
+import { postCheckProse, buildAllowedValues, numbersIn, parseNumberForms } from "../post-check";
+import { BARRANQUILLA_SPEC as SPEC_TURNO_1 } from "../../fixtures/barranquilla";
+import { SPEC_TURNO_2 } from "../../demo/turns";
+import { emptySpec, type ProjectSpec } from "../../project-spec";
 
-const blank = (): ProjectSpec => {
-  const base = { ...SPEC_TURNO_1 } as unknown as Record<string, unknown>;
-  for (const k of Object.keys(base)) {
-    if (base[k] && typeof base[k] === "object" && "status" in (base[k] as object)) {
-      base[k] = emptyField();
-    }
-  }
-  base.component_list = null;
-  return base as unknown as ProjectSpec;
+const FALLBACK = "[sustituido por el guardrail: ver ingeniero de aplicacion]";
+const blank = (): ProjectSpec => emptySpec();
+const postCheck = (prose: string, spec: ProjectSpec, tools: unknown[] = []) => {
+  const r = postCheckProse(
+    prose,
+    buildAllowedValues(spec, tools.map((t) => (typeof t === "string" ? t : JSON.stringify(t)))),
+    FALLBACK,
+  );
+  return { ...r, replaced: r.substituted, text: r.safe };
 };
 
 describe("parseNumberForms — ambiguedad es/en", () => {
@@ -48,7 +49,7 @@ describe("EL FALLO QUE EXISTE PARA IMPEDIR", () => {
       SPEC_TURNO_1,
     );
     expect(r.replaced).toBe(true);
-    expect(r.offenders.some((o) => o.value === 660 && o.unit === "w")).toBe(true);
+    expect(r.offenders.some((o: { value: number; unit: string }) => o.value === 660 && o.unit === "w")).toBe(true);
   });
 
   test("bloquea una capacidad de catalogo que ninguna tool devolvio", () => {

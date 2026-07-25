@@ -14,8 +14,9 @@
 import { describe, test, expect, beforeAll } from "vitest";
 import { readFileSync, existsSync } from "node:fs";
 
-import { EMAIL_INTAKE, REPLY_DATOS, SPEC_TURNO_1 } from "../../fixtures/barranquilla";
-import { emptyField, type Field, type ProjectSpec } from "../../project-spec";
+import { BARRANQUILLA_INPUT as EMAIL_INTAKE, BARRANQUILLA_SPEC as SPEC_TURNO_1 } from "../../fixtures/barranquilla";
+import { RESPUESTA_CLIENTE as REPLY_DATOS } from "../../demo/turns";
+import { emptySpec, type AnyField, type ProjectSpec } from "../../project-spec";
 
 /** Carga `.env.local` sin depender de dotenv. */
 function loadEnvLocal() {
@@ -38,27 +39,18 @@ const HAS_KEYS = !!(
   process.env.MISTRAL_API_KEY
 );
 
-const blank = (): ProjectSpec => {
-  const base = { ...SPEC_TURNO_1 } as unknown as Record<string, unknown>;
-  for (const k of Object.keys(base)) {
-    if (base[k] && typeof base[k] === "object" && "status" in (base[k] as object)) {
-      base[k] = emptyField();
-    }
-  }
-  base.component_list = null;
-  return base as unknown as ProjectSpec;
-};
+const blank = (): ProjectSpec => emptySpec();
 
-const at = (s: ProjectSpec, k: string) => s[k as keyof ProjectSpec] as Field;
+const at = (s: ProjectSpec, k: string) => s[k as keyof ProjectSpec] as AnyField;
 
 describe.skipIf(!HAS_KEYS)("extraccion en vivo contra proveedor real", () => {
   let extract: typeof import("../extract").extract;
-  let validate: typeof import("../validate").validate;
+  let validateExtraction: typeof import("../validate").validateExtraction;
   let sumComponentList: typeof import("../validate").sumComponentList;
 
   beforeAll(async () => {
     ({ extract } = await import("../extract"));
-    ({ validate, sumComponentList } = await import("../validate"));
+    ({ validateExtraction, sumComponentList } = await import("../validate"));
   });
 
   test(
@@ -66,30 +58,31 @@ describe.skipIf(!HAS_KEYS)("extraccion en vivo contra proveedor real", () => {
     { timeout: 60_000 },
     async () => {
       const { raw, trace } = await extract(EMAIL_INTAKE, blank());
-      const { clean, degraded } = validate(raw, EMAIL_INTAKE);
+      const { spec: clean, log: degraded } = validateExtraction(raw, EMAIL_INTAKE);
+      const cleanSpec = clean as unknown as ProjectSpec;
 
       console.log(`\n  proveedor: ${trace.id} · ${trace.model} · ${trace.latency_ms} ms`);
       if (trace.fell_back_from?.length) console.log(`  cayo desde: ${trace.fell_back_from.join(", ")}`);
       if (degraded.length) {
         console.log("  el validador intervino:");
-        for (const d of degraded) console.log(`    [${d.kind}] ${d.text}`);
+        for (const d of degraded) console.log(`    [${d.action}] ${d.reason}`);
       }
 
       // LA REGLA 1. Da igual lo que el modelo haya intentado: tras el validador,
       // la disipacion no puede tener valor, porque el correo no la declara.
-      expect(at(clean, "total_dissipation_w").value).toBeNull();
-      expect(at(clean, "total_dissipation_w").status).toBe("missing");
+      expect(at(cleanSpec, "total_dissipation_w").value).toBeNull();
+      expect(at(cleanSpec, "total_dissipation_w").status).toBe("missing");
 
       // Los 38 °C si estan declarados y tienen que sobrevivir con su cita literal.
-      const amb = at(clean, "ambient_temp_max_c");
+      const amb = at(cleanSpec, "ambient_temp_max_c");
       expect(amb.status).toBe("declared");
       expect(amb.value).toBe(38);
       expect(EMAIL_INTAKE.toLowerCase()).toContain(amb.evidence!.toLowerCase().trim());
 
       // Ningun campo declarado puede quedar sin evidencia despues del validador.
-      for (const [k, v] of Object.entries(clean)) {
+      for (const [k, v] of Object.entries(cleanSpec)) {
         if (!v || typeof v !== "object" || !("status" in v)) continue;
-        const f = v as Field;
+        const f = v as AnyField;
         if (f.status === "declared") expect(f.evidence, `${k} declarado sin evidencia`).toBeTruthy();
         if (f.status === "inferred") expect(f.basis, `${k} inferido sin cita`).toBeTruthy();
         if (f.status === "missing") expect(f.value, `${k} missing con valor`).toBeNull();
@@ -102,16 +95,16 @@ describe.skipIf(!HAS_KEYS)("extraccion en vivo contra proveedor real", () => {
     { timeout: 60_000 },
     async () => {
       const { raw } = await extract(REPLY_DATOS, SPEC_TURNO_1);
-      const { clean } = validate(raw, REPLY_DATOS);
+      const { spec: clean } = validateExtraction(raw, REPLY_DATOS);
       // La conversacion acumulada: las cantidades ("2 variadores") vienen del
       // correo inicial, las perdidas ("650 W") de la respuesta.
       const conversacion = `${EMAIL_INTAKE}\n${REPLY_DATOS}`;
-      const { clean: sumado, degraded } = sumComponentList(clean, conversacion);
+      const { spec: sumado, log: degraded } = sumComponentList(clean, conversacion);
 
       console.log(`\n  component_list: ${JSON.stringify(clean.component_list)}`);
-      for (const d of degraded) console.log(`    [${d.kind}] ${d.text}`);
+      for (const d of degraded) console.log(`    [${d.action}] ${d.reason}`);
 
-      const total = at(sumado, "total_dissipation_w").value;
+      const total = at(sumado as unknown as ProjectSpec, "total_dissipation_w").value;
       console.log(`  total_dissipation_w = ${String(total)}`);
 
       // Lo que se prueba NO es que el modelo acierte, sino que el sistema sea

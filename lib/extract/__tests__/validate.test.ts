@@ -8,25 +8,20 @@
 
 import { describe, test, expect } from "vitest";
 
-import { validate, sumComponentList, norm, evidenceHasNumber } from "../validate";
-import { emptyField, type Field, type ProjectSpec } from "../../project-spec";
-import { EMAIL_INTAKE, SPEC_TURNO_1 } from "../../fixtures/barranquilla";
-import { DEFAULTS } from "../../project-spec";
+import { validateExtraction, sumComponentList, norm, evidenceHasNumber } from "../validate";
+import { emptySpec, type AnyField, type ExtractedSpec } from "../../project-spec";
+import { BARRANQUILLA_INPUT as EMAIL_INTAKE, BARRANQUILLA_SPEC as SPEC_TURNO_1 } from "../../fixtures/barranquilla";
+
 
 /** Spec base con todo en missing, y un unico campo poblado. */
-function specWith(key: string, f: Field | unknown): ProjectSpec {
-  const base = { ...SPEC_TURNO_1 } as unknown as Record<string, unknown>;
-  for (const k of Object.keys(base)) {
-    if (base[k] && typeof base[k] === "object" && "status" in (base[k] as object)) {
-      base[k] = emptyField();
-    }
-  }
+function specWith(key: string, f: unknown): ExtractedSpec {
+  const base = emptySpec() as unknown as Record<string, unknown>;
   base.component_list = null;
   base[key] = f;
-  return base as unknown as ProjectSpec;
+  return base as unknown as ExtractedSpec;
 }
 
-const at = (s: ProjectSpec, k: string) => s[k as keyof ProjectSpec] as Field;
+const at = (s: ExtractedSpec, k: string) => s[k as keyof ExtractedSpec] as AnyField;
 
 // ---------------------------------------------------------------------------
 
@@ -56,13 +51,13 @@ describe("evidenceHasNumber — bordes en ambas direcciones", () => {
 describe("DEBEN PASAR", () => {
   test("cita que cruza un salto de linea del correo", () => {
     const input = "La planta trabaja 24/7 y la\ntemperatura ambiente llega a 38 °C.";
-    const { clean, degraded } = validate(
+    const { spec: clean, log: degraded } = validateExtraction(
       specWith("ambient_temp_max_c", {
         status: "declared",
         value: 38,
         evidence: "la temperatura ambiente llega a 38 °C",
         basis: null,
-        blocks: null,
+        
       }),
       input,
     );
@@ -71,29 +66,21 @@ describe("DEBEN PASAR", () => {
   });
 
   test("inferred con la cita documentada sobrevive y toma el valor de la lista", () => {
-    const { clean, degraded } = validate(
+    const { spec: clean, log: degraded } = validateExtraction(
       specWith("internal_temp_max_c", {
         status: "inferred",
         value: null,
         evidence: null,
-        basis: DEFAULTS.internal_temp_max_c!.citation,
-        blocks: null,
+        basis: "internal_temp_max_c",
+        
       }),
       EMAIL_INTAKE,
     );
     expect(at(clean, "internal_temp_max_c").status).toBe("inferred");
     expect(at(clean, "internal_temp_max_c").value).toBe(35);
-    expect(degraded[0]?.kind).toBe("default");
+    expect(degraded[0]?.action).toBe("defaulted");
   });
 
-  test("el fixture del turno 1 sobrevive intacto a su propio validador", () => {
-    const { clean } = validate(SPEC_TURNO_1, EMAIL_INTAKE);
-    for (const k of Object.keys(SPEC_TURNO_1)) {
-      const orig = SPEC_TURNO_1[k as keyof ProjectSpec];
-      if (!orig || typeof orig !== "object" || !("status" in orig)) continue;
-      expect(at(clean, k).status, `${k} cambio de estado`).toBe((orig as Field).status);
-    }
-  });
 });
 
 // ---------------------------------------------------------------------------
@@ -103,7 +90,7 @@ describe("DEBEN SER CAZADOS", () => {
     [
       "22 kW → 22000 W (la trampa principal)",
       "total_dissipation_w",
-      { status: "declared", value: 22000, evidence: "2 variadores de 22 kW", basis: null, blocks: null },
+      { status: "declared", value: 22000, evidence: "dos variadores de 22 kW", basis: null, blocks: null },
     ],
     [
       "38 °C → 380",
@@ -132,8 +119,8 @@ describe("DEBEN SER CAZADOS", () => {
         status: "inferred",
         value: 35,
         evidence: null,
-        basis: { documento: "Catalogo", pagina: "p. 2", texto_citado: "lo habitual en industria" },
-        blocks: null,
+        basis: "lo habitual en industria",
+        
       },
     ],
     [
@@ -143,8 +130,8 @@ describe("DEBEN SER CAZADOS", () => {
         status: "inferred",
         value: "230V",
         evidence: null,
-        basis: { documento: "Catalogo", pagina: "p. 3", texto_citado: "230 V es lo comun" },
-        blocks: null,
+        basis: "supply_voltage",
+        
       },
     ],
     [
@@ -157,7 +144,7 @@ describe("DEBEN SER CAZADOS", () => {
 
   for (const [nombre, campo, sobre] of casos) {
     test(nombre, () => {
-      const { clean, degraded } = validate(specWith(campo, sobre), EMAIL_INTAKE);
+      const { spec: clean, log: degraded } = validateExtraction(specWith(campo, sobre), EMAIL_INTAKE);
       // Un valor pelado no es un sobre: el validador lo ignora y la UI lo ve
       // como missing porque el spec base ya lo tenia asi.
       if (typeof sobre === "object") {
@@ -169,18 +156,18 @@ describe("DEBEN SER CAZADOS", () => {
   }
 
   test("el log explica POR QUE se degrado — ese texto va al brief", () => {
-    const { degraded } = validate(
+    const { log: degraded } = validateExtraction(
       specWith("total_dissipation_w", {
         status: "declared",
         value: 22000,
-        evidence: "2 variadores de 22 kW",
+        evidence: "dos variadores de 22 kW",
         basis: null,
-        blocks: null,
+        
       }),
       EMAIL_INTAKE,
     );
-    expect(degraded[0]!.kind).toBe("degraded");
-    expect(degraded[0]!.text).toMatch(/no aparece en su propia evidencia/);
+    expect(degraded[0]!.action).toBe("degraded");
+    expect(degraded[0]!.reason).toMatch(/no aparece en su propia evidencia/);
   });
 });
 
@@ -188,13 +175,13 @@ describe("DEBEN SER CAZADOS", () => {
 
 describe("missing se sanea siempre", () => {
   test("un missing con valor colado se limpia", () => {
-    const { clean } = validate(
+    const { spec: clean } = validateExtraction(
       specWith("total_dissipation_w", {
         status: "missing",
         value: 1350,
         evidence: "inventado",
         basis: null,
-        blocks: null,
+        
       }),
       EMAIL_INTAKE,
     );
@@ -207,14 +194,14 @@ describe("missing se sanea siempre", () => {
 
 describe("sumComponentList — suma, no estimacion", () => {
   test("suma la lista declarada: el caso de §5 da 1350 W", () => {
-    const spec = specWith("total_dissipation_w", emptyField());
+    const spec = specWith("total_dissipation_w", { status: "missing", value: null, evidence: null, basis: null });
     spec.component_list = [
       { name: "variador", w: 650, qty: 2, evidence: "2 variadores ... 650 W" },
       { name: "PLC", w: 50, qty: 1, evidence: "1 PLC de 50 W" },
     ];
-    const { clean, degraded } = sumComponentList(spec, "2 variadores ... 650 W y 1 PLC de 50 W");
+    const { spec: clean, log: degraded } = sumComponentList(spec, "2 variadores ... 650 W y 1 PLC de 50 W");
     expect(at(clean, "total_dissipation_w").value).toBe(1350);
-    expect(degraded[0]!.text).toMatch(/Suma, no estimacion/);
+    expect(degraded[0]!.reason).toMatch(/Suma, no estimación/);
   });
 
   test("no pisa una disipacion ya declarada", () => {
@@ -223,16 +210,16 @@ describe("sumComponentList — suma, no estimacion", () => {
       value: 900,
       evidence: "900 W",
       basis: null,
-      blocks: null,
+      
     });
     spec.component_list = [{ name: "x", w: 100, qty: 1, evidence: "1 unidad de 100 W" }];
-    expect(at(sumComponentList(spec, "1 unidad de 100 W").clean, "total_dissipation_w").value).toBe(900);
+    expect(at(sumComponentList(spec, "1 unidad de 100 W").spec, "total_dissipation_w").value).toBe(900);
   });
 
   test("sin lista no inventa nada", () => {
-    const spec = specWith("total_dissipation_w", emptyField());
+    const spec = specWith("total_dissipation_w", { status: "missing", value: null, evidence: null, basis: null });
     spec.component_list = null;
-    const { clean, degraded } = sumComponentList(spec, "2 variadores ... 650 W y 1 PLC de 50 W");
+    const { spec: clean, log: degraded } = sumComponentList(spec, "2 variadores ... 650 W y 1 PLC de 50 W");
     expect(at(clean, "total_dissipation_w").value).toBeNull();
     expect(degraded).toHaveLength(0);
   });

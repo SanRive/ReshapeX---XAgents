@@ -87,15 +87,36 @@ export type NemaType = z.infer<typeof NemaType>;
  * Un `inferred` cuyo `basis` no esté aquí se degrada a `missing`.
  * Esto es lo que impide que el modelo invente una justificación creíble.
  *
- * ⚠️ Pendiente de verificar contra el corpus antes de la demo (pista B):
- * la cita de `internal_temp_max_c` puede estar anclada a una frase sobre
- * EFICIENCIA y no sobre temperatura MÁXIMA. Si es así, hay que cambiar el
- * texto de la cita — no el valor.
+ * ✅ Verificado por grep contra `corpus_txt/` el 2026-07-25. No añadir una
+ * entrada sin comprobar que la cita existe textualmente en el corpus.
+ *
+ * Una entrada **sin `value`** no es un default sino una **regla de
+ * clasificación documentada**: el modelo elige el valor —acotado por el enum
+ * de Zod— pero no puede inventarse la regla, porque la clave tiene que existir
+ * aquí. Clasificar texto declarado con la regla del catálogo no es inventar.
  */
 export const DEFAULTS = {
   internal_temp_max_c: {
     value: 35.0,
-    cita: 'Catálogo NA p.2 — "Electronics are typically most efficient in low humidity with a temperature around 95°"',
+    /**
+     * Re-anclado el 2026-07-25. La cita anterior era del catálogo NA
+     * ("most efficient ... around 95°") y hablaba del punto ÓPTIMO de
+     * eficiencia, no de un máximo — no sostiene el default y un juez lo tumba
+     * con una pregunta. PSS llama a 95 °F la temperatura máxima admisible, y
+     * 95 °F = 35 °C exactos. Citar a PSS es más fuerte: es la herramienta que
+     * alimentamos.
+     */
+    cita: 'PSS Tutorial · Results — "the ambient temperature selected (100°F) is higher than the maximum allowable temperature inside the enclosure (95°F)" → 95 °F = 35 °C',
+  },
+  /**
+   * REGLA DE CLASIFICACIÓN, no default: sin `value`.
+   *
+   * El cliente describe su entorno en prosa («se lava a presión», «hay polvo
+   * de cemento»); la matriz del catálogo tiene tres filas. Mapear de una a
+   * otra es clasificar, no inventar — pero solo vale con la regla del catálogo.
+   */
+  air_quality: {
+    cita: 'Thermal_Management_Catalog_12_Page-Final_2024 p.2 — matriz de tecnología, fila "High Ambient and/or Very Harsh, Dirty Conditions"',
   },
   housing_material: {
     value: "painted_steel" as HousingMaterial,
@@ -152,7 +173,28 @@ export const ExtractedSpecSchema = z.object({
   total_dissipation_w: field(z.number()),
   /** Camino alterno: si dan lista de componentes con W, se SUMAN. Suma, no estimación. */
   component_list: z
-    .array(z.object({ name: z.string(), w: z.number(), qty: z.number() }))
+    .array(
+      z.object({
+        name: z.string(),
+        w: z.number(),
+        qty: z.number(),
+        /**
+         * Fragmento LITERAL del cliente que respalda esta línea.
+         *
+         * `component_list` no es un sobre y por tanto esquiva el bucle
+         * principal del validador. Sin esta evidencia, el modelo puede
+         * inventarse una cantidad y su producto entra como disipación
+         * "declarada".
+         *
+         * Pasó en vivo el 2026-07-25: el modelo puso `qty: 4` para los
+         * variadores —confundiendo los 4 gabinetes con las 2 unidades por
+         * gabinete— y la suma dio 2 650 W en vez de 1 350 W. Comprobar los
+         * dígitos contra la conversación entera no bastaba: el «4» existía,
+         * solo que significando otra cosa. Tiene que estar en ESTE fragmento.
+         */
+        evidence: z.string().nullable(),
+      }),
+    )
     .nullable(),
   /** Tercer camino de PSS. Se DETECTA y se deriva a PSS; no se implementa el cálculo. */
   measured_temps: z
