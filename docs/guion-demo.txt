@@ -1,0 +1,167 @@
+===============================================================================
+ ENGINEERING COPILOT PFANNENBERG — TEXTOS DE LA DEMO
+ AgentSprint · EAFIT Medellin · 2026-07-25
+===============================================================================
+
+ App:  http://192.168.202.70:3000        (misma wifi, cualquier dispositivo)
+       http://localhost:3000             (en la maquina que la sirve)
+
+ Los tres textos ya estan en los botones de la pantalla. Este archivo es por si
+ quieres pegarlos a mano, teclearlos en vivo, o improvisar variantes.
+
+ Orden: 1 -> 2 -> 3b   (ver nota al final sobre 3a y 3b)
+
+
+===============================================================================
+ 1 · FUERA DE ALCANCE  —  abre la demo
+===============================================================================
+
+Buenos días,
+
+Necesitamos sirenas y balizas para señalización de emergencia en una subestación eléctrica. ¿Qué modelos manejan y qué nivel sonoro alcanzan?
+
+Gracias.
+
+-------------------------------------------------------------------------------
+ QUE PASA:  responde INSTANTANEO, sin llamar al modelo. El pie del mensaje lo
+            dice: «Guardrail determinista · keyword "sirena" · respondido sin
+            llamar al modelo».
+
+ QUE DECIR: "Abrimos por aqui a proposito. Lo primero que ensena el agente es
+            lo que NO sabe. Y no lo decide un modelo: es codigo determinista
+            que corre antes de gastar una sola llamada."
+
+
+===============================================================================
+ 2 · CORREO DE BARRANQUILLA  —  el turno principal
+===============================================================================
+
+Buenas tardes,
+
+Estamos montando una línea de llenado nueva en nuestra planta de Barranquilla y necesitamos climatizar los tableros de control. Son 4 gabinetes iguales de 2000 x 800 x 600 mm, montados contra pared en la zona de proceso. La zona se lava a presión al final de cada turno.
+
+Cada gabinete lleva dos variadores de 22 kW y un PLC. La planta trabaja 24/7 y la temperatura ambiente en esa zona llega a 38 °C en temporada seca.
+
+¿Qué nos recomiendan?
+
+-------------------------------------------------------------------------------
+ TARDA:     4-7 segundos. El badge de abajo dice que proveedor respondio.
+
+ QUE PASA:  - Las frases que la extraccion uso como evidencia quedan RESALTADAS
+              dentro del propio mensaje del cliente.
+            - La ficha de la derecha se llena: 38 °C declarado, washdown y
+              wall_mounted clasificados con cita, dimensiones declaradas.
+            - La COMPUERTA dispara con solo 3 datos, ANTES de conocer la carga
+              termica: Filterfan rechazado, PKS rechazado, DTS viable, PWS
+              condicional. Cada veredicto con sus citas.
+            - total_dissipation_w se queda en FALTA.
+
+ >>> EL MOMENTO. DECIRLO EN VOZ ALTA: <<<
+
+            "Fijense en la disipacion termica: esta en rojo, falta. El correo
+             dice 'dos variadores de 22 kW'. Un chatbot escribe 22.000 W y
+             pierde. Los 22 kW son el tamano del motor, no el calor que el
+             variador suelta dentro del gabinete. Son magnitudes distintas.
+             El agente no lo convirtio, y el log de decisiones lo deja por
+             escrito."
+
+ SI PREGUNTAN si eso esta cableado a mano: el validador es codigo determinista
+ con 160 tests. Se puede escribir cualquier correo y la regla se sostiene.
+
+
+===============================================================================
+ 3a · RESPUESTA DEL CLIENTE — version AMBIGUA (el agente se niega a sumar)
+===============================================================================
+
+Revisé las hojas de datos: cada variador declara 650 W de pérdidas y el PLC 50 W. La alimentación en planta es 460 V trifásico y, por el lavado, los gabinetes son en acero inoxidable.
+
+-------------------------------------------------------------------------------
+ OJO: este texto dice "cada variador" pero NO dice cuantos hay.
+
+ QUE PASA:  el agente tiene las perdidas por componente delante, PODRIA sumar,
+            y NO LO HACE. Pregunta cuantos variadores hay.
+            NO cierra el shortlist.
+
+ QUE DECIR: "Aqui pasa lo segundo interesante. Tiene los watts de cada
+             componente y podria sumar. Pero nadie le dijo cuantos variadores
+             hay por gabinete, y 'es uno' no es lo mismo que 'no se cuantos'.
+             Asi que pregunta en vez de suponer."
+
+
+===============================================================================
+ 3b · RESPUESTA DEL CLIENTE — version EXPLICITA (cierra el shortlist)
+===============================================================================
+
+Revisé las hojas de datos: los 2 variadores declaran 650 W de pérdidas cada uno y 1 PLC 50 W. La alimentación en planta es 460 V trifásico y, por el lavado, los gabinetes son en acero inoxidable.
+
+-------------------------------------------------------------------------------
+ QUE PASA:  2 × 650 + 50 = 1350 W          <- SUMA, no estimacion
+            1350 × 1.10 = 1485 W           <- margen citado de DTS_2017
+            1485 W = 5067 Btu/h            <- conversion de unidades
+            Shortlist con DTS 3185 y sus alternativas, con voltajes,
+            dimensiones y NEMA reales del catalogo.
+
+ QUE DECIR: "Ahora si suma. Y es una suma sobre valores que el cliente declaro,
+             no una estimacion. El margen del 10 % sale del catalogo, con cita."
+
+
+===============================================================================
+ 4 · TOGGLE A VISTA INGENIERO  —  el cierre
+===============================================================================
+
+ Boton "Ingeniero" arriba a la derecha.
+
+ QUE ENSENAR:
+   - Brief mapeado tab por tab al formato de PSS.
+   - Cada campo con su estado: declarado con la frase exacta que lo respalda,
+     inferido con su cita de catalogo, o en rojo con la decision que traba.
+   - El log de decisiones: la prueba en papel de que el guardrail actuo.
+   - La seccion "lo que no afirmamos".
+   - Boton de descargar .md
+
+ FRASE DE CIERRE:
+   "PSS dimensiona en 5 minutos. Llegar al punto de poder usar PSS toma 3 dias.
+    Automatizamos los 3 dias."
+
+
+===============================================================================
+ SI ALGO SE TUERCE EN VIVO
+===============================================================================
+
+ · Si el post-check sustituye una respuesta y aparece el aviso amarillo:
+   NO LO ESCONDAS, ENSENALO. Es el guardrail actuando en directo sobre una
+   salida real del modelo. Convence mas que cualquier explicacion.
+
+ · Si un proveedor falla, el badge muestra el fallback (groq -> mistral).
+   Tambien es una demostracion: el fallback es visible, no silencioso.
+
+ · Si se cae la red: el guardrail de fuera de alcance sigue funcionando, y la
+   vista ingeniero sobre un caso ya cargado tambien. Son codigo puro.
+
+ · Si no responde nada: la ficha NO se toca. Se dice la verdad y se reintenta.
+
+
+===============================================================================
+ PREGUNTAS QUE PUEDEN CAER
+===============================================================================
+
+ "PSS ya hace esa entrevista, ¿que agregaron?"
+    PSS es un formulario que exige un ingeniero que YA tiene las respuestas.
+    Aqui el cliente escribe en prosa y el agente le ensena que dato falta,
+    donde buscarlo y que error no cometer. El valor no es el formulario: es el
+    camino desde el desorden hasta un brief que PSS pueda tragar.
+
+ "¿Como se que no esta inventando?"
+    Cada valor tiene o la frase literal del cliente que lo respalda, o una cita
+    de catalogo. Lo que no tiene ninguna de las dos, no sale: se marca en rojo.
+    Y hay dos guardrails, uno sobre los datos y otro sobre la prosa.
+
+ "¿Y el precio?"
+    No lo damos, y es deliberado. Pfannenberg no publica lista de precios, y el
+    coste de operacion depende de una tarifa electrica local que no conocemos:
+    la del catalogo es de Estados Unidos. Lo que si damos es la corriente de
+    cada modelo, citada.
+
+ "¿Esta mockeado?"
+    160 tests, sin mocks del LLM. El endpoint llama a proveedores reales con
+    fallback verificado. Se puede escribir cualquier correo en vivo.
