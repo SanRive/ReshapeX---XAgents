@@ -1,0 +1,57 @@
+# Secretos — jamas commitear
+.env
+.env.*
+!.env.example
+*.key
+
+# Este archivo tiene las keys en claro en el bloque DEV_KEYS mientras dure
+# el desarrollo. Ignorado para que no entre al historial.
+# Al quitar DEV_KEYS y pasar a .env, borrar esta linea y versionarlo:
+# es la herramienta que demuestra el test de abstencion y suma en la revision.
+tools/smoke_test_providers.py
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+build/
+next-env.d.ts
+*.tsbuildinfo
+.vercel/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Vector store local (se regenera con el script de indexado)
+.chroma/
+chroma_db/
+
+# PDFs originales: son ~17 MB de material publico de Pfannenberg.
+# El repo versiona el texto extraido en scope (corpus_txt/), no los binarios.
+*.pdf
+*.PDF
+
+# Texto extraido fuera del alcance del MVP (senalizacion, chillers, calefactores,
+# case studies). Se regenera con tools/extract_corpus.sh si hace falta.
+corpus_txt/DownloadCentre/CaseStudies/
+corpus_txt/DownloadCentre/SignalingSolution/
+corpus_txt/DownloadCentre/Service/
+corpus_txt/DownloadCentre/IndustrySolution/
+corpus_txt/Pfanember/Chiller/
+corpus_txt/Pfanember/schalling/
+corpus_txt/Pfanember/service/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# SO / editores
+.DS_Store
+.idea/
+.vscode/
+*.swp
