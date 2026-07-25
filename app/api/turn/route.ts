@@ -5,7 +5,12 @@ import { createOpenAI } from "@ai-sdk/openai";
 import { FUERA_DE_ALCANCE_RESPUESTA, detectOutOfScope } from "@/lib/fixtures/out-of-scope";
 import { providerHealth, PROVIDER_CHAIN } from "@/lib/llm/providers";
 import { extract } from "@/lib/extract/extract";
-import { validateExtraction, sumComponentList, mergeSpec } from "@/lib/extract/validate";
+import {
+  validateExtraction,
+  sumComponentList,
+  mergeSpec,
+  applyDefaults,
+} from "@/lib/extract/validate";
 import { buildAllowedValues, postCheckProse } from "@/lib/extract/post-check";
 import {
   evaluateTechnologyGate,
@@ -132,7 +137,12 @@ export async function POST(request: Request) {
     const summed = sumComponentList(merged, conversacion);
     decisions.push(...toDecisions(summed.log));
 
-    spec = { ...spec, ...summed.spec } as ProjectSpec;
+    // Los defaults documentados los aplica CODIGO, no el modelo: un valor que
+    // cambia entre ejecuciones identicas no es un default, es azar.
+    const conDefaults = applyDefaults(summed.spec);
+    decisions.push(...toDecisions(conDefaults.log));
+
+    spec = { ...spec, ...conDefaults.spec } as ProjectSpec;
   } catch (err) {
     // Fallaron todos los proveedores. El estado NO se toca y la ficha no se mueve.
     const detalle = err instanceof Error ? err.message : String(err);
@@ -228,7 +238,15 @@ export async function POST(request: Request) {
       }.${questions.length > 0 ? ` Para cerrar el equipo me falta: ${questions.map((q) => q.field).join(", ")}.` : ""}`
     : "Necesito tres datos para poder descartar tecnologias: la temperatura ambiente maxima, si el tablero esta en interior, a la intemperie o en zona de lavado, y como de sucio es el entorno.";
 
-  const check = postCheckProse(prose || plantilla, buildAllowedValues(spec, toolResults), plantilla);
+    // La conversacion del cliente entra como fuente legitima: el agente tiene que
+  // poder repetirle sus propias cifras («esos 22 kW son potencia nominal, no
+  // disipacion») sin que el guardrail lo confunda con inventarlas.
+  const dichoPorElCliente = [...(body.history ?? []), body.message].join("\n");
+  const check = postCheckProse(
+    prose || plantilla,
+    buildAllowedValues(spec, toolResults, dichoPorElCliente),
+    plantilla,
+  );
   if (check.substituted) {
     decisions.push({
       field: "post_check",

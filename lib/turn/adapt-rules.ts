@@ -19,10 +19,12 @@
 import type {
   Citation as RuleCitation,
   CoolingUnitCandidate,
+  CoolingUnitModel,
   CoolingUnitShortlistResult,
   TechnologyFamily,
   TechnologyVerdict,
 } from "../rules";
+import { allCoolingUnitModels } from "../rules";
 import type { Citation, Family, FamilyVerdict, ModelCandidate, Shortlist, Verdict } from "../turn";
 
 /* ==========================================================================
@@ -99,24 +101,49 @@ function adaptCandidateStatus(c: CoolingUnitCandidate): Verdict {
   }
 }
 
-function mountingOf(series: string): ModelCandidate["mounting"] {
-  // El montaje va codificado en la serie: DTS = side · DTI = recessed · DTT = top.
-  if (series.startsWith("DTI")) return "recessed";
-  if (series.startsWith("DTT")) return "top";
-  return "side";
+const MOUNTING_MAP: Record<string, ModelCandidate["mounting"]> = {
+  side: "side",
+  recessed: "recessed",
+  top: "top",
+};
+
+/**
+ * El candidato del motor no arrastra voltajes ni dimensiones, pero el catálogo
+ * curado sí los tiene. Se buscan aquí en vez de duplicarlos: la fuente sigue
+ * siendo `catalog-data.ts` y esto es solo una lectura.
+ */
+function findModel(c: CoolingUnitCandidate): CoolingUnitModel | undefined {
+  const modelos = allCoolingUnitModels();
+  return (
+    modelos.find((m) => c.designacionComercial && m.designacionComercial === c.designacionComercial) ??
+    modelos.find((m) => m.modelo === c.model) ??
+    modelos.find((m) => m.serie === c.series)
+  );
 }
 
 function adaptCandidate(c: CoolingUnitCandidate): ModelCandidate {
   const razones = [c.reason, ...c.rejectionReasons, ...c.verificationWarnings].filter(Boolean);
+  const m = findModel(c);
+  const d = m?.dimensiones;
+
   return {
     model: c.designacionComercial ?? c.model,
     capacity_btuh: [c.capacidadMinBtuH, c.capacidadMaxBtuH],
-    // El motor no publica voltajes ni dimensiones por candidato todavía; la UI
-    // los pinta vacíos antes que inventarlos.
-    voltages: [],
-    dimensions_mm: { h: 0, w: 0, d: 0 },
-    mounting: mountingOf(c.series),
-    nema_available: [],
+    // Los voltajes tal como los imprime el catálogo, sin normalizar: el
+    // ingeniero busca esa cadena, no nuestro enum.
+    voltages: [...(m?.voltajesCatalogo ?? [])],
+    // Si el catálogo no publica una dimensión, va a 0 y la UI no la pinta.
+    // Cero es «no publicado», nunca una medida inventada.
+    dimensions_mm: {
+      h: d?.altoMm ?? 0,
+      w: d?.anchoMm ?? 0,
+      d: d?.profundidadMm ?? 0,
+    },
+    // El montaje va codificado en la serie: DTS = side · DTI = recessed · DTT = top.
+    mounting:
+      (m && MOUNTING_MAP[m.montaje]) ??
+      (c.series.startsWith("DTI") ? "recessed" : c.series.startsWith("DTT") ? "top" : "side"),
+    nema_available: [...(m?.ratingsNema ?? [])],
     verdict: adaptCandidateStatus(c),
     reason: razones.join(" "),
     citations: c.citations.map(adaptCitation),

@@ -202,6 +202,54 @@ export function validateExtraction(raw: ExtractedSpec, input: string): Validatio
 }
 
 // ---------------------------------------------------------------------------
+// Defaults documentados — los aplica CÓDIGO, no el modelo
+// ---------------------------------------------------------------------------
+
+/**
+ * Rellena los campos que siguen `missing` y tienen un default documentado.
+ *
+ * El modelo puede marcarlos `inferred` por su cuenta, pero **no se depende de
+ * que lo haga**: un default documentado es una decisión nuestra, tomada una vez
+ * y citada, no algo que se redecide en cada llamada. Visto en vivo el
+ * 2026-07-25: la misma entrada daba `internal_temp_max_c` inferido en una
+ * pasada y «sin dato» en la siguiente, según lo que el modelo eligiera. Un
+ * valor que cambia entre ejecuciones idénticas no es un default, es azar.
+ *
+ * Solo aplica a entradas de `DEFAULTS` **con `value`**. Las que no lo tienen
+ * son reglas de clasificación: ahí hace falta el texto del cliente para elegir,
+ * y sin él el campo se queda `missing` y se pregunta.
+ */
+export function applyDefaults(spec: ExtractedSpec): ValidationResult {
+  const out = { ...spec } as Record<string, unknown>;
+  const log: DecisionEntry[] = [];
+
+  for (const [key, def] of Object.entries(
+    DEFAULTS as Record<string, { value?: unknown; cita: string }>,
+  )) {
+    if (def.value === undefined) continue; // regla de clasificación, no default
+    if (!(FIELD_KEYS as readonly string[]).includes(key)) continue;
+
+    const f = spec[key as FieldKey] as AnyField | undefined;
+    if (f && f.status !== "missing" && f.value !== null) continue;
+
+    out[key] = {
+      status: "inferred",
+      value: def.value as AnyField["value"],
+      evidence: null,
+      basis: key,
+    };
+    log.push({
+      field: key,
+      action: "defaulted",
+      reason: `Sin dato declarado, se aplica el default documentado ${String(def.value)}. ${def.cita}`,
+      proposed: null,
+    });
+  }
+
+  return { spec: out as unknown as ExtractedSpec, log, degraded: 0 };
+}
+
+// ---------------------------------------------------------------------------
 // Fusión entre turnos
 // ---------------------------------------------------------------------------
 

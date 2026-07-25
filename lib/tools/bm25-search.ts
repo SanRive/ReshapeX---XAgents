@@ -73,6 +73,31 @@ const SINONIMOS: Record<string, string[]> = {
   "intercambiador": ["heat exchanger"],
   "modelo": ["model"],
   "referencia": ["part no", "article number", "model"],
+
+  // ── Entradas inversas ──────────────────────────────────────────────────────
+  // El diccionario de arriba es unidireccional: «voltaje» expandía a «tension»,
+  // pero «tension» no expandía a nada. El corpus está en inglés, así que un
+  // cliente que escribe «tensión» no encontraba NADA. Verificado: score 0.
+  //
+  // El agente habla con clientes en castellano. Si el término que usan de forma
+  // natural no llega al corpus, la herramienta de conocimiento no sirve para su
+  // caso de uso principal.
+  "tension": ["voltage", "voltaje", "supply voltage"],
+  "voltios": ["voltage", "v"],
+  "amperios": ["amps", "current", "a"],
+  "amperaje": ["current", "amps"],
+  "perdidas": ["losses", "heat loss", "power loss", "dissipation"],
+  "gabinete": ["cabinet", "enclosure", "panel"],
+  "lavado": ["washdown", "wash down", "cleaning"],
+  "lavado a presion": ["washdown", "high pressure cleaning"],
+  "intemperie": ["outdoor", "outside"],
+  "interior": ["indoor", "inside"],
+  "polvo": ["dust", "dirty", "dirt"],
+  "sucio": ["dirty", "dust"],
+  "humedad": ["humidity", "moisture"],
+  "refrigeracion": ["cooling", "refrigeration"],
+  "acero inoxidable": ["stainless steel"],
+  "chapa pintada": ["painted steel"],
 };
 
 function expandirQuery(query: string): string[] {

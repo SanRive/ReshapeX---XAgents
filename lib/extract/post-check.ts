@@ -101,14 +101,42 @@ export function numbersIn(text: string): number[] {
 // ---------------------------------------------------------------------------
 
 /**
- * Reúne todo número al que el agente tiene derecho a referirse este turno:
- * los del spec ya validado, los de los resultados de tool, y las constantes
- * documentadas.
+ * Valores del vocabulario del contrato. Ofrecerlos al preguntar no es inventar:
+ * son las opciones que PSS admite, y el agente tiene que poder decir «¿230 V o
+ * 460 V?» sin que el guardrail lo tome por una cifra fabricada.
  */
-export function buildAllowedValues(spec: ProjectSpec, toolResults: string[] = []): Set<number> {
+const VOCABULARIO = [115, 230, 400, 460, 12, 4, 3];
+
+/**
+ * Reúne todo número al que el agente tiene derecho a referirse este turno.
+ *
+ * Cuatro fuentes legítimas:
+ *   1. El spec ya validado.
+ *   2. Los resultados de tool de este turno.
+ *   3. Las constantes documentadas del catálogo.
+ *   4. **Lo que escribió el propio cliente.**
+ *
+ * La cuarta no estaba, y era un agujero: el cliente dice «dos variadores de
+ * 22 kW», el agente responde «esos 22 kW son potencia nominal, no disipación»
+ * —que es LA frase que justifica el producto— y el post-check la bloqueaba por
+ * citar un número que, correctamente, nunca llega al spec.
+ *
+ * La regla es «ningún número sin fuente». El mensaje del cliente es una fuente:
+ * repetirle lo que él escribió no es inventar. Lo que sigue prohibido es
+ * *derivar* un número nuevo de ahí, y eso lo impide el validador de sobres.
+ *
+ * @param sourceText mensajes del cliente en esta conversación.
+ */
+export function buildAllowedValues(
+  spec: ProjectSpec,
+  toolResults: string[] = [],
+  sourceText = "",
+): Set<number> {
   const allowed = new Set<number>();
 
   for (const c of DOCUMENTED_CONSTANTS) allowed.add(c.value);
+  for (const v of VOCABULARIO) allowed.add(v);
+  for (const n of numbersIn(sourceText)) allowed.add(n);
 
   for (const [, v] of Object.entries(spec)) {
     if (v && typeof v === "object" && "status" in v) {
@@ -142,8 +170,27 @@ export function buildAllowedValues(spec: ProjectSpec, toolResults: string[] = []
     if (typeof v === "number") allowed.add(v);
   }
 
-  // Todo lo que devolvió una herramienta este turno es material citable.
-  for (const r of toolResults) for (const n of numbersIn(r)) allowed.add(n);
+  /**
+   * Resultados de tool — SOLO los estructurados, y de ahí el límite de tamaño.
+   *
+   * Un resultado de `specs_modelo` es una ficha corta: capacidad, voltajes,
+   * dimensiones, corriente. Esas cifras son citables una a una.
+   *
+   * Un resultado de `buscar_catalogo` es un párrafo del catálogo con decenas de
+   * números sueltos. Volcarlos todos convertía el guardrail en un colador: el
+   * modelo escribió «650 W + 50 W = 700 W» —aritmética suya, no del motor de
+   * reglas— y pasó, porque algún fragmento recuperado contenía un 700 sin
+   * ninguna relación. Verificado en vivo el 2026-07-25.
+   *
+   * Un fragmento largo se CITA entero; no se le extraen cifras para recombinar.
+   * Si el agente necesita un número concreto de un párrafo, la vía correcta es
+   * `specs_modelo`, que lo devuelve como dato y no como prosa.
+   */
+  const LIMITE_ESTRUCTURADO = 400;
+  for (const r of toolResults) {
+    if (r.length > LIMITE_ESTRUCTURADO) continue;
+    for (const n of numbersIn(r)) allowed.add(n);
+  }
 
   return allowed;
 }

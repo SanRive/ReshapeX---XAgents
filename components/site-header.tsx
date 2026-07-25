@@ -38,9 +38,9 @@ export function SiteHeader({
         <div className="ml-auto flex items-center gap-3">
           <span
             className="u-datum text-[0.625rem] tracking-wider text-[rgba(238,240,236,0.4)]"
-            title="La UI corre contra el fixture del caso §5. El endpoint POST /api/turn está definido y pendiente de conectar (I1)."
+            title="Cada turno pasa por POST /api/turn: espina determinista (extract → validate → merge → compuerta → shortlist), loop de solo lectura con 4 herramientas, y post-check numérico sobre la prosa."
           >
-            fixture
+            en vivo
           </span>
           <div className="seg" role="tablist" aria-label="Vista">
             <button

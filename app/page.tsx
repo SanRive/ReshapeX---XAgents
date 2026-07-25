@@ -5,8 +5,8 @@ import { Chat, type Exchange } from "@/components/chat";
 import { EngineerView } from "@/components/engineer-view";
 import { Ficha } from "@/components/ficha";
 import { SiteHeader, type View } from "@/components/site-header";
-import { emptySpec, type ProjectSpec } from "@/lib/project-spec";
-import { DEMO_SCRIPT, EXAMPLES, type ScriptedTurn } from "@/lib/demo/turns";
+import { emptySpec, FIELD_KEYS, type AnyField, type ProjectSpec } from "@/lib/project-spec";
+import { EXAMPLES } from "@/lib/demo/turns";
 import {
   FUERA_DE_ALCANCE_RESPUESTA,
   detectOutOfScope,
@@ -14,27 +14,14 @@ import {
 import type { TurnResult } from "@/lib/turn";
 
 /**
- * D1 — la única ruta.
+ * D1 + I4 — la única ruta, conectada al pipeline real.
  *
  * Dos vistas sobre el mismo estado: el cliente conversa y ve su ficha llenarse;
  * el ingeniero recibe el brief. Un toggle, sin routing.
  *
- * ─────────────────────────────────────────────────────────────────────────────
- * ESTADO DE INTEGRACIÓN (I4 — la hace D, no quien integra)
- *
- * Hoy los turnos salen de `lib/demo/turns.ts`. Para conectar el pipeline real
- * basta cambiar el cuerpo de `runTurn` por:
- *
- *   const res = await fetch("/api/turn", {
- *     method: "POST",
- *     headers: { "content-type": "application/json" },
- *     body: JSON.stringify({ message: input, spec }),
- *   });
- *   const turn: TurnResult = await res.json();
- *
- * `TurnResult` ya es la forma que devuelve el endpoint y `spec` ya es el
- * `ProjectSpec` del contrato. Ningún componente cambia.
- * ─────────────────────────────────────────────────────────────────────────────
+ * Cada turno va a `POST /api/turn`, que corre la espina determinista completa
+ * (extract → validate → merge → gate → shortlist), el loop de solo lectura y el
+ * post-check numérico. Aquí no se decide nada: se pinta lo que devuelve.
  */
 
 export default function Page() {
@@ -51,20 +38,45 @@ export default function Page() {
   async function runTurn(input: string) {
     setPending(true);
 
-    // El guardrail de fuera de alcance es código determinista y corre ANTES de
-    // cualquier llamada al modelo. Funciona sobre entrada libre, no solo sobre
-    // el ejemplo precargado: un juez puede escribir lo que quiera y sigue en pie.
+    // El guardrail de fuera de alcance también corre AQUÍ, no solo en el
+    // servidor. Duplicarlo es deliberado: es instantáneo, funciona sin red, y
+    // es el primer paso de la demo. Si el wifi del venue cae, esto sigue en pie.
     const keyword = detectOutOfScope(input);
-    const scripted = matchScript(input);
+    if (keyword) {
+      pushTurn(input, outOfScopeTurn(keyword, spec));
+      setPending(false);
+      return;
+    }
 
-    await sleep(keyword ? 180 : 700);
+    try {
+      const res = await fetch("/api/turn", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          message: input,
+          spec,
+          // Los mensajes previos del cliente. Sin esto, una cantidad declarada
+          // en un turno anterior («2 variadores») no es rastreable cuando en el
+          // turno siguiente llegan las pérdidas, y la suma se bloquea.
+          history: history.map((h) => h.input),
+        }),
+      });
 
-    const turn: TurnResult = keyword
-      ? outOfScopeTurn(keyword, spec)
-      : (scripted?.result ?? notWiredTurn(spec));
+      const turn = (await res.json()) as TurnResult;
+      // `touched` es cosa de la vista: qué campos cambiaron para animarlos.
+      // El servidor no tiene por qué saber cómo se pinta.
+      pushTurn(input, { ...turn, message: { ...turn.message, touched: diffFields(spec, turn.spec) } });
+    } catch {
+      // Red caída o servidor muerto. El estado NO se toca: la ficha se queda
+      // como estaba y se dice la verdad, en vez de inventar un turno.
+      pushTurn(input, offlineTurn(spec));
+    } finally {
+      setPending(false);
+    }
+  }
 
+  function pushTurn(input: string, turn: TurnResult) {
     setHistory((h) => [...h, { id: `x${h.length}`, input, turn }]);
-    setPending(false);
   }
 
   return (
@@ -130,11 +142,13 @@ function EmptyBrief({ onBack }: { onBack: () => void }) {
 
 /* ========================================================================== */
 
-const norm = (s: string) => s.replace(/\s+/g, " ").trim().toLowerCase();
-
-function matchScript(input: string): ScriptedTurn | undefined {
-  const needle = norm(input);
-  return DEMO_SCRIPT.find((t) => norm(t.input) === needle);
+/** Qué campos cambiaron de estado este turno. Solo sirve para animarlos. */
+function diffFields(previo: ProjectSpec, nuevo: ProjectSpec): string[] {
+  return FIELD_KEYS.filter((k) => {
+    const a = previo[k] as AnyField | undefined;
+    const b = nuevo[k] as AnyField | undefined;
+    return a?.status !== b?.status || a?.value !== b?.value;
+  });
 }
 
 function outOfScopeTurn(keyword: string, spec: ProjectSpec): TurnResult {
@@ -154,10 +168,9 @@ function outOfScopeTurn(keyword: string, spec: ProjectSpec): TurnResult {
   };
 }
 
-/** Entrada libre que no es fuera de alcance y no coincide con el guion. Se dice
- *  la verdad: la extracción todavía no está conectada. Inventar una ficha aquí
- *  sería justo lo que este producto existe para no hacer. */
-function notWiredTurn(spec: ProjectSpec): TurnResult {
+/** El servidor no respondió. Se dice la verdad y el estado se queda intacto:
+ *  inventar un turno aquí sería justo lo que este producto existe para no hacer. */
+function offlineTurn(spec: ProjectSpec): TurnResult {
   return {
     spec,
     gate: null,
@@ -165,15 +178,13 @@ function notWiredTurn(spec: ProjectSpec): TurnResult {
     questions: [],
     disclaimers: [],
     message: {
-      id: `nw-${Date.now()}`,
-      speaker: "agent",
-      text: `Recibí el mensaje, pero la extracción todavía no está conectada a esta vista: **POST /api/turn** está definido y sin implementar.
+      id: `off-${Date.now()}`,
+      speaker: "system",
+      text: `No pude contactar con el servidor, así que no toco tu ficha: sigue exactamente como estaba.
 
-Lo que sí corre ahora mismo es el guardrail de fuera de alcance, que es código determinista — pruébelo pidiendo sirenas, un chiller o un calefactor.
+El guardrail de fuera de alcance sí funciona sin red — es código determinista y corre en esta pantalla. Pruébelo pidiendo sirenas, un chiller o un calefactor.
 
-Para ver el caso completo, cargue **Correo de Barranquilla** con el botón de abajo y luego **Respuesta del cliente**.`,
+Vuelva a enviar el mensaje cuando haya conexión.`,
     },
   };
 }
-
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
