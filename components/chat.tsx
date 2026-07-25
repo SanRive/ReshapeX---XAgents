@@ -120,25 +120,77 @@ export function Chat({
 
 /* ========================================================================== */
 
+/**
+ * La tesis de la página.
+ *
+ * Lo primero que se ve no es una caja de texto vacía: es la afirmación que
+ * justifica que el producto exista. La barra de abajo no es adorno — es la
+ * duración real de las dos cosas que comparamos, y el hueco entre ellas es
+ * exactamente lo que automatizamos.
+ */
 function Intake() {
   return (
-    <div className="plate px-5 py-6">
+    <div className="plate max-w-[40rem] px-6 py-7 sm:px-8 sm:py-9">
       <span className="u-eyebrow">Fase 0 · intake</span>
-      <h2 className="u-nameplate mt-2 text-[1.375rem] leading-[1.08]">
+
+      <h2 className="u-nameplate mt-2.5 text-[clamp(1.5rem,3.6vw,2.125rem)] leading-[1.03]">
         Pegue el correo
         <br />
         tal como llegó
       </h2>
-      <p className="mt-3 max-w-[46ch] text-[0.875rem] leading-relaxed text-[var(--color-ink-muted)]">
+
+      <p className="mt-4 max-w-[44ch] text-[0.9375rem] leading-relaxed text-[var(--color-ink-muted)]">
         Sin ordenarlo, sin traducirlo y sin completar lo que falta. Lo desordenado
         es la entrada real, y lo que falta es justamente lo que hay que descubrir.
       </p>
-      <p className="mt-3 max-w-[46ch] text-[0.875rem] leading-relaxed text-[var(--color-ink-muted)]">
-        A la derecha se va llenando la ficha. Cada valor aparece con la frase
-        exacta que lo respalda, o con la cita del catálogo si fue inferido, o en
-        rojo con la decisión que traba si no está.
-      </p>
-      <p className="mt-4 text-[0.8125rem] text-[var(--color-ink-faint)]">
+
+      {/* Una sola pista: el trabajo entero, con PSS ocupando la punta.
+          Tres días contra cinco minutos son ~860 a 1, así que la barra NO va a
+          escala —a escala el tramo azul sería medio píxel y no se vería—. Se
+          dice en el pie, porque una proporción falseada en la portada de un
+          producto que presume de no falsear números se cae sola. */}
+      <div className="mt-7 border-t border-[var(--color-hairline)] pt-4">
+        <div className="flex items-end justify-between gap-3">
+          <div>
+            <span className="u-eyebrow block text-[var(--color-iron-3)]">
+              Reunir los datos
+            </span>
+            <span className="u-datum mt-1 block text-[1.0625rem] font-medium">
+              3 días
+            </span>
+          </div>
+          <div className="text-right">
+            <span className="u-eyebrow block text-[var(--color-water-deep)]">
+              Dimensionar en PSS
+            </span>
+            <span className="u-datum mt-1 block text-[1.0625rem] font-medium">
+              5 min
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-2 flex h-1.5 gap-[2px]">
+          <span
+            className="flex-1 rounded-l-[1px]"
+            style={{
+              background:
+                "repeating-linear-gradient(90deg, var(--color-iron-3) 0 3px, transparent 3px 6px)",
+            }}
+          />
+          <span className="w-2 rounded-r-[1px] bg-[var(--color-water)]" />
+        </div>
+
+        <p className="mt-3 max-w-[44ch] text-[0.8125rem] leading-relaxed text-[var(--color-ink-muted)]">
+          PSS ya resuelve la parte corta. Lo que automatizamos es la larga:
+          extraer, distinguir lo declarado de lo asumido de lo que falta, y
+          enseñarle a quien no es experto dónde conseguir lo que falta.
+        </p>
+        <p className="mt-1.5 text-[0.6875rem] text-[var(--color-ink-faint)]">
+          La barra no va a escala: la proporción real es de unos 860 a 1.
+        </p>
+      </div>
+
+      <p className="mt-6 text-[0.8125rem] text-[var(--color-ink-faint)]">
         Los dos ejemplos de abajo cargan casos reales del expediente.
       </p>
     </div>

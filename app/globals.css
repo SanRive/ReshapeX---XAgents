@@ -19,33 +19,36 @@
 
 @theme {
   /* --- superficie -------------------------------------------------------- */
-  --color-field: #e4e6e3; /* RAL 7035 · el gris del gabinete */
-  --color-field-deep: #d3d7d2;
-  --color-panel: #fbfbf9; /* RAL 9003 signal white */
+  --color-field: #d7dbd6; /* RAL 7035 · el gris del gabinete */
+  --color-field-deep: #c3c8c2;
+  /* Papel, no blanco de pantalla. RAL 9003 puro dejaba la app lavada y hacía
+     que la chapa clara y el fondo se confundieran. */
+  --color-panel: #f1f2ed;
+  --color-panel-lift: #f8f9f5; /* la placa de datos, un punto sobre el papel */
   --color-anthracite: #2f353a; /* RAL 7016 */
   --color-anthracite-lift: #3b4349;
   --color-graphite: #59626a;
-  --color-hairline: #c6cbc5;
-  --color-hairline-soft: #e0e3df;
+  --color-hairline: #b9bfb8;
+  --color-hairline-soft: #d5dad4;
 
   /* --- tinta ------------------------------------------------------------- */
   --color-ink: #22282c;
   --color-ink-muted: #5d666d;
-  --color-ink-faint: #8b939a;
+  --color-ink-faint: #737c85;
   --color-ink-inverse: #eef0ec;
 
   /* --- acento: RAL 5021 water blue, saturado --------------------------- */
   --color-water: #00778a;
   --color-water-deep: #005463;
-  --color-water-wash: #e2f0f2;
+  --color-water-wash: #d9ecef;
 
   /* --- estados de la ficha ---------------------------------------------- */
   --color-declared: #3f7a28; /* RAL 6018 yellow green, deepened */
-  --color-declared-wash: #eaf2e4;
+  --color-declared-wash: #dfecd6;
   --color-inferred: #a86a00; /* RAL 1023 traffic yellow, deepened */
-  --color-inferred-wash: #f8efdd;
+  --color-inferred-wash: #f5e7c9;
   --color-missing: #c0110f; /* RAL 3020 traffic red */
-  --color-missing-wash: #fbe8e6;
+  --color-missing-wash: #f8dcd9;
 
   /* --- tipografia -------------------------------------------------------- */
   --font-display: var(--font-archivo), "Archivo", "Helvetica Neue", sans-serif;
@@ -56,6 +59,22 @@
   --text-eyebrow--line-height: 1.1;
   --text-micro: 0.75rem;
   --text-micro--line-height: 1.45;
+
+  /* --- rampa ironbow ----------------------------------------------------- *
+   * La paleta de una camara termografica. No es decoracion: el tercer camino
+   * de carga termica que reconoce PSS es «calculate dissipation based on
+   * recorded temperature», o sea una medida de campo con termografo. Usar su
+   * vernaculo para pintar temperatura es hablar el idioma del instrumento.
+   *
+   * Vive lejos del verde/ambar/rojo de estado a proposito —indigo y magenta no
+   * aparecen en ningun otro sitio— para que nadie lea «caliente» como «error».
+   */
+  --color-iron-0: #241b47; /* frio */
+  --color-iron-1: #5b2a72;
+  --color-iron-2: #9c3272;
+  --color-iron-3: #d1495b;
+  --color-iron-4: #ee7b30;
+  --color-iron-5: #f6c344; /* caliente */
 
   /* --- geometria --------------------------------------------------------- */
   --radius-plate: 3px;
@@ -70,8 +89,15 @@ html {
   background: var(--color-field);
 }
 
+/* Retícula de 4 mm sobre el gris del gabinete. Es papel de ingeniería, no
+   textura por textura: a este contraste no se lee, se nota — le da al fondo una
+   escala física en vez de dejarlo como un plano de color muerto. */
 body {
-  background: var(--color-field);
+  background-color: var(--color-field);
+  background-image:
+    linear-gradient(rgba(47, 53, 58, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(47, 53, 58, 0.055) 1px, transparent 1px);
+  background-size: 16px 16px;
   color: var(--color-ink);
   font-family: var(--font-body);
   font-size: 0.9375rem;
@@ -147,10 +173,17 @@ body {
    Placa — la superficie base de todo bloque de contenido
    ========================================================================== */
 
+/* Una placa atornillada sobre el gabinete: canto superior encendido, sombra
+   corta abajo. Dos píxeles de relieve que separan la chapa del fondo — sin
+   flotar como una tarjeta de software. */
 .plate {
   background: var(--color-panel);
   border: 1px solid var(--color-hairline);
   border-radius: var(--radius-plate);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 1px 0 rgba(47, 53, 58, 0.04),
+    0 2px 6px -2px rgba(47, 53, 58, 0.09);
 }
 
 /* Variante acentuada. Va como clase propia y no como utilidad de borde: `.plate`
@@ -158,6 +191,37 @@ body {
    por orden de aparicion. */
 .plate-accent {
   border-left: 3px solid var(--color-water);
+}
+
+/* ----------------------------------------------------------------------------
+   Dos materiales.
+   La ficha es un instrumento: el bastidor va en metal —cabecera y separadores
+   de grupo en antracita— y los datos van en placas claras encastradas. La
+   alternancia oscuro/claro es lo que la saca de «panel blanco de software» y la
+   convierte en un objeto.
+
+   Importa además por accesibilidad: los tres colores de estado se quedan
+   siempre sobre placa clara, que es la superficie contra la que se validaron.
+   El metal solo sostiene texto inverso, nunca un chip de estado.
+   ---------------------------------------------------------------------------- */
+.plate-instrument {
+  background: var(--color-anthracite);
+  border-color: var(--color-anthracite);
+}
+
+.band-chrome {
+  background-color: var(--color-anthracite-lift);
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.02) 0 1px,
+    transparent 1px 3px
+  );
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.band-chrome .u-eyebrow {
+  color: rgba(238, 240, 236, 0.72);
 }
 
 .plate-head {
@@ -178,6 +242,7 @@ body {
 
 .fieldcard {
   position: relative;
+  background: var(--color-panel-lift);
   padding: 0.6rem 0.875rem 0.65rem 1.15rem;
   border-bottom: 1px solid var(--color-hairline-soft);
   transition: background 160ms ease;
@@ -601,21 +666,195 @@ body {
    Un solo gesto, corto, y solo cuando el campo cambia de estado.
    ========================================================================== */
 
+/* El fotograma final aterriza en la placa clara, NO en `transparent`.
+   Con `animation-fill-mode: both` el último fotograma se queda fijo, así que un
+   `transparent` aquí dejaba ver el bastidor de metal a través de la ficha y el
+   dato se volvía ilegible en cuanto el marco pasó a ser oscuro. */
 @keyframes settle {
   from {
     opacity: 0;
     transform: translateY(-4px);
-    background: var(--color-water-wash);
+    background-color: var(--color-water-wash);
   }
   to {
     opacity: 1;
     transform: none;
-    background: transparent;
+    background-color: var(--color-panel-lift);
   }
 }
 
 .animate-settle {
   animation: settle 340ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ============================================================================
+   La chapa de datos — cabecera
+   ----------------------------------------------------------------------------
+   Aluminio anodizado cepillado: el degradado de base da la curvatura, las
+   franjas de 3 px dan el cepillado y la banda inferior es una rejilla de
+   ventilación. Todo es el objeto que este producto climatiza, no adorno
+   genérico de dashboard.
+   ========================================================================== */
+
+.nameplate-rail {
+  position: relative;
+  background-color: var(--color-anthracite);
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.028) 0 1px,
+      transparent 1px 3px
+    ),
+    linear-gradient(
+      180deg,
+      #3d454b 0%,
+      var(--color-anthracite) 42%,
+      #262b30 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.11),
+    0 1px 0 rgba(47, 53, 58, 0.5);
+}
+
+/* Rejilla de ventilación: la lee cualquiera que haya visto un gabinete. */
+.nameplate-rail::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(0, 119, 138, 0.55) 0 2px,
+    transparent 2px 7px
+  );
+  opacity: 0.6;
+}
+
+/* El mismo cepillado, sin rejilla, para superficies grandes: la cabecera del
+   brief es la chapa del artefacto, no un riel de navegación. */
+.plate-metal {
+  background-color: var(--color-anthracite);
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.022) 0 1px,
+      transparent 1px 3px
+    ),
+    linear-gradient(160deg, #414a51 0%, var(--color-anthracite) 55%, #242a2f 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 2px 10px -4px rgba(47, 53, 58, 0.45);
+}
+
+/* El grabado: una sombra clara un píxel abajo, como un troquel. */
+.engraved {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+/* ============================================================================
+   Delta térmico — el elemento firma
+   ----------------------------------------------------------------------------
+   La regla de la compuerta es una frase del catálogo: «si el ambiente supera el
+   objetivo interno, hace falta enfriamiento activo». Esto es esa frase dibujada.
+   Dos marcas sobre la rampa de un termógrafo y la banda entre ellas: se ve de un
+   vistazo por qué el filterfan no sirve, antes de leer una palabra.
+
+   La rampa NO es la escala de estado. Indigo y magenta no aparecen en ningún
+   otro sitio de la app justamente para que «caliente» no se confunda con «error».
+   ========================================================================== */
+
+.thermal-scale {
+  position: relative;
+  height: 10px;
+  border-radius: var(--radius-mark);
+  background: linear-gradient(
+    90deg,
+    var(--color-iron-0) 0%,
+    var(--color-iron-1) 20%,
+    var(--color-iron-2) 40%,
+    var(--color-iron-3) 60%,
+    var(--color-iron-4) 80%,
+    var(--color-iron-5) 100%
+  );
+  box-shadow: inset 0 0 0 1px rgba(47, 53, 58, 0.18);
+}
+
+/* La banda de exceso: desde el objetivo interno hasta el ambiente. Va rayada
+   porque es una zona de conflicto, no una medida. */
+.thermal-gap {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.85) 0 2px,
+    rgba(255, 255, 255, 0.25) 2px 5px
+  );
+  box-shadow: 0 0 0 1px rgba(47, 53, 58, 0.35);
+}
+
+.thermal-mark {
+  position: absolute;
+  top: -5px;
+  bottom: -5px;
+  width: 2px;
+  background: var(--color-anthracite);
+  box-shadow: 0 0 0 1.5px rgba(251, 251, 249, 0.95);
+}
+
+.thermal-flag {
+  position: absolute;
+  top: -1.45rem;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+/* ============================================================================
+   El dato manda
+   ----------------------------------------------------------------------------
+   En una ficha técnica el valor es el protagonista y la etiqueta es servicio.
+   El número va grande y en versalitas de anchura tabular; la unidad, un escalón
+   por debajo, para que la columna de cifras se lea en vertical sin ruido.
+   ========================================================================== */
+
+.datum-hero {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.datum-unit {
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--color-ink-muted);
+}
+
+/* ============================================================================
+   Aparición escalonada
+   ----------------------------------------------------------------------------
+   Los campos no caen de golpe: entran en cascada, en el orden en que la ficha
+   los lee. Es el momento que vende el producto —una frase suelta volviéndose
+   dato tipado— y en bloque no se ve; escalonado, sí.
+   ========================================================================== */
+
+.animate-settle {
+  animation: settle 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--stagger, 0) * 55ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-settle {
+    animation-delay: 0ms !important;
+  }
 }
 
 /* Barra de scroll discreta dentro de los paneles */

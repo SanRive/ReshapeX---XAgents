@@ -186,6 +186,26 @@ export function blockingFields(spec: ExtractedSpec): FieldKey[] {
    Vocabulario de estado — glifo y palabra, nunca color a secas
    ========================================================================== */
 
+/**
+ * El valor y su unidad, por separado.
+ *
+ * En una ficha técnica la cifra manda y la unidad acompaña. Separarlas deja
+ * componer la columna con el número grande y el `°C` un escalón por debajo, que
+ * es como se lee una hoja de datos y no como se lee un formulario.
+ */
+export function splitFieldValue(
+  key: string,
+  field: AnyField,
+): { value: string; unit: string | null } {
+  if (field.value === null || field.value === undefined) {
+    return { value: "—", unit: null };
+  }
+  if (typeof field.value === "number") {
+    return { value: num(field.value), unit: FIELD_UNITS[key] ?? null };
+  }
+  return { value: formatFieldValue(key, field), unit: null };
+}
+
 export const STATUS_GLYPH = {
   declared: "✓",
   inferred: "~",
