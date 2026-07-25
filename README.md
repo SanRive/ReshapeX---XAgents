@@ -13,6 +13,20 @@ AgentSprint · Universidad EAFIT, Medellín · 2026-07-25.
 
 ---
 
+## 🔗 Probarlo ahora
+
+**https://27vv4slq-3000.use2.devtunnels.ms/**
+
+Instancia en vivo para el jurado del evento. Tres botones cargan casos reales:
+*fuera de alcance*, *correo de Barranquilla* y *respuesta del cliente*. También
+acepta entrada libre — escribe el correo que quieras.
+
+> Es un túnel a una máquina de desarrollo levantado para la presentación: sin
+> autenticación y con las claves de proveedor del equipo detrás. Se apaga al
+> terminar el evento. Para uso real, desplegar y rotar las claves.
+
+---
+
 ## Arrancar
 
 ```bash
