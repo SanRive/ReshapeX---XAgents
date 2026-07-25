@@ -309,13 +309,40 @@ function DerivedRow({
   );
 }
 
+/**
+ * La lista de componentes declarada.
+ *
+ * ⚠️ Solo se pinta como SUMADA si el validador acepto la lista. Si la rechazo
+ * —porque alguna cifra no estaba respaldada por un fragmento literal— la lista
+ * se ensena igual, pero marcada como NO sumada y sin total.
+ *
+ * Visto en vivo el 2026-07-25: el modelo puso los 22 kW nominales como
+ * disipacion del variador. El guardrail lo bloqueo y `total_dissipation_w`
+ * quedo en FALTA, pero esta tabla pintaba igual «SE SUMA · Total 44 000 W».
+ * Un brief que dice «falta la disipacion» y tres lineas mas abajo ensena un
+ * total de 44 000 W se contradice a si mismo delante del jurado.
+ */
 function ComponentTable({ spec }: { spec: ProjectSpec }) {
   const list = spec.component_list ?? [];
   const total = list.reduce((a, c) => a + c.w * c.qty, 0);
+  // Si la disipacion sigue sin resolverse, es que la suma NO se acepto.
+  const sumada =
+    spec.total_dissipation_w.status !== "missing" &&
+    spec.total_dissipation_w.value !== null;
 
   return (
     <div className="mt-2 border-t border-[var(--color-hairline-soft)] pt-2">
-      <span className="u-eyebrow">Lista de componentes declarada · se suma</span>
+      <span className={`u-eyebrow ${sumada ? "" : "text-[var(--color-missing)]"}`}>
+        {sumada
+          ? "Lista de componentes declarada · se suma"
+          : "Lista propuesta · NO se suma, sin respaldo literal"}
+      </span>
+      {!sumada && (
+        <p className="mt-1 mb-1.5 text-[0.75rem] leading-snug text-[var(--color-ink-faint)]">
+          Alguna cifra de estas líneas no aparece en un fragmento literal del
+          cliente, así que no se suma nada: se pregunta. Ver el log de decisiones.
+        </p>
+      )}
       <table className="mt-1.5 w-full max-w-[26rem] text-[var(--text-micro)]">
         <tbody>
           {list.map((c) => (
@@ -327,9 +354,9 @@ function ComponentTable({ spec }: { spec: ProjectSpec }) {
               <td className="u-datum py-0.5 pl-4 text-right">{num(c.w * c.qty)} W</td>
             </tr>
           ))}
-          <tr className="border-t border-[var(--color-hairline)]">
+          <tr className={`border-t border-[var(--color-hairline)] ${sumada ? "" : "opacity-45 line-through"}`}>
             <td className="py-0.5 font-medium" colSpan={2}>
-              Total
+              {sumada ? "Total" : "Total propuesto · descartado"}
             </td>
             <td className="u-datum py-0.5 pl-4 text-right font-medium">
               {num(total)} W

@@ -88,13 +88,13 @@ export default function Page() {
   }
 
   return (
-    <div className="flex min-h-dvh flex-col lg:h-dvh lg:min-h-0">
+    <div className="flex min-h-dvh flex-col min-[900px]:h-dvh min-[900px]:min-h-0">
       <SiteHeader view={view} onView={setView} briefReady={briefReady} />
 
       {view === "cliente" ? (
-        <main className="grid flex-1 gap-4 p-4 lg:min-h-0 lg:grid-cols-[minmax(0,1fr)_25rem] lg:gap-5 lg:p-5">
+        <main className="grid flex-1 gap-4 p-4 min-[900px]:min-h-0 min-[900px]:grid-cols-[minmax(0,1fr)_21rem] min-[900px]:gap-4 min-[900px]:p-4 xl:grid-cols-[minmax(0,1fr)_25rem] xl:gap-5 xl:p-5">
           <section
-            className="flex min-h-0 flex-col lg:h-full"
+            className="flex min-h-0 flex-col min-[900px]:h-full"
             aria-label="Conversación"
           >
             <Chat
@@ -108,12 +108,12 @@ export default function Page() {
             />
           </section>
 
-          <aside className="flex min-h-0 flex-col lg:h-full" aria-label="Ficha">
+          <aside className="flex min-h-0 flex-col min-[900px]:h-full" aria-label="Ficha">
             <Ficha spec={spec} touched={touched} />
           </aside>
         </main>
       ) : (
-        <main className="scroll-pane flex-1 p-4 lg:min-h-0 lg:p-5">
+        <main className="scroll-pane flex-1 p-4 min-[900px]:min-h-0 xl:p-5">
           {last ? (
             <EngineerView turn={last} />
           ) : (

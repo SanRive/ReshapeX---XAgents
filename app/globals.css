@@ -898,10 +898,31 @@ body {
 }
 
 /* Barra de scroll discreta dentro de los paneles */
+/* El panel que scrolla por su cuenta — pero SOLO cuando tiene altura acotada.
+   ----------------------------------------------------------------------------
+   Bug corregido el 2026-07-25: `overflow-y: auto` estaba puesto siempre. Por
+   encima de 1024 px el contenedor padre tiene `h-dvh`, asi que el panel scrolla
+   dentro de una altura fija y todo va bien. Por debajo, el padre pasa a
+   `min-h-dvh` y CRECE con el contenido, pero el panel seguia declarandose
+   scrollable: dos contenedores de scroll anidados sin tope, que es lo que se
+   sentia como scroll infinito en la vista del ingeniero.
+
+   El modelo correcto son dos: ventana pequena, UNA barra —la del documento—;
+   ventana grande, layout de dos paneles que scrollan independientes. */
 .scroll-pane {
-  overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--color-hairline) transparent;
+  /* Sin encadenar: al llegar al final del panel no arrastra al documento. */
+  overscroll-behavior: contain;
+}
+
+/* Tiene que coincidir con el umbral de dos paneles de `app/page.tsx`. Si no
+   coinciden, vuelve a existir un tramo de anchos con overflow sin altura
+   acotada — que es exactamente el bug del scroll infinito. */
+@media (min-width: 900px) {
+  .scroll-pane {
+    overflow-y: auto;
+  }
 }
 
 /* ============================================================================

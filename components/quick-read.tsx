@@ -45,7 +45,7 @@ export function QuickRead({ turn }: { turn: TurnResult }) {
         </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-px bg-[rgba(255,255,255,0.07)] lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-px bg-[rgba(255,255,255,0.07)] md:grid-cols-4">
         <Celda
           rotulo="Disipación total"
           valor={disipacion === undefined ? null : num(disipacion)}
