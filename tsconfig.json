@@ -1,0 +1,18 @@
+// TEMPORAL — creado por la pista C para poder tipar/correr TS de forma aislada antes de T0.1.
+// Quien haga el scaffold de Next.js (T0.1) debe fusionar/reemplazar esto, no ignorarlo:
+// especialmente el include de tsconfig.json y las devDependencies de package.json.
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "lib": ["ES2020"],
+    "types": ["node"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true
+  },
+  "include": ["lib/tools/**/*.ts"]
+}
