@@ -125,8 +125,17 @@ export const SPEC_TURNO_2: ProjectSpec = {
     "los gabinetes son en acero inoxidable",
   ),
   component_list: [
-    { name: "Variador de frecuencia", w: 650, qty: 2 },
-    { name: "PLC", w: 50, qty: 1 },
+    // Cada línea con su fragmento literal. Los 650 W salen de la respuesta; la
+    // cantidad, del correo inicial. Ambas cifras tienen que estar en SU cita:
+    // comprobarlas contra la conversación entera no basta, porque el «4» de
+    // «4 gabinetes» validaría un `qty: 4` de variadores que nadie declaró.
+    {
+      name: "Variador de frecuencia",
+      w: 650,
+      qty: 2,
+      evidence: "2 variadores de 22 kW",
+    },
+    { name: "PLC", w: 50, qty: 1, evidence: "y un PLC" },
   ],
   // La suma la hace codigo sobre componentes declarados, no el modelo. Va como
   // `inferred` y no como `declared` porque el numero 1 350 no aparece literal en

@@ -87,6 +87,20 @@ export const ComponentEntrySchema = z.object({
   name: z.string(),
   w: z.number(),
   qty: z.number().int().positive(),
+  /**
+   * Fragmento LITERAL del cliente que respalda esta linea.
+   *
+   * `component_list` no es un sobre y por tanto esquiva el bucle principal del
+   * validador. Sin esta evidencia, el modelo puede inventarse una cantidad y su
+   * producto entra como disipacion "declarada".
+   *
+   * Paso en vivo el 2026-07-25: el modelo puso `qty: 4` para los variadores
+   * —confundiendo los 4 gabinetes con las 2 unidades por gabinete— y la suma
+   * dio 2 650 W en vez de 1 350 W. Comprobar los digitos contra la conversacion
+   * entera no bastaba: el «4» existia, solo que significando otra cosa. Tiene
+   * que estar en ESTE fragmento.
+   */
+  evidence: z.string().nullable(),
 });
 
 export type ComponentEntry = z.infer<typeof ComponentEntrySchema>;

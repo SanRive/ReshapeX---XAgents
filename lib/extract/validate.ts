@@ -207,11 +207,67 @@ export function validate(raw: ProjectSpec, message: string): ValidateResult {
  * Esto NO viola la regla 1: sumar valores declarados es aritmetica, no
  * estimacion. Lo que nunca se hace es derivar la disipacion de la potencia
  * nominal — para eso el campo se queda `missing`.
+ *
+ * ⚠ `component_list` NO es un sobre: no tiene `status` ni `evidence`, asi que
+ * esquiva el bucle principal del validador. Sin la comprobacion de abajo, el
+ * modelo puede inventarse una cantidad y su producto entra como disipacion
+ * "declarada". Paso en vivo el 2026-07-25: con el correo de Barranquilla el
+ * modelo puso `qty: 4` para los variadores —confundiendo los 4 gabinetes con
+ * las 2 unidades por gabinete— y la suma dio 2 650 W en vez de 1 350 W.
+ *
+ * Por eso cada `w` y cada `qty` tienen que aparecer como digitos en el texto
+ * que declaro el cliente. Si uno no es rastreable, NO se suma: se pregunta.
+ * Preferir "missing" antes que adivinar vale tambien aqui.
+ *
+ * @param sourceText texto declarado por el cliente — idealmente la conversacion
+ *                   acumulada, porque las cantidades suelen venir de un turno
+ *                   anterior al de las perdidas.
  */
-export function sumComponentList(spec: ProjectSpec): ValidateResult {
+export function sumComponentList(spec: ProjectSpec, sourceText = ""): ValidateResult {
   const list = spec.component_list;
   if (!list || list.length === 0) return { clean: spec, degraded: [] };
   if (spec.total_dissipation_w.status !== "missing") return { clean: spec, degraded: [] };
+
+  const normSource = norm(sourceText);
+
+  /**
+   * Cada linea tiene que traer un fragmento literal del cliente donde aparezcan
+   * SUS dos cifras: los watts Y la cantidad. Comprobarlas contra la conversacion
+   * entera no basta — el «4» de «4 gabinetes» valida un `qty: 4` de variadores
+   * que nadie declaro.
+   *
+   * Sin exonerar `qty === 1`. Se probo y era peor: con la cita «cada uno declara
+   * 650 W de perdidas», que no dice cuantos, el modelo ponia honestamente
+   * `qty: 1` y la suma daba 700 W. No es 2 650, pero tampoco es 1 350 — sigue
+   * siendo un numero inventado, solo que por defecto en vez de por exceso.
+   * «Es uno» y «no se cuantos» tienen que ser distinguibles, y la unica forma
+   * es exigir que el uno tambien este escrito.
+   */
+  const noRastreables = list.filter((c) => {
+    if (!c.evidence || !c.evidence.trim()) return true;
+    if (!normSource.includes(norm(c.evidence))) return true;
+    if (!evidenceHasNumber(c.evidence, c.w)) return true;
+    if (!evidenceHasNumber(c.evidence, c.qty)) return true;
+    return false;
+  });
+
+  if (noRastreables.length > 0) {
+    const detalle = noRastreables
+      .map((c) => `${c.qty}×${c.name} ${c.w} W (cita: ${c.evidence ? `«${c.evidence}»` : "ninguna"})`)
+      .join("; ");
+    return {
+      clean: spec,
+      degraded: [
+        {
+          kind: "degraded",
+          text:
+            `No se suma la disipacion: hay lineas de la lista de componentes cuyas cifras no ` +
+            `estan respaldadas por un fragmento literal del cliente (${detalle}). ` +
+            `Se pregunta en vez de suponer.`,
+        },
+      ],
+    };
+  }
 
   const total = list.reduce((acc, c) => acc + c.w * c.qty, 0);
   if (!Number.isFinite(total) || total <= 0) return { clean: spec, degraded: [] };

@@ -118,8 +118,8 @@ describe("la suma declarada es citable, lo redondeado a ojo no", () => {
   test("1350 W procedente de la lista de componentes pasa", () => {
     const spec = blank();
     spec.component_list = [
-      { name: "variador", w: 650, qty: 2 },
-      { name: "PLC", w: 50, qty: 1 },
+      { name: "variador", w: 650, qty: 2, evidence: "2 variadores 650 W" },
+      { name: "PLC", w: 50, qty: 1, evidence: "1 PLC de 50 W" },
     ];
     expect(postCheck("Sumando lo que declaraste son 1350 W.", spec).replaced).toBe(false);
   });
@@ -127,15 +127,15 @@ describe("la suma declarada es citable, lo redondeado a ojo no", () => {
   test("y el requerido con el margen del 10% tambien: 1485 W", () => {
     const spec = blank();
     spec.component_list = [
-      { name: "variador", w: 650, qty: 2 },
-      { name: "PLC", w: 50, qty: 1 },
+      { name: "variador", w: 650, qty: 2, evidence: "2 variadores 650 W" },
+      { name: "PLC", w: 50, qty: 1, evidence: "1 PLC de 50 W" },
     ];
     expect(postCheck("Con el margen del catalogo, 1485 W.", spec).replaced).toBe(false);
   });
 
   test("pero 1400 W, que nadie declaro ni se deriva de nada, no", () => {
     const spec = blank();
-    spec.component_list = [{ name: "variador", w: 650, qty: 2 }];
+    spec.component_list = [{ name: "variador", w: 650, qty: 2, evidence: "2 variadores 650 W" }];
     expect(postCheck("Serian unos 1400 W.", spec).replaced).toBe(true);
   });
 });
@@ -144,8 +144,8 @@ describe("buildAllowedValues", () => {
   test("incluye el total sumado, no solo los subtotales", () => {
     const spec = blank();
     spec.component_list = [
-      { name: "variador", w: 650, qty: 2 },
-      { name: "PLC", w: 50, qty: 1 },
+      { name: "variador", w: 650, qty: 2, evidence: "2 variadores 650 W" },
+      { name: "PLC", w: 50, qty: 1, evidence: "1 PLC de 50 W" },
     ];
     const allowed = buildAllowedValues(spec);
     expect(allowed.has(1300)).toBe(true); // subtotal

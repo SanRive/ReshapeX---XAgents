@@ -209,10 +209,10 @@ describe("sumComponentList — suma, no estimacion", () => {
   test("suma la lista declarada: el caso de §5 da 1350 W", () => {
     const spec = specWith("total_dissipation_w", emptyField());
     spec.component_list = [
-      { name: "variador", w: 650, qty: 2 },
-      { name: "PLC", w: 50, qty: 1 },
+      { name: "variador", w: 650, qty: 2, evidence: "2 variadores ... 650 W" },
+      { name: "PLC", w: 50, qty: 1, evidence: "1 PLC de 50 W" },
     ];
-    const { clean, degraded } = sumComponentList(spec);
+    const { clean, degraded } = sumComponentList(spec, "2 variadores ... 650 W y 1 PLC de 50 W");
     expect(at(clean, "total_dissipation_w").value).toBe(1350);
     expect(degraded[0]!.text).toMatch(/Suma, no estimacion/);
   });
@@ -225,14 +225,14 @@ describe("sumComponentList — suma, no estimacion", () => {
       basis: null,
       blocks: null,
     });
-    spec.component_list = [{ name: "x", w: 100, qty: 1 }];
-    expect(at(sumComponentList(spec).clean, "total_dissipation_w").value).toBe(900);
+    spec.component_list = [{ name: "x", w: 100, qty: 1, evidence: "1 unidad de 100 W" }];
+    expect(at(sumComponentList(spec, "1 unidad de 100 W").clean, "total_dissipation_w").value).toBe(900);
   });
 
   test("sin lista no inventa nada", () => {
     const spec = specWith("total_dissipation_w", emptyField());
     spec.component_list = null;
-    const { clean, degraded } = sumComponentList(spec);
+    const { clean, degraded } = sumComponentList(spec, "2 variadores ... 650 W y 1 PLC de 50 W");
     expect(at(clean, "total_dissipation_w").value).toBeNull();
     expect(degraded).toHaveLength(0);
   });
