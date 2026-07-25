@@ -97,6 +97,12 @@ export const BARRANQUILLA_SPEC: ProjectSpec = {
     evidence: "La zona se lava a presión al final de cada turno.",
     basis: null,
   },
+  process_water_available: {
+    status: "missing",
+    value: null,
+    evidence: null,
+    basis: null,
+  },
 
   // ---- D · Carga térmica --------------------------------------------------
   /**

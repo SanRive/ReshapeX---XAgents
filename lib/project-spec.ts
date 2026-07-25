@@ -53,6 +53,14 @@ export type AnyField = {
   basis: string | null;
 };
 
+/** Sobre genérico tipado para consumidores deterministas como el motor de reglas. */
+export type Field<T> = {
+  status: FieldStatus;
+  value: T | null;
+  evidence: string | null;
+  basis: string | null;
+};
+
 // ---------------------------------------------------------------------------
 // Vocabulario — copia el del catálogo para que las citas mapeen 1:1
 // ---------------------------------------------------------------------------
@@ -136,6 +144,8 @@ export const ExtractedSpecSchema = z.object({
   wind_exposure: field(z.boolean()),
   installation: field(Installation),
   air_quality: field(AirQuality),
+  /** Condición de aplicabilidad de PWS; falta de dato bloquea, `false` descarta. */
+  process_water_available: field(z.boolean()),
 
   // D · Carga térmica — tab Heat Dissipation de PSS
   /** BLOQUEANTE DURO del shortlist. NUNCA se estima. Ver regla 1. */
@@ -163,6 +173,7 @@ export const FIELD_KEYS = [
   "housing_material", "housing_color", "supply_voltage",
   "location", "ambient_temp_max_c", "ambient_temp_min_c",
   "solar_load", "wind_exposure", "installation", "air_quality",
+  "process_water_available",
   "total_dissipation_w", "enclosure_count",
 ] as const;
 
@@ -295,4 +306,65 @@ export function emptySpec(): ProjectSpec {
     },
     decision_log: [],
   };
+}
+
+/** Alias conservado para el motor de reglas y sus fixtures. */
+export const emptyProjectSpec = emptySpec;
+
+export function missingField<T>(): Field<T> {
+  return { status: "missing", value: null, evidence: null, basis: null };
+}
+
+export function declaredField<T>(value: T, evidence: string): Field<T> {
+  return { status: "declared", value, evidence, basis: null };
+}
+
+export function inferredField<T>(value: T, basis: string): Field<T> {
+  return { status: "inferred", value, evidence: null, basis };
+}
+
+export function valueOf<T>(envelope: Field<T> | undefined): T | undefined {
+  if (!envelope || envelope.status === "missing" || envelope.value === null) return undefined;
+  return envelope.value;
+}
+
+/** Vista de solo lectura consumida por B; colapsa sobres sin alterar `ProjectSpec`. */
+export type ResolvedSpec = {
+  project_name?: string;
+  customer?: string;
+  enclosure_count?: number;
+  height_mm?: number;
+  width_mm?: number;
+  depth_mm?: number;
+  internal_temp_max_c?: number;
+  internal_temp_min_c?: number;
+  housing_material?: HousingMaterial;
+  housing_color?: string;
+  supply_voltage?: SupplyVoltage;
+  location?: Location;
+  ambient_temp_max_c?: number;
+  ambient_temp_min_c?: number;
+  solar_load?: boolean;
+  wind_exposure?: boolean;
+  installation?: Installation;
+  air_quality?: AirQuality;
+  process_water_available?: boolean;
+  total_dissipation_w?: number;
+  component_list?: Array<{ name: string; w: number; qty: number }>;
+  measured_temps?: { inside_c: number; outside_c: number };
+};
+
+export function resolveSpec(spec: ProjectSpec): ResolvedSpec {
+  const resolved: ResolvedSpec = {
+    ...(spec.component_list === null ? {} : { component_list: spec.component_list }),
+    ...(spec.measured_temps === null ? {} : { measured_temps: spec.measured_temps }),
+  };
+  for (const key of FIELD_KEYS) {
+    const envelope = spec[key] as Field<unknown>;
+    const value = valueOf(envelope);
+    if (value !== undefined) {
+      (resolved as Record<string, unknown>)[key] = value;
+    }
+  }
+  return resolved;
 }
