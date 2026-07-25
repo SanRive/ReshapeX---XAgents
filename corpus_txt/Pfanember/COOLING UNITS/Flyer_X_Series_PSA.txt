@@ -1,0 +1,132 @@
+X-Series
+Cooling Units
+CLOSED LOOP ENCLOSURE COOLING.
+
+
+
+
+Precision Cooling
+for Energy Efficiency
+
+
+
+
+                                 Flexible
+                                 • Utilizing inverter technology, each unit covers a wide range of
+                                   cooling capacity making each unit highly versatile.
+
+
+                                 Energy Efficient
+                                 • The variable speed compressor will adjust according to the
+                                   application requirements using less energy compared to a fix
+                                   speed compressor.
+                                 • The variable speed components combined with Pfannenberg’s
+                                   years of experience optimizing the control algorithm leads to
+                                   significant energy savings for customers.
+
+
+                                 Connectivity Ready
+                                 • Comes standard with RS485 interface to enable
+                                   communication via Modbus RTU protocol.
+
+
+                                 Precise Cooling
+                                 • Designed for precision cooling with accuracy of +/-0.1 K (0.2degF).
+
+
+                                 Quick Installation
+                                 • Cutout is compatible with other Pfannenberg units for
+                                   easy upgrade.
+                                 • Available in both recessed mount to save floor space and side
+                                 mount.
+
+
+
+
+        X-Series
+
+www.pfannenbergusa.com
+  Product                                                       DTI 6X1E                            DTS 6X1E                                 DTI 6X2E                     DTS 6X2E
+
+  Article No.                          XC                    13897332555                          13887332555                           13897832555                      13887832555
+  Mounting Type                                              Recessed Mount                          Side Mount                         Recessed Mount                    Side Mount
+
+  Cooling Capacity, Regulated                                                   1000-2800 W                                                              2000-4500 W
+
+                                                                                                                        AC 50 | 60 Hz
+  Rated Voltage ±10%
+                                                                                                                         400/460 V
+
+  Cooling Capacity                       A35/A20                                    3300 W                                                                  4800 W
+
+                                         A35/A35                                    2800 W                                                                  4500 W
+  Cooling Capacity
+  according to EN 14511
+                                         A35/A50                                    2100 W                                                                  3100 W
+
+  Power Consumption                      A35/A35                                 240 - 1300 W                                                            240 - 2020 W
+
+  Current Consumption                    A35/A35                                     3.2 A                                                                   4.6 A
+
+  Starting Current                                                                                                        soft start
+
+  Pre Fuse Type                                                                   6A (type C)                                                             10A (type C)
+
+  Type of Connection                                                                                       spring-type terminal included with plug
+
+  Unimpeded Airflow
+                                          internal                                 990 m3/h                                                               1430 m3/h
+  (Free Flow)
+
+  Ambient Temperature                                                                                       +15 ˚C … +55 ˚C | +59 ˚F ... +131 ˚F
+
+  Control Range (adjustable)                                                              +25 ˚C … +45 ˚C | +77 ˚F … +113 ˚F; factory setting +35 ˚C | +95 ˚F
+
+  Medium                                   R134a                                    1100 g                                                                  1950 g
+
+  Condensate Management                                                                      integrated condensate evaporation system with safety overflow
+
+  Weight (Netto)                                                   70 kg                                  75 kg                               84 kg                         87 kg
+
+                                             IP 54                                     towards the electrical enclosure if used as intended by the manufacturer
+  Protection system
+  according to EN 60529
+                                             IP 34                                        towards the surroundings if used as intended by the manufacturer
+
+                                         housing                                                                    galvanized sheet steel
+  Design
+                                            cover                                                          electrostatically powder coated (200 °C)
+
+  Colour                                    cover                                                                         RAL 7035
+
+
+
+
+ Temperature [C˚/ F˚]
+                                                                                    Cabinet
+             37/98.6                                                                Temperature
+              35/95
+             33/91.4                                                                Target Temperature
+                                                                                    +35/95 (adjustable)
+
+           Heat Load
+
+
+
+    Required Energy                                                                    Time [min]
+
+
+Precision Cooling for Efficiency
+Inverter technology combined with years of experience in control algorithms eliminates the temperature
+spike within the cabinet seen in single speed compressor cooling units. This system provides more
+consistent cabinet temperature protecting the sensitive components inside (refer to the solid red line).                                                PRODUCT INFORMATION
+The inverter technology allows the cooling unit to operate at partial load by only cooling to the heat
+load (red dotted line) inside the cabinet to reduce energy consumption (refer to green line).                                                            https://hubs.ly/Q02Bltp40
+
+
+                            Pfannenberg USA
+                                    1-886-689-0085
+                                    sales@pfannenbergusa.com
+                                    www.pfannenbergusa.com
+ver. BU1_018_6.15.24
+

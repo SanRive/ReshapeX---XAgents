@@ -1,0 +1,191 @@
+   PSS Tutorial
+   How to use Pfannenberg Sizing Software (PSS) to correctly size a thermal solution for
+   your enclosure.
+
+
+
+   Copia offline de info.pfannenbergusa.com/support/pss-tutorial · capturada el 24 de julio de 2026 ·
+   contenido © Pfannenberg Sales America
+
+
+   CONTENIDO
+
+   1. Getting Started
+   2. Contacts Page
+   3. Enclosure Information Page
+   4. Operating Environment Page
+   5. Heat Dissipation Page
+   6. Results Page
+
+
+
+
+   Tip
+   Please do not click the back button in the browser. If the back button is clicked, this
+   will create an error message on the page and the program will need to be restarted.
+   Instead, use the PSS tabs to move back and forth within the project.
+
+
+
+Getting Started
+
+For values that are not in PSS by standard (°C, Watts (W) Heat Loss, or mm), select
+preferences in the top left-hand corner to go to the page below. Once the values are
+selected, click the "OK" button and the values will change over in the software.
+
+
+
+
+                                Preferences en la esquina superior izquierda
+                Ventana de preferencias: unidades de temperatura, potencia y dimensiones
+
+
+
+
+Contacts Page
+
+This is the first page when entering into the PSS Project. The "Project Name" will be the
+name of the file when downloaded. The other fields are optional.
+                                        Contacts Page
+
+
+
+
+Enclosure Information Page
+
+Once the contacts page is complete, click the "Continue" button. This will bring up the
+Enclosure Information Tab.
+
+Field Explanations:
+
+ • Enclosure Dimensions: Input the Height, Width, and Depth of the enclosure.
+
+ • Temperature in Switch Cabinet: Input the minimum and maximum temperature in the
+  enclosure that is acceptable. The maximum temperature will be taken into consideration
+  when calculating a properly sized solution for the enclosure.
+
+ • Housing Material: Select from the dropdown for the material used for the enclosure or
+  manually input the material information. Ensure color is selected accurately for outdoor
+  applications as solar loading will vary depending on the color of the enclosure.
+ • Supply Voltage for Air Conditioning Components: Select a voltage that can be used
+  from the dropdown table. Please note this can change which units show in the final
+  solution page.
+
+
+
+
+                                   Enclosure Information Page
+
+
+
+
+Operating Environment Page
+
+Once finished with the Enclosure Tab, click the "Continue" button. On the next tab labelled
+"Environment", the page below will be displayed.
+
+Field Explanations:
+
+ • Location: Select where the enclosure will be located — Indoor (NEMA Type 12),
+  Outdoor (NEMA Type 3R/4), or Washdown (NEMA Type 4/4X).
+
+ • Solar Load: If the enclosure is in direct sunlight outside, please select this checkmark
+  box.
+
+ • Wind Speed: If the enclosure is outside and in a very windy space (such as on a bridge
+  or on top of a building), please select the wind speed dropdown.
+ • Installation Characteristics: Select from the dropdown table on how the enclosure will
+  be mounted. This relates directly to the surface area available for heat transfer of the
+  environment into the enclosure or heat transfer from the enclosure into the environment.
+
+ • Ambient Temperature: Input the minimum and maximum ambient air temperatures into
+  this selection.
+
+
+
+
+                                   Operating Environment Page
+
+
+
+
+Heat Dissipation Page
+
+Once finished with the Environment Tab, click the "Continue" button. The page below will
+be displayed.
+
+Field Explanations:
+
+ • Indicate Known Total Dissipation: Input the total heat loss within the cabinet if it is
+  known.
+
+ • Calculate Dissipation Based on Components in Enclosure: Use this tab to select
+  from a few different components if total heat loss is not known. It is recommended to still
+  verify heat loss of each individual component as these values might be higher than the
+ actual components that are being used. Utilization on the component page refers to part
+ load.
+
+• Calculate Dissipation based on Recorded Temperature: If total heat load is unknown
+ or an incomplete component list, use this tab. It is recommended to calculate the main
+ heat generators' heat load within the cabinet (this is typically for larger drives). The
+ temperature outside the enclosure and the temperature recorded inside the enclosure is
+ needed to calculate heat load within the cabinet. This is typically for existing enclosures
+ in the field.
+
+
+
+
+                            Heat Dissipation: dissipation total conocida
+Heat Dissipation: calculo por componentes
+                           Heat Dissipation: calculo por temperatura registrada
+
+
+
+
+Results Page
+
+Once finished with the Dissipation Tab, click the "Continue" button. The last page, confirm
+the correct solution for the application. Select the product family to determine which
+solution will cool the enclosure effectively. The picture below states filter fan and air/air heat
+exchanger are not possible, this is because the ambient temperature selected (100°F) is
+higher than the maximum allowable temperature inside the enclosure (95°F).
+
+Click the cooling units or heat exchanger button to check which unit could work best, the
+example below is for cooling units. The dropdown will list which AC unit can cool the
+electrical enclosure at the worst-case scenario (highest ambient temperature and highest
+electrical enclosure temperature). The quantity can be changed if a two/multiple unit
+solution is needed. Different mounting styles can be selected (side / flush mount,
+integrated / recessed mount, or top mount). Once a unit is selected, click the "OK" button.
+After this, click on the "Detail Results" or "Download Detail Results as PDF" to receive a
+page with all of the calculations taken into factor and showing the unit selected as an
+effective solution for the custom application.
+
+The "Download Project" downloads a HTML file which can be opened up by the PSS.
+Images are shown below for more information on how to open the project. Whenever
+sending in a message to PSS support, please include a download of the project (either
+HTML or PDF).
+
+
+
+
+                            Results Page: familias de producto disponibles
+Seleccion de unidad de refrigeracion
+Detail Results
+                                    Descarga del proyecto
+
+
+
+
+                                    Opciones de descarga
+
+
+Select the HTML file downloaded before / that was sent. Then click import.
+                                  Importar un proyecto guardado en PSS
+
+
+
+
+Fuente original: https://info.pfannenbergusa.com/support/pss-tutorial
+Documento archivado para uso personal. Todo el texto y las imagenes pertenecen a Pfannenberg Sales
+America. Las capturas se recomprimieron para reducir el tamano del archivo.
+

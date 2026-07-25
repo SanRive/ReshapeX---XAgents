@@ -1,0 +1,480 @@
+The Pfannenberg
+Thermal Management
+Concept
+Air/Air Heat Exchangers
+
+A/C Cooling Units
+
+Air/Water Heat Exchangers
+
+
+
+
+ Pfannenberg’s unique
+ thermal management
+ concept
+ Optimal thermal management for all
+ requirements due to coordinated
+ hardware and software.
+
+
+ • Complete program of thermal management units:
+
+     – Air/Air Heat Exchangers
+
+     – A/C Cooling Units
+
+     – Air/Water Heat Exchangers
+
+   All three cooling technologies are cut-out
+   compatible designed to be mounted to cabinets
+   from all leading electrical enclosure manufacturers
+
+ • Efficient       -Technology
+
+ • Calculate the perfect thermal management solution:
+   Pfannenberg Sizing Software (PSS) helps you to find
+   the most suitable solution for individual application
+
+ • Monitor your processes:        -Plant for cooling units –
+   Premium software service tool for units with Pfannenberg
+   Multi Controller (MC)
+1 Enclosure cut-out
+3 Cooling technologies
+9 Device versions
+Manufacturers of machines, plant engineers,
+end users and distributors profit from increased
+flexibility and cost savings:
+
+
+• All three cooling technologies are completely
+  interchangeable to suit customer’s cooling demand
+
+• Only one standardized enclosure cut-out
+
+• Through one standard cut-out size,
+  only few enclosure variants are needed
+
+• Minimum logistic expenditure
+
+• Flexibility of appropriate cooling technology –
+  even after the planning phase
+
+• Simple upgrade of the cooling technology
+  when temperature conditions change
+
+• Easy and fast installation reduces service
+  and maintenance costs
+Air/Air Heat Exchangers
+
+A/C Cooling Units
+
+Air/Water Heat Exchangers
+
+
+
+
+ Secure climatisation
+ solution with ambient air
+
+
+
+
+    ADVANTAGES
+
+    •	C ost efficient solution for applications
+       with ∆T > 10K
+
+    •	Available in six performance classes
+       from 20 W/K to 100 W/K in three sizes
+
+    •	M aximum distance between intake and exhaust
+       vents optimizes airflow within the electrical
+       enclosure which eliminates potential hot spots
+
+    •	Integrated thermostat for temperature control
+
+    •	Additional thermostat for
+        high temperature warning
+
+    •	High maintenance friendliness
+
+    •	M ounting-friendly seal, no elaborate
+       reworking of the installation cut-out
+
+    •	IP rating is achieved
+Air/Air Heat Exchangers
+
+
+
+
+FIELD OF USE
+
+Application in which the ambient air is contaminated
+with dust, or liquids, rendering the use of a filterfan
+impractical.
+
+
+SOLUTION
+
+If the ambient temperature is low enough but the
+use of filterfans is not possible due to rough
+ambient conditions – it is advised to use air/air
+heat exchangers.
+
+The air/air heat exchanger separates the external air
+circuit from the internal one. Due to this separation
+the risk of damages on the components through
+harmful dust and fluids is minimized.
+
+The robust steel construction of the air/air heat
+exchangers enables the safe operation in tough
+industrial environments.
+Air/Air Heat Exchangers
+
+A/C Cooling Units
+
+Air/Water Heat Exchangers
+
+
+
+
+ Universal solution
+ for many ambient
+ conditions
+
+
+    ADVANTAGES
+
+    • Available in 5 performance classes in 3 sizes
+
+    • Significant energy saving due to market leading
+      energy efficiency ratio (EER)
+
+    • Condenser coils with wide fin spacing for
+      maximum machine availability
+
+    • Maximum distance between intake and exhaust
+      vents optimizes airflow within the electrical enclo-
+      sure which eliminates potential hot spots
+
+    • Available with a standard controller (SC)
+      or with a multi controller (MC, extended
+      functionality)
+
+    • USB interface (MC version) for easy retrieval
+      of parameter settings or historical data
+      (Pfannenberg        -Plant software available
+     free of charge)
+
+    • Power-saving mode is integrated in the
+      multi controller as standard
+
+    • Optional pre-filter is added in a few seconds
+A/C Cooling Units
+
+
+
+
+FIELD OF USE
+
+Applications where the ambient temperature outside the
+electrical enclosure is not enough to ensure an optimal
+temperature for the electrical components.
+
+
+SOLUTION
+
+Pfannenberg’s A/C cooling units offer the same advan-
+tages as air/air heat exchangers in terms of safety and
+protection against contaminated ambient air.
+
+Despite high cooling capacity         A/C cooling units
+stand out with their low energy consumption compared
+to ordinary devices – general reduction of up to 43% of
+energy consumption is achieved.
+
+Multi master function: It is possible to connect 20
+A/C cooling units for simultaneous operating mode by a
+simple two wire connection.
+
+Alternatively, if there is no spare space on the side of the
+electrical enclosure – top mounted DTT series A/C cooling
+units achieve the same cooling performances as DTI/DTS
+units.
+Air/Air Heat Exchangers
+
+A/C Cooling Units
+
+Air/Water Heat Exchangers
+
+
+
+
+ Energy efficient solution
+ for harsh ambient
+ conditions
+
+
+
+    ADVANTAGES
+
+    • Liquid cooling reduces maintenance
+      and increases energy efficiency
+
+    •	M ultiple benefits for environments with
+       high ambient and airborne contaminants
+
+    •	S imple changeover from active cooling
+       units to air/water heat exchanger
+
+    •	M aintenance friendly: Enormous saving
+       potential for the service costs
+
+    • Integrated thermostat and magnetic valve
+      for temperature control
+
+    •	Temperature monitoring with alarm contact
+
+    •	C ompatible with our Pfannenberg line of chillers
+Air/Water Heat Exchangers
+
+
+
+
+FIELD OF USE
+
+Pfannenberg’s Air/Water heat exchangers are usually
+used in the following situations:
+
+• Applications with high ambient temperatures,
+  such as plastic mould injection or foundries
+
+• Processes with harsh environments containing
+  airborne particulate e.g. sugar production or
+  flour in food production
+
+• Environments where machines or production
+  processes are already cooled with liquid
+
+
+
+SOLUTION
+
+Air/water heat exchangers do not use any ambient air
+in hot or contaminated environments.
+
+It is possible to connect these units to already existing
+liquid supply for machines or processes thus using
+resources effectively.
+
+In combination with chillers which are placed outside of
+the production areas - the heat can be piped away as
+part of the liquid solution, this way keeping the heat away
+from production halls.
+The Pfannenberg
+       series
+
+Energy efficient
+Easy to install
+Service friendly
+OUR OFFER
+
+Maximum cost efficiency with highest performance capacity.
+
+
+YOUR ADVANTAGES
+
+• Industrial design: rugged, industrial steel
+  construction with removable cover
+
+• Condenser coils with wide fin spacing for
+  maximum machine availability
+
+• Tool-free installation in less than three minutes
+
+• Reduced energy consumption by up to 43%
+
+• Market leading coefficient of power
+
+• Optimized service factors MTTR and MTBF
+
+• Service friendly due to easy replaceable components
+
+In addition to the presented cooling solutions, the patented
+Pfannenberg filterfans and chillers complete the          series.
+Single person installation
+and service friendliness
+
+
+Pfannenberg’s thermal management units
+stand out through their remarkable
+customer friendly construction
+
+
+  Easy installation
+
+
+
+
+  The Plug&Play system enables a single person installation
+  within minutes. Pfannenberg climatisation units PAI, DTI and
+  PWI are mounted with only six fastening clips.
+
+
+
+
+  Easy service
+
+
+
+
+  Few screws and the easy access of the components make the
+  devices particularly service friendly.
+Cut-out compatible:
+Three cut-out sizes –
+20 compatible units
+Which device fits into which device cut-out?
+
+
+
+
+ Cut-out         Cooling unit        Air/water heat       Air/air heat
+                                     exchanger            exchanger
+                 300 – 4000 Watt     500 – 5000 Watt      20 – 100 W/K
+
+ Size 1          DTx 6801            PWx 6502             PAx 6203
+                 DTx 6501            PWx 6302             PAx 6173
+                 DTx 6401
+                 DTx 6301
+                 DTx 6201
+
+ Size 2          DTx 9341C           PWx 6302C            PAx 6133
+                 DTx 9141            PWx 6152             PAx 6103
+                                                          PAx 6073
+
+ Size 3          DTx 9041            PWx 6105             PAx 6043
+                                     PWx 6052
+
+
+
+All devices are available as semi recessed DTI units or
+external DTS units
+
+
+
+
+FURTHER ADVANTAGES OF ALL UNITS:
+
+• Available in stainless steel hood
+
+• Special order RAL colours
+
+• CAD drawings available on www.pfannenberg.com
+  for all leading design packages.
+
+• International approvals including CE,
+  UL and EAC for the Russian market
+PSS
+Pfannenberg Sizing
+Software
+
+
+
+
+The PSS software is a free, very user-friendly tool, with
+which you can easily and quickly determine the correct
+solutions for your thermal management project.
+
+
+It also contains an open library for personal selection
+of enclosures and components.
+
+
+
+
+                     Free download:
+                     www.pfannenberg.com
+
+
+                     Online version:
+                     pss.pfannenberg.com
+
+
+                     Free app for tablets:
+                     iPad + Android
+        -Plant –
+The cockpit for your
+thermal management!
+
+
+
+
+       -Plant is the Pfannenberg system software with
+which you can not only read out status information of
+        cooling units, but also set and adjust parameters.
+There is the possibility to communicate directly with the
+cooling units or to incorporate the software into the user
+interface of your machine control.
+
+       -Plant is an important tool for service technicians,
+to read status information at the cooling unit and to
+parameterise it. The software provides, amongst other
+things, information about the temperature progression and
+the running time of the components, thus giving important
+indications on necessary adjustments or maintenance
+intervals.
+
+Machine manufacturers (OEMS) implement              -Plant
+in the user interface of the machine control. With this, the
+machine operator is constantly informed about the status
+of the controls and the temperature conditions and can
+react to any deviations promptly.
+
+      -Plant is compatible with all       cooling units
+which are equipped with a multi controller (MC).
+We support you with the planning
+and development of your project!
+On our website you can find the following downloads:
+• EPlan Macros
+• Pfannenberg Sizing Software (PSS)
+•       -Plant Software
+
+
+System solutions from one source:
+In addition to devices for the thermal management of
+electrical enclosures, the Pfannenberg portfolio covers
+filterfans, chillers, heaters, thermostats and hygrostats.
+Furthermore, Pfannenberg offers a wide spectrum
+of signaling devices like flashing lights, sounders,
+combined devices and signal towers, to protect your
+business, keeping your personnel safe and machines
+productive.
+
+
+
+
+Contact us.
+We are happy to assist you!
+Pfannenberg Group Holding
+Werner-Witt-Straße 1, 21035 Hamburg, Germany
+P.O. Box 80 07 47, 21007 Hamburg, Germany
+
+        +49 40 73412 0
+        +49 40 73412 101
+        info@pfannenberg.com
+        www.pfannenberg.com
+
+
+Pfannenberg –
+there for you all over the world!
+
+Deliveries are made on the basis of the General Terms and Services of
+the ZVEI. Subject to technical amendments and misprints. This paper
+has been manufactured from chlorine-free bleached cellulose.
+
+
+
+
+    075000236
+

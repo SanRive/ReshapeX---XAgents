@@ -1,0 +1,103 @@
+    PFANNENBERG
+    OUTDOOR RATED FILTERFAN®                                                                            (NEMA 3R)
+
+    RAIN, SHINE OR SNOW....WE HAVE YOU PROTECTED
+
+
+
+
+For over 60 years Pfannenberg has been protecting electrical
+enclosures from heat damage and ingress of liquid and solid objects.
+For indoor applications our Filterfan® protects against water and
+dust (NEMA 12/IP55). For extreme applications (NEMA 4/4X) the
+addition of a rainhood provides weatherproof protection. The
+Pfannenberg Outdoor Rated Filterfan® (NEMA 3R) is designed for
+outdoor weather where resistance against falling rain, ice formation,
+and UV degradation is important to ensure operation of apparatus
+inside enclosure.
+
+
+
+
+  VALUE AND BENEFITS
+Outdoor Weather Ready                             Less Frequent Maintenance
+Protection against ingress of falling dirt, and   The fluted filter-mat provides 3x longer service life, holding
+harmful effects on sensitive components           more dust before impeding airflow extending the mean
+against rain, sleet, snow and even external ice   time between maintenance (MTBM) for outdoor enclosure;
+formation. (NEMA 3R rating)                       especially, critical for those locate in remote area.
+
+Optimized Air Flow                                Low Initial Investment                                            Prolong Life
+Louvers design is optimized to provide maximal    Traditional outdoor solution requires installation of a metal     UV resistance plastic to prevent premature
+airflow while providing supreme ingress           hood (rainhood) over the filter fan. The Outdoor Rated            degradation from direct sunlight
+protection; combined with best in class fans      Filterfan® (NEMA 3R) eliminates the component and labor
+produces improved air flow to prevent hotspot     cost, and the patented tool-free installation reduces up
+                                                  front investment.
+    IDEAL APPLICATIONS                                                                       CONFIGURATIONS
+    • Pump panels for irrigation, water/waste water                                          • Multiple unimpeded airflow rating (up to 560cfm)
+    • Lighting control box for traffic, field/stadiums                                       • Matching Outdoor rated (NEMA 3R) exhaust filter
+    • Outdoor communication (IT) structures                                                  • Two color choice – Black (RAL 9011) and Light Grey (RAL 7035)
+    • Energy storage and charging systems                                                    • AC and DC Voltages – 115Vac, 230Vac, 460Vac and 24Vdc
+                                                                                             • Accessories & Spare parts – Replacement fluted filter mat,
+    • Transportation systems – Bridges, Highways, Tolls, Rail
+                                                                                               Thermostat, Hygrostats, Heaters
+
+
+                                              Air Flow Rate                                                                                        Part No.
+                                                                                  Physical                  Cutout
+                                       CFM²                   CFM³               Dimension                Dimension
+     Type           Voltage                                                                                                             Black                 Light Grey
+                                     (Unimpeded -        (Installed with one      (W x H x D)                (W x H)
+                                  Filterfan assembly      FilterFan and one          inch                  inch (mm)                  (RAL 9011)              (RAL 7035)
+                                      uninstalled)          Exhaust Filter)
+
+  PF Series Filterfans® 4.0 - Outdoor Rated (NEMA 3R)
+  PF 22000 R         115 VAC                                                                                                        11622153110            11622153115
+                                                                                                           4.92 x 4.92
+  PF 22000 R         230 VAC           38 cfm                 28 cfm           5.71 x 5.71 x 2.76                                   11622103110            11622103115
+                                                                                                           (125 x 125)
+  PF 22000 R         24 VDC                                                                                                         11622803110            11622803115
+  PF 32000 R         115 VAC                                                                                                        11632153110            11632153115
+                                                                                                           6.97 x 6.97
+  PF 32000 R         230 VAC           65 cfm                 38 cfm           7.95 x 7.95 x 3.66                                   11632103110            11632103115
+                                                                                                           (177 x 177)
+  PF 32000 R         24 VDC                                                                                                         11632803110            11632803115
+  PF 42500 R         115 VAC                                                                                                        11642153110            11642153115
+                                                                                                           8.78 x 8.78
+  PF 42500 R         230 VAC           94 cfm                 74 cfm           9.92 x 9.92 x 4.05                                   11642103110            11642103115
+                                                                                                           (223 x 223)
+  PF 42500 R         24 VDC                                                                                                         11642803110            11642803115
+  PF 43000 R         115 VAC                                                                                                        11643153110            11643153115
+                                                                                                           8.78 x 8.78
+  PF 43000 R         230 VAC           155 cfm                122 cfm          9.92 x 9.92 x 4.69                                   11643103110            11643103115
+                                                                                                           (223 x 223)
+  PF 43000 R         24 VDC                                                                                                         11643803110            11643803115
+  PF 65000 R         115 VAC                                                                             11.46 x 11.46              11665153110            11665153115
+                                       297 cfm                224 cfm          12.6 x 12.6 x 6.18
+  PF 65000 R         230 VAC                                                                              (291 x 291)               11665103110            11665103115
+  PF 66000 R         115 VAC                                                                                                        11666153110            11666153115
+                                                                                                         11.46 x 11.46
+  PF 66000 R         230 VAC           462 cfm                295 cfm          12.6 x 12.6 x 6.18                                   11666103110            11666103115
+                                                                                                          (291 x 291)
+  PF 66000 R         460 VAC                                                                                                        11666023110            11666023115
+  PF 67000 R         115 VAC                                                                                                        11667153110            11667153115
+                                                                                                         11.46 x 11.46
+  PF 67000 R         230 VAC           560 cfm                368 cfm          12.6 x 12.6 x 6.18                                   11667103110            11667103115
+                                                                                                          (291 x 291)
+  PF 67000 R         460 VAC                                                                                                        11667023110            11667023115
+
+  PFA Series Exhaust Filters - Outdoor Rated (NEMA 3R)							
+  PFA 20000 R           -                 -                       -            5.71 x 5.71 x 1.22    4.92 x 4.92 (125 x 125)        11720003110            11720003115
+  PFA 30000 R           -                 -                       -            7.95 x 7.95 x 1.57    6.97 x 6.97 (177 x 177)        11730003110            11730003115
+  PFA 40000 R           -                 -                       -            9.92 x 9.92 x 1.74    8.78 x 8.78 (223 x 223)        11740003110            11740003115
+  PFA 60000 R           -                 -                       -            12.6 x 12.6 x 1.8    11.46 x 11.46 (291 x 291)       11760003110            11760003115
+
+
+
+
+                                                                                                                                                                           Rev 2
+
+Design & Application Assistance • Web-based Sizing Software
+Online Certifications & Drawings • National / International Service
+
+pfannenbergusa.com                                                                                                       ELECTRO-TECHNOLOGY FOR INDUSTRY
+

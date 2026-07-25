@@ -1,0 +1,106 @@
+  PTF 1200 Top Mount Filterfan®
+  Efficient heat removal for densely packed control cabinets.
+
+
+
+
+Outdoor - Type 3R                                                                                  Indoor - Type 12
+
+
+
+
+            Highest Airflow Rate                                All Weather Protection
+            Over 30% more airflow than any filter fan in the    Type 3R rated model provides resistance
+            market pulling more hot air from the enclosure to   against falling rain, sleet, and damage from
+            reach the optimal temperature.                      external ice formation.
+
+            The PTF 1200 Product Kit is equivalent to
+            a 3000BTU air conditioner with a 5.6º F             Space Saving Design
+            temperature difference.
+                                                                Designed for use in crowded enclosures. This
+                                                                solution has no intrusion into the cabinet.
+
+            Energy Efficient Fan
+            The highly efficient EC centrifugal fan allows      Long Service Life
+            for precise control of the fan speed to reduce      The EC fan with advanced motor technology
+            energy consumption.                                 reduces mechanical stress providing over 25%
+                                                                longer service life than standard axial fans.
+
+
+            Robust Housing
+            Durable and robust powder coated 16 gauge           Easy to Ship
+            steel or stainless steel.                           The rugged design makes standard
+                                                                parcel shipping possible.
+
+
+
+
+ www.pfannenbergusa.com
+PTF SERIES - TOP MOUNT FILTERFAN®
+                                                                                                  Power             Starting         Fuse         Noise Level                    Weight
+                                             Part                Voltage       Frequency                                                            (according to
+               PTF 1200                                                                        Consumption          Current       (maximum)         EN ISO 3741)             (without packaging)
+                                            Number                 (VAC)           (Hz)
+                                                                                                       (W)        @ 35A/35A °C     Class CC                                         (lb)
+                                                                                                                                                       dB(A)
+
+                                         11692152055               115                                                2.20
+Indoor - Type 12                                                                  50/60                170                             6               <74                         14.4
+                                         11692102055               230                                                1.40
+
+                                         11692152120               115                                                2.20
+Outdoor - Type 3R                                                                 50/60                170                             6               <74                         14.4
+                                         11692102120               230                                                1.40
+
+                                Design   Type 12 - Sheet steel, powder coated. RAL 7035 (different colors available upon request). Type 3R - stainless steel. Screw mounting on the enclosure roof.
+
+Part Number                                11692152055                     11692152120                       11692102055                   11692102120
+Dimensions                                                                                11.81 x 11.81 x 6.1                                                                 L x W x H in
+
+Unimpeded Airflow                                                                                 589                                                                             CFM2
+
+Airflow rate in comb.with 2x exhaust
+                                                                                                  512                                                                             CFM3
+filter (IP 55)
+
+Type of connection                                                                           X-COM plug
+
+Fuse                                                                                               6                                                                                 A
+System of protection
+                                         IP 54 / NEMA Type 12          IP 54 / NEMA Type 3R             IP 54 / NEMA Type 12          IP 54 / NEMA Type 3R
+according to EN 60529 / UL 50
+
+Filtration efficiency                                                                             81                                                                                %
+
+Filter mat quality class - EN779                                                                  G4
+
+Bearing type                                                                                 ball bearing
+
+Service life L10 (+ 40 °C)1                                                                 approx. 70000                                                                            h
+
+Operating temperature                                - 25 … + 60 / - 13 … + 140                                     - 25 … + 50 / + 13 … + 122
+                                                                                                                                                                                 °C / °F
+Storage temperature                                                                 - 40 … + 80 / - 40 … + 175
+
+PTF SERIES ACCESSORIES KITS
+Spare Filter Mat                             20 pieces spare filters                                18611600193
+FLZ 530 Thermostat                           Thermostat                                             17121000010
+FLZ 600 Hygrostat 40-90% rh DT               Hygrostat                                              17207000000
+PFA 60000 Exhaust Filter                     Inlet Filter (2x Need per One PTF 1200)                11760004055
+PFA 60000 3R Exhaust Filter                  Inlet Filter (2x Need per One PTF 1200)                11760003115
+PTF 1200 115V 54 7035                        PTF 1200, IP54, 115VAC, Lt grey                        11692152055
+PTF 1200 230V 54 7035                        PTF 1200, IP54, 230VAC, Lt grey                        11692102055
+                                                                                                                                                                               PRODUCT
+                                                                                                                                                                             INFORMATION
+Power Cord                                   Plug and Cord Whip                                     18125401412
+                                                                                                                                                                         https://hubs.ly/Q033YwFt0
+
+
+
+
+                           Pfannenberg USA
+                                 1-886-689-0085
+                                 sales@pfannenbergusa.com
+                                 www.pfannenbergusa.com
+ver. BU1_017_7.9.25
+

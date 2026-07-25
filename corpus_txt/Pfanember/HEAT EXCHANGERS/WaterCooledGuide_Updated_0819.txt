@@ -1,0 +1,523 @@
+                Water-Cooled Solutions
+                                                                         guide
+
+
+                                              innovative. efficient. reliable.
+
+
+
+
+The complete water-cooled solution for industrial control enclosures.
+
+
+
+
+                                       ELECTRO-TECHNOLOGY FOR INDUSTRY
+                           For over 50 years Pfannenberg has been a leader in thermal management
+                           solutions. From simple Fan Cooling and Packaged Air Conditioners to more complex
+                           water cooled applications, our expertise helps ensure industrial electronics operate
+                           at peak efficiency and extended service life.
+                           Heat is a single common by-product of today’s manufacturing machines that include
+                           the advanced automation technology required for both high speed operation and
+                           high precision. Components such as spindle motors, variable frequency drives,
+                           laser and x-ray sources all require cooling to operate properly and reliably - most
+                           often in very adverse manufacturing environments. Pfannenberg provides cooling
+                           solutions for a wide variety of equipment including machining centers, printing
+                           presses, wood working machines, welding systems, packaging machines and food
+                           processing machines, this experience allows us to apply proven cooling technology
+                           to new applications as well.
+                           Our application engineering team works to match our standard products with as
+                           many applications as possible and also works closely with our product engineers to
+                           offer custom solutions when required. This continuous interaction allows continuous
+                           product development that is always in keeping with the ever changing needs of the
+                           market.
+
+
+
+Understanding Thermal Management Products
+  Filterfans are appropriate when ambient air conditions are relatively cool and
+  clean.
+
+
+  		                Air Conditioners provide a convenient packaged 			
+                    cooling solution for high ambient temperatures.
+
+
+  Water Cooling Products like our Air/Water Heat Exchangers, Water Cooled Air
+  Conditioners and Packaged Water Chillers provide efficient cooling solutions
+  when ambient conditions are at their worst.
+  Cooling Electronics with Water
+  We understand that many users are hesitant to introduce a water-based cooling solution for electronic enclosure
+  cooling. Over the years Pfannenberg’s water cooled products have successfully cooled thousands of electronic
+  applications worldwide. So how do we do this?
+
+
+    PWS 3000                                                                                 Air flow path
+                                                                                         designed to prevent
+                                                                                                                                                      One-piece cover with
+                                                                                                                                                       sloped top for better
+                                                                                          condensate water                                             protection of internal
+                                                                                          from entering the                                           components and easy
+                                                                                              enclosure.                                             cleaning in wash-down
+                                                                                                                                                          applications.*
+                             Bulkhead fitting
+                              for condensate                                                                                                                              * Not pictured.
+                              drain providing
+                             superior ingress
+                                protection.
+
+
+
+                                                                                            Internal design
+                                                                                            guarantees full                                        Adjustable mechanical
+                                                                                         separation of water                                        thermostat for more
+                                                                                          lines from airflow                                         accurate control of
+                                                                                                 paths.                                            temperatures. Manual
+                                                                                                                                                    purge feature eases
+                                                                                                                                                       winterization.
+         Solenoid valve –
+           controls liquid                                    Color-coded water
+         flow for capacity                                    lines easily identify
+        control and energy                                       water supply &
+           conservation.                                          return lines.
+
+
+
+
+  Understanding                                                                       How do I know if water works for me?
+  Air Flow
+                                                AIR FLOW
+                                                    IN
+  Heated air is drawn
+  from the top of the
+  enclosure, cooled in
+  the heat exchanger’s
+                                                                                                         High Ambient
+  water coil and
+  delivered at the
+  bottom in keeping with                                                                                Airborne Particulate
+  natural air circulation.
+  The wide separation
+  between the air inlet
+                                                AIR FLOW
+                                                   OUT
+                                                                                                        High Utility Costs
+  and air outlet prevents
+  short circuiting.
+                                                                                                       Multiple Units Needed
+                                                             WATER WATER
+                                                              OUT    IN
+
+
+
+Where Do We Get The Water From?                                                                        Frequent Wash-down
+
+                                                                                                               ELECTRO-TECHNOLOGY
+                                                                                                                                    FOR INDUSTRY
+
+
+
+
+Well Water      City Water                 Chiller         Cooling Tower
+                                                               Water
+UNDERSTANDING THE BENEFITS OF
+CLOSED-LOOP LIQUID COOLING OF
+INDUSTRIAL PROCESS & ELECTRONICS
+WITH MANUFACTURING SPACE AT A PREMIUM, MACHINE PACKAGES HAVE                         WHAT IS THE WATER SOURCE?
+BECOME SMALLER AND LIQUID COOLING HAS EMERGED AS THE MOST
+EFFICIENT AND ECONOMICAL MEANS OF REMOVING PROCESS HEAT. LIQUID                        OPEN LOOP                                CLOSED LOOP
+COOLING IS ESPECIALLY WELL ADAPTED TO HOT, DIRTY ENVIRONMENTS                           ONCE-THROUGH                                RECIRCULATED
+                                                                                      100% FRESH WATER                                 WATER
+WHERE IT PROVIDES A METHOD OF REMOVING THE HEAT NOT ONLY FROM THE
+
+                                                                                                                VS.
+                                                                                           $$$$$$                                        $$
+MACHINES, BUT ALSO FROM THE FACTORY ITSELF.
+
+APPLICATIONS THAT CAN BENEFIT FROM WATER COOLING SOLUTIONS
+            AUTOMOTIVE                                  PAPER & PRINTING
+                SPINDLE MOTORS                               CHILL ROLLER COOLING
+
+                HYDRAULICS                                   INK COOLING
+
+                AUTOMATION DRIVES                            CONVERTING MACHINES
+
+                AUTOMATIC WELDERS                            LAMP COOLING
+                                                                                                                                COOLING TOWER
+            ENERGY                                                                                                                  WATER
+                SOLAR INVERTERS
+                                                        WATER / WASTEWATER                 CITY WATER
+                BOILER CONTROLS                              PUMP DRIVES
+                POWER PLANT ELECTRONICS
+
+            FOOD / BEVERAGE &
+            PHARMACEUTICAL
+                                                        PLASTIC MANUFACTURING
+                INGREDIENT MIXERS                                                         WELL WATER                                   CHILLER
+                                                            INJECTION MOLD COOLING
+                PRODUCT COOLING/DRYING
+                PACKAGING AUTOMATION                        EXTRUDER COOLING
+
+                INSPECTION SYSTEMS                          BLOW MOLD AIR COOLING
+                                                                                      EST.      COST OF OPEN LOOP WATER
+                OVEN CONTROLS                               MACHINE CONTROLS
+
+
+COMMON DATA CONVERSIONS
+  I TON     =                                                        12,000 Btu/hr                               +
+  I BHP     =        2.545 Btu/hr
+  I l/m     =                    0.2642 gpm                                                            $10.00                 PER THOUSAND
+                                                                                                                              GALLONS
+
+  I kW      =                                      3,415 Btu/hr
+                                                                                      { 1/2 TON OF COOLING REQUIRES 576,000 GALLONS/YEAR }
+            =
+ 1 kcal/h
+
+   °F       =
+                      4 Btu/hr
+
+                                     1.8 °C + 32
+                                                                                                              $5,760                 PER YEAR
+
+                                                                                     (BASED ON $10.00 PER THOUSAND GALLONS AND 3 SHIFTS PER DAY OPERATION)
+
+
+
+   HEAT
+                                  BTU/HR = MASS FLOW RATE (LB/HR) X SPECIFIC HEAT (BTU/LB °F) X TEMPERATURE DIFFERENCE (°F)
+   LOAD
+          UNDERSTANDING TEMPERATURE
+
+                 DANGER OF HEAT STRESS FAILURE
+
+
+
+          } ELECTRONICS COOLING “SWEET SPOT”
+                    85°F - 95°F                                              ELIMINATE ELECTRONIC FAILURES
+                                                                                AND INCREASE EQUIPMENT
+                    DANGER OF CONDENSATION                                     UPTIME WITH PFANNENBERG
+                                                                                LIQUID COOLED SOLUTIONS.
+
+
+
+                                                                                                                                 EFFICIENCIES
+                                                                                                                                 TOTAL COST OF OWNERSHIP (TCO)
+EST.    ENERGY COST OF COOLING
+
+
+
+
+                                                                          MAXIMIZE YOUR SYSTEM
+                                                                            EFFICIENCIES WITH
+                                                                       PFANNENBERG LIQUID COOLED
+                                                                               SOLUTIONS.
+                    TOWER WATER POWER (KW/TON): 0.20
+                      CHILLED WATER POWER (KW/TON): 1.50
+                        AIR CONDITIONER POWER (KW/TON): 2.00
+                                     PELTIER POWER (KW/TON): 10.5
+
+                                   COMPRESSED AIR POWER (KW/TON): 29
+
+
+        $ = TONS X KW/TON X HOURS X $/KWH                                                                                   REDUCE YOUR
+    (FOR EXAMPLE, EST. ANNUAL COST OF COOLING FOR A 1/2 TON LOAD)                                                      MAINTENANCE BUDGETS
+                                                                                                                     WITH PFANNENBERG PREVENT
+
+
+
+
+ $
+                { COST
+                  0.5 X 0.2 KW X 8000 X $0.07/KWH = $56.00 }
+                       OF COOLING WITH TOWER WATER:                                                                        SERVICE PLANS.
+
+
+                { COST
+                  0.5 X 1.5 KW X 8000 X $0.07/KWH = $420.00 }
+                       OF COOLING WITH CHILLED WATER:
+
+                                                                                                                            NT ASSESSMEN
+                                                                                                                       : PLA
+                { COST
+                  0.5 X 2 KW X 8000 X $0.07/KWH = $560.00 }
+                       OF COOLING WITH AN AIR CONDITIONER:
+
+                                                                                                                TEP
+                                                                                                                    ONE                 T
+                                                                                                               S
+                { COST OF COOLING WITH PELTIER COOLING UNIT: }
+                   0.5 X 10.5 KW X 8000 X $0.07/KWH = $2940.00
+
+
+
+
+                                                                                                                                                                               LUTION DEVEL
+                { COST
+                  0.5 X 29 KW X 8000 X $0.07/KWH = $8120.00 }
+                       OF COOLING WITH COMPRESSED AIR:
+
+
+
+
+                                                                                                                                                                          O: SO
+                                                                                                                                                                                           O
+                                                                                                                                (TCO)
+
+
+                                                                                                                                                                                            P
+            (BASED ON $0.07/KWH AND 3 SHIFTS PER DAY OPERATION)
+
+
+
+
+                                                                                                                                                                                             M
+                                                                                                                                                                        TW
+                                                                                                               IT'S A VALUE PROPOSITION WHICH PROVIDES
+
+                                                                                                 ILLMENT                                                                                      EN
+                                                                                          R: FULF
+EQUIPMENT SELECTION & RECOMMENDATIONS                                                                         SOLUTIONS TO PROBLEMS ENCOUNTERED BY THE
+
+
+
+                                                                                                                                                                                                T
+IT’S IMPORTANT TO NOTE THAT PROPERLY SELECTED
+
+
+
+                                                                                                                                                                     EP
+                                                                                         U
+                                                                                                             AUTOMATION USER (PLANT) THAT ARE ASSOCIATED
+
+
+                                                                                        O
+EQUIPMENT IS THE KEY TO COOLING EFFICIENCY.
+
+                                                                                       F
+                                                                                                            WITH THERMAL MANAGEMENT PRODUCTS. IT ALLOWS
+
+
+
+
+                                                                                                                                                                   ST
+                                                                                    EP
+AIR CONDITIONERS: PROVIDE A CONVENIENT MEANS OF EFFICIENT COOLING                                            PFANNENBERG TO TAKE THE EXPERIENCE GAINED IN
+FOR MANY INDUSTRIAL CONTROL COOLING APPLICATIONS.                                                          SUPPLYING THESE PRODUCTS TO THE MACHINE BUILDER
+
+
+
+                                                                                  ST
+WATER SOLUTIONS: OFTEN ARE THE ONLY METHOD OF PROVIDING SUSTAINABLE                                            AND EXTEND IT TO THE POINT OF USE WHERE IT
+EFFICIENCY & RELIABLE PERFORMANCE IN “HOSTILE” ENVIRONMENTS.                                                  CAN BE APPLIED TO MEET SPECIFIC CHALLENGES,
+< “DIRTY HOSTILE” = HEAT + AIRBORNE PARTICULATE &/OR OILS >                                                           AND/OR TO TAKE ADVANTAGE OF
+< “CLEAN HOSTILE” = HEAT + REGULAR WASH DOWN W/ CAUSTICS >                                                              SPECIFIC OPPORTUNITIES.
+
+
+                                                                                                                                        I ANALYSIS
+                                                                                                                                  EE: RO
+                                                                                                                               THR
+                                                                                                                            EP
+                                                                                                                          ST
+
+
+
+
+                                                                                                   WWW.PFADVANTAGE.COM                  ELECTRO-TECHNOLOGY FOR INDUSTRY
+Performance and Examples
+ STEP 1.
+ Calculate load
+                                                                                                         ENCLOSURES AND LOADS
+                                                                      (est.) Load                                             Drive                                Control Enclosures
+                                                                           2236 W                                            150 HP                                   36 x 72 x 24
+                                                                           4471 W                                            300 HP                                   48 x 72 x 24
+                                                                           4471 W                                            300 HP                                   48 x 72 x 24
+                                                                           7450 W                                            500 HP                                   60 x 72 x 24
+                                                                           7450 W                                            500 HP                                   60 x 72 x 24
+
+                                                                       26078 W                                 TOTAL LOAD
+
+                                                                       Pc
+                                                              BTU/hr          W                                                                             PWS 31002
+                                                                                               HEAT EXCHANGER SELECTION
+                                                              44357         13000
+                                                              40945         12000                                                                           PWS 3502
+                                                              37533         11000
+                                                              34121         10000                                                                           PWS 3302
+                                                              30709          9000
+                                                              27300          8000                                                                           PWS 3202
+                                                              23884          7000
+                                                              20500          6000
+                                                                                                                                                            PWS 3152
+                                                              17060          5000
+                                                                                                                                                            PWS 3102
+                                                              13650          4000
+                                                              10236          3000
+                                                                                                                                                            PWS 3082
+                                                               6820          2000
+                                                               3412          1000                                                                           PWS 3062
+                                                                 0             0
+ STEP 2.                                                                            1.6        7.2      12.7     18.3     23.8      29.4       35      °C
+ Select Properly Sized                                                              35         45        55       65         75      85        95      °F
+ Air/Water Heat Exchanger
+                                                                                                    Supply Water Temperature Tw
+
+
+                                                                                   EB 80 WT / EB 95 WT / EB 140 WT / EB 160 WT
+                                                                                                                 (60Hz)
+                                                            200,000
+                                                            190,000
+                                                                                                                                     EB 440 WT
+                                                            180,000
+                                                            170,000
+                                                            160,000
+                                                            150,000
+ STEP 3.                                                                                                                                    EB 310 WT
+                                                                                                                                                                    ADDITIONAL
+
+
+
+
+                                Cooling Capacity [BTU/hr]
+ Select Properly Sized                                      140,000
+
+ Chiller (if water is needed)                               130,000                                                                                                 CHILLER SELECTION:
+                                                            120,000                                                                       EB 260 WT                 Our CCE and EB Series Chiller
+                                                            110,000
+                                                                                                                                           EB 160 WT                products are available for smaller
+                                                            100,000                                                                                                 applications. Please consult the
+                                                             90,000                                                                                                 Pfannenberg Thermal Management
+                                                                                                                                    EB 140 WT
+                                                             80,000                                                                                                 Solutions Catalog for additional
+                                                                                                                                            EB 95 WT
+                                                             70,000                                                                                                 information.
+                                                             60,000                                                                                     EB 80 WT
+                                                             50,000
+                                                             40,000
+                                                             30,000
+                                                             20,000
+                                                                      45                  55              65            75             85                   95
+                                                                                                        Water Temperature TW [°F]
+                                                                           EB 80 WT / EB 95 WT / EB 140 WT / EB 160 WT / EB 260 WT / EB 310 WT / EB 440 WT
+                                                                                                           (60Hz Tamb 77°F)
+                                                                                      Water Cooling Product Lines
+             Air to Water Heat Exchangers                                                          Cooling                                        Dimensions/Weight
+                                                                                     Type          capacity          Rated voltage
+                                                                                                  Btu/h / W*                                 W           L        D          Wt.
+                                                                                                                                           10.13 in    24.14 in  5.62 in     22 lb
+                                                                                 PWS 3062          2218 / 650           115 / 230 V        257 mm      613 mm 142.8 mm      10 kg
+                                                                                                                                           10.13 in    24.14 in  5.62 in    22 lb
+                                                                                 PWS 3082          2900 / 900           115 / 230 V        257 mm     613 mm 142.8 mm       10 kg
+                                                                                                                                           15.80 in    32.05 in  6.28 in    33 lb
+                                                                                 PWS 3102         3753 / 1100           115 / 230 V        401 mm     814 mm    159 mm      15 kg
+                                                                                                                                           11.78 in    36.65 in  8.16 in    34 lb
+                                                                                 PWS 3152         5800 / 1700           115 / 230 V        299 mm     930 mm    207 mm     15.5 kg
+                                                                                                                                           15.76 in    51.89 in  9.07 in    62 lb
+                                                                                 PWS 3202         7165 / 2100           115 / 230 V        400 mm     1318 mm 230 mm        28 kg
+                                                                                                                                           15.76 in    51.89 in  9.07 in    66 lb
+                                                                                 PWS 3302         12283 / 3600          115 / 230 V        400 mm     1318 mm 230 mm        30 kg
+                                                                                                                                           15.76 in    57.09 in  8.60 in    73 lb
+                                                                                 PWS 3502         21496 / 6300          115 / 230 V        400 mm     1450 mm 218 mm        33 kg
+                                                                                                                                           19.74 in    65.52 in 12.10 in    126 lb
+                                                                                PWS 31002        34121 / 10000          230 /460 V         501 mm     1664 mm 307 mm        57 kg
+
+
+                                                                              Highlighted units above are the selections based on sample calculations found in the perfor-
+                                                                              mance and example curves on the previous page.
+
+
+
+
+                                                      Power             Dimensions/Weight
+      Model                    Capacity
+                                                      Supply                  (inches / lbs.)
+                       Btu/hr     kW      Tons        V/Ph/Hz          W        D        H      Wt.
+
+  CCE 6301             8,200      2.4      .68         230 1~         19.4    23.62    22.5     158
+
+                                                                                                                                       Chillers
+  CCE 6401             12,000     3.5       1     400 3~/460 3~       26.61   23.62    36.27    240
+
+
+
+  CCE 6601             22,000     6.5      1.8    400 3~/460 3~       26.61   23.62    36.27    251
+
+
+
+  EB 2.0 80 WT         27,000      8       2.25   400 3~/460 3~       23.62   29.94    54.17    330
+
+
+
+  EB 2.0 95 WT         32,500     9.5      2.7    400 3~/460 3~       23.62   29.94    54.17    352
+
+
+
+  EB 2.0 140 WT        47,750      14       4     400 3~/460 3~       29.96   33.68    60.40    396
+
+
+
+  EB 2.0 160 WT        54,500      16      4.5    400 3~/460 3~       29.96   33.68    60.40    418
+
+
+
+  EB 260 WT            89,053     26.1     7.4    400 3~/460 3~       66.14   31.10    55.51    888
+
+
+
+  EB 310 WT           106,454     31.2     8.8    400 3~/460 3~       66.14   31.10    55.51    956
+
+
+
+  EB 440 WT           151,492     44.4     12.6   400 3~/460 3~       65.7      31     55.7     1102
+
+
+
+Highlighted units above are the selections based on sample calculations found in the perfor-
+mance and example curves on the previous page.
+Global Service - Your Local Advantage
+
+
+
+
+                                                               Sales & Manufacturing
+                                                               Sales
+                                                               Sales Agent
+
+Pfannenberg’s innovation has made it one of the largest globally operating manufacturers of thermal management
+and process cooling equipment today. Our wide product range stretches from individual warning and signaling
+components to complete system solutions for machine cooling and enclosure air conditioning.
+
+We speak your language - In addition to manufacturing facilities located on three continents, Pfannenberg has
+developed a worldwide network of local subsidiaries and sales partners eager to meet your service needs.
+
+We’re there when you need us - Worldwide
+Repair service
+If your cooling system is down, you can expect immediate
+                                                                                          Pfannenberg Service Centers
+                                                                                          in Germany (headquarters), USA, China,
+assistance from Pfannenberg. Our repair service affords you
+                                                                                          UK, Italy, Brazil, France, Russia,
+the fastest possible response – nationally or internationally.
+                                                                                          Singapore and India
+We ensure that your cooling system is returned to optimal
+condition – even if it’s not a Pfannenberg product. Our                                   Service Support Centers
+on-site service gets you back on line faster, eliminating the                             visit www.pfannenberg.com/support/
+transit time associated with factory repair programs.                                     service/ for a complete list.
+We offer you the following services:                                                      Service Agents
+Fault diagnostics • Repair cost estimates • On-site repair • Handling and
+                                                                                          Serving 42 countries on 5 continents
+disposal of returned goods.
+
+
+
+                                                                                       Contact Your Local Representative:
+ELECTRO-TECHNOLOGY FOR INDUSTRY
+
+
+Pfannenberg Incorporated
+68 Ward Road, Lancaster, New York 14086 USA
+Phone: 716-685-6866 Fax: 716-681-1521
+
+info@pfannenbergusa.com
+www.pfannenbergusa.com                                                                              Subject to technical amendments and misprints.
+

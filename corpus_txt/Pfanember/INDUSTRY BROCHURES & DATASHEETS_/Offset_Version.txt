@@ -1,0 +1,169 @@
+PFANNENBERG SOLUTIONS
+
+Life Expectancy and Operational Reliability
+To keep temperatures inside cabinets within limits for optimum performance, 3 factors should be considered:
+
+
+
+
+              Cooling and                               Heating and                    Appropriate
+           avoiding hot spots                       avoiding condensate           ingress protection (IP)
+
+Avoid Costly Downtimes                                                                100
+
+Unsuitable or improperly sized cooling units and thermal management
+components can affect the service life of your wind turbines, causing                  10                         Semiconductor
+technical malfunctions, downtimes and increases in maintenance costs.
+By using Pfannenberg cooling technology, you can reduce the costs of          Years
+                                                                                        1
+operation significantly.                                                                                Electrolytic Capacitor
+
+                                                                                      0.1
+                                                                                         20   30   40      50       60     70     80     90
+Intelligent Product Design                                                                         Temperature °C
+• Promotes natural convection
+• Maximum distance between air intake and air outlet
+• Optimum distribution of heat inside the cabinet eliminates hot spots       Distribution of heat
+                                                                             inside the cabinet
+
+
+Reliability and Efficiency                                                                         up to                           up to
+• Service-friendly, power-saving, reliable, and long-lasting systems                               +55°C                           +55°C
+• High internal airflow to reduce hot spots
+• Energy efficient designs save resources
+• Filter-less designs reduce maintenance requirements
+                                                                              Low clearance between             High clearance between
+                                                                              air intake and air outlet-        air intake and air outlet-
+                                                                              Danger of heat pockets            No hot spots
+
+Innovative Product Features
+• 3 mm fin spacing of heat exchanger prevents clogging by contaminants
+• Integrated condensate evaporator, reliable condensate management
+• Effective sealing, preservation of Type 12 rating
+• Impact resistant steel cover (also available as stainless steel version)
+• Easy service access to all cooling unit components
+
+
+
+
+ELECTRO-TECHNOLOGY FOR INDUSTRY
+
+Pfannenberg Incorporated
+68 Ward Road, Lancaster, New York 14086
+Phone: 716-685-6866
+Fax: 716-681-1521                                                            www.pfannenbergusa.com
+sales@pfannenbergusa.com
+Thermal Management and
+    Signaling Technology
+         for Wind Energy
+
+
+
+
+          ELECTRO-TECHNOLOGY FOR INDUSTRY
+PFANNENBERG SOLUTIONS
+
+In demand worldwide ... Innovative Equipment for Wind Power Plants
+Wind energy is one of the most cost-effective forms of renewable energy being used on an increasing worldwide scale. The problem:
+smooth functioning of the turbines demands reliable cooling of some very important areas, such as the pitch control cabinet or the
+shafts in the gondola. The performance of this equipment is affected by exposure to fluctuating temperatures, sand, dust or salt
+water. This is where Pfannenberg’s proven experience in cooling technology and thermal management can offer you high quality
+products that work properly - even when used under extreme environmental conditions. Maintenance provided by our global
+service network will also help avoid costly downtimes.
+
+Pfannenberg is a leading thermal management and signaling solution supplier for wind energy OEM's and their supply chains.
+We provide innovative solutions like real Type 12 / IP 55 protected Filterfans®- with 300% longer service life for extreme
+environments or Top Mount Cooling Units with a unique condensate safety feature for cabinets in the tower button or other
+areas where space is limited.
+
+
+
+                                                    POL 2000R
+                                                    Aviation Light                     PA 100
+                                                    LED, 2000 cd                       Sounder for
+                                                                                       machine start-up
+
+
+
+
+       PF 66000
+   Filterfan® IP 55,
+       High airflow
+          to reduce
+      maintenance
+    costs for pitch           FLZ 520           FLH 250xx
+             control        Thermostat      250 W Heater with
+                          Energy saving     Vibration resistant
+                        thermal control     monitoring system                                               PTM 100
+                                                 for heating of                                             Peltier Devices - Vibration
+                             for aviation
+                                                       nacelles                                             resistant for pitch systems.
+                           light control                                                                    They work reliably (while
+                                                                                                            rotating), even if they are
+                                                                                                            exposed to rainwater, dust
+                                                                                                            or high fluctuations in
+                       DTT 6301                                                                             temperature.
+                 Top mounting
+                cooling unit for                                                                          POL 10
+         climatization of power                                                                           Tower aviation Light
+             converter cabinet                                                                            LED, redundant, 10 cd
+
+
+
+                                                                                                           DS 10
+                                                                                                           Electronic sounder
+                       PWS 7152                                               ABL                          with VdS, GL approval for
+                  Air/water heat                                      Flashlight for                       fire alert 110 dB
+                   exchanger for                                  elevator start-up
+                 cabinet cooling                                           warning
+                           DTT Top Mounted Cooling Units
+                           1200–14000 Btu/h
+                           DTS 3000 Indoor/Outdoor
+                           Cooling Units 2000–24000 Btu/h
+                           • High reliability using the best available components & design tools
+                           • Excellent security level due to patented condensate management system -
+                              which prevents condensate from penetrating the enclosure.
+                           • Perfect service-friendliness and long maintenance intervals
+                           • Product variety: multiple performance levels available
+                           • Environmental protection thanks to energy efficiency and recyclability
+                           • Easy mounting: quick release mounting frame & quick mount design
+
+
+
+                           Filterfans®
+                           With the 4th Generation, our company can look back on over 50 years
+                           of successful development of Filterfans®
+                           • Installation size 6, air flow rate up to 462 CFM
+                           • Three performance classes, cut-out compatible
+                           • System of protection IP 54 and IP 55, NEMA type 12
+                           • UL, cUL to NITW2 Category and CE approved, CSA pending
+                           • UV-resistance / EMC options available
+
+
+
+                Peltier Cooling Units                                     FLH
+                100–500 W                                                 Fan Heaters
+                Use in sensitive areas- circuitry and                     • Heating performance ratings of 250 and 400 Watts
+                small control cabinets.
+                                                                          • Integrated fan that assists the natural convection
+                • Ideal for cooling of operating and control elements
+                • Particularly suitable for support arm systems           • Fast and even distribution of the heat
+
+                • Vibration-free, also usable for precision processes
+                • Pinpoint cooling of hot spots
+                                                                                   PWS Air/Water
+                                                                                   Heat Exchangers
+FLZ Thermostats                                                                    650–10000 W
+                                                                                   • Compact design- install or mount
+• Available with N.C. / N.O.                                                          externally and internally
+  and changeover contacts.                                                         • Seal requires no reworking of the cut-out
+• In combination with FLH heaters,                                                 • Maintenance-free design
+  they provide temperature control                                                 • High IP protection, NEMA 3R/4 optional
+  inside the control cabinet.                                                      • Usable under aggressive conditions
+                                                                                   • System compatible with chillers
+• In combination with filterfans, they provide for                                 • Can be integrated into existing
+  additional savings on energy, materials and time.                                  cooling circuits
+
+           Pfannenberg is certified manufacturer for GL, VdS, CCC, GOST and
+                                             ATEX products and member of
+

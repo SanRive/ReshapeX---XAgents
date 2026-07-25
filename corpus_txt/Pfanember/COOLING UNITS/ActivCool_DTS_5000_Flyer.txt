@@ -1,0 +1,211 @@
+ActivCool DTS 5000 Series   ™
+
+
+4,000–10,000 Btu/h Cooling Units
+SMARTER. SAFER. READY FOR THE FUTURE.
+
+
+
+
+Protecting People, Machines and the Environment
+                 ActivCool DTS 5000 Series                ™
+
+
+
+
+Environmentally Friendlier                                                      Ease of Serviceability
+Comes standard with low-GWP R-513A refrigerant,                                 Critical components are serviceable from outside the
+meeting stringent environmental regulations and                                 enclosure, improving safety by eliminating the need to
+rated A1 (non-flammable) for safety.                                            open the energized electrical enclosure.
+
+
+
+Pressure Overload Protection                                                    Thermal Overload Protection
+High pressure cutout switch ensures safety by                                   Compressor and fan motors are outfitted with
+shutting off the compressor in the event of excessive                           integral temperature switches to shut down the unit
+pressure appearing in the refrigeration circuit.                                in the event of excessive temperature.
+
+
+
+Closed Loop Design                                                              Thermal Expansion Valve
+Designed to isolate the external ambient air from                               Regulates the flow of refrigerant based on thermal
+the internally conditioned air eliminating the risk of                          demand for efficient performance over the entire
+contaminants entering the cabinet.                                              operating temperature range.
+
+
+High Airflow Backward Curve                                                     Efficient Circulation
+Impeller Fan                                                                    Large evaporator for increased airflow path especially
+Provides high airflow in a long lasting, single bearing                         critical in densely packed electrical enclosures.
+design. Outperforms typical two-bearing blowers
+with nearly twice the lifespan.
+                                                                                Compact Width
+                                                                                This unit is designed for side-mounting on electrical
+Easy Installation                                                               enclosures. Will fit most 12” wide cabinets.
+The unit is shipped with the gasket installed saving
+installation time.
+                                                                                Active Condensate
+                                                                                Management
+Hermetically Sealed                                                             Condensation is a natural byproduct of refrigeration.
+Compressor                                                                      The heated condensate collection pan boils this
+The absence of any refrigerant fill valves eliminates                           off thereby eliminating the need for drain tubes
+leak paths. Recharging is never needed. 100%                                    and buckets. To conserve power, this heater only
+cooling capacity efficiency is ensured.                                         activates when necessary.
+
+
+
+
+                                                              60335
+
+
+
+
+       Closed Loop Cooling Units
+       The DTS 5000 Series keeps control cabinets cool so your lines run to plan—delivering fast installation,
+       clean integration, and safer service access from outside the enclosure.
+       This compact side-mount design fits tight spaces and is built for tough plant environments, with versions
+       for everything from standard indoor areas to demanding washdown zones. Choose LED status
+       indication or a full digital display for clear, at-a-glance visibility in any facility.
+Choose the Interface
+That Fits Your Operation
+Designed for different operator needs, the DTS 5000 series
+offer a clear LED status indicator or an advanced digital display
+for real-time insight. Choose the LED for quick at-a-glance
+status or the Digital Display for full operational visibility.
+
+
+
+
+                                Industry Applications
+         The DTS 5000 Series is ideal for controlling heat in enclosure in indoor spaces, outdoor industrial
+         environments, and washdown zones across food & beverage processing, robotic packaging and
+                             conveyor systems, and emerging energy installations.
+
+
+                                                                    DTS 5541 and 5341 Indoor
+
+                                                                    Automation & Warehouse
+                                                                    NEMA Type 12
+                                                                    For control panels and enclosures in automation and
+                                                                    warehouse environments, providing reliable thermal
+                                                                    management to protect sensitive electronics from
+                                                                    heat generated by drives, PLCs, and power supplies.
+
+
+
+
+                                                                    DTS 5561 and 5361 Outdoor
+
+                                                                    Solar & Energy
+                                                                    NEMA Type 3R/4
+                                                                    Enclosure cooling for applications exposed to harsh
+                                                                    outdoor conditions. Built to withstand temperature
+                                                                    extremes and environmental exposure, these units
+                                                                    protect critical power and control electronics to
+                                                                    maintain system performance and reliability.
+
+
+
+
+                                                                    DTS 5581 and 5381 Washdown
+
+                                                                    Food & Beverage
+                                                                    NEMA Type 4/4x
+                                                                    Designed for environments where hygiene and
+                                                                    frequent washdowns are required. The corrosion
+                                                                    resistant construction supports reliable cooling of
+                                                                    enclosures in wet, washdown‑intensive areas while
+                                                                    helping meet sanitary and operational demands.
+ DTS 5000 Series (4,000 - 10,000 Btu/h) Side-Mount Cooling Units
+   Nominal Capacity                                         NEMA Type
+                                             Model                                   Voltage                          Digital Display Controller                                   LED Status Indicator
+ @35°C/35°C (95°F/95°F)                                       Rating
+
+                                                                                      115V                                       13584364255                                                 13584344255
+
+         5600 BTU/hr                        DTS 5341         Type 12                  230V                                       13584361255                                                 13584341255
+
+                                                                                     400/460V                                    13584356255                                                 13584336255
+
+                                                                                      115V                                       13584364355                                                 13584344355
+
+         5100 BTU/hr                        DTS 5361        Type 3R/4                 230V                                       13584361355                                                 13584341355
+
+                                                                                     400/460V                                    13584356355                                                 13584336355
+
+                                                                                      115V                                       13584364158                                                 13584344158
+
+         5100 BTU/hr                        DTS 5381         Type 4/4x                230V                                       13584361158                                                 13584341158
+
+                                                                                     400/460V                                    13584356158                                                 13584336158
+
+                                                                                      115V                                       13584564255                                                 13584544255
+
+         8900 BTU/hr                        DTS 5541         Type 12                  230V                                       13584561255                                                 13584541255
+
+                                                                                     400/460V                                    13584556255                                                 13584536255
+
+                                                                                      115V                                       13584564355                                                 13584544355
+
+         8100 BTU/hr                        DTS 5561        Type 3R/4                 230V                                       13584561355                                                 13584541355
+
+                                                                                     400/460V                                    13584556355                                                 13584536355
+
+                                                                                      115V                                       13584564158                                                 13584544158
+
+         8100 BTU/hr                        DTS 5581         Type 4/4x                230V                                       13584561158                                                 13584541158
+
+                                                                                     400/460V                                    13584556158                                                 13584536158
+
+
+
+                                                                                      PERFORMANCE CURVES
+                        PC                                                                                                  PC
+                 BTU     W                             DTS 5541                                                      BTU     W                                 DTS 5341
+                 14904 4500                                                                                          11950 3500
+
+                 13640 4000
+                                                                                                                     10250 3000
+
+                 11950 3500
+                                                                                                                     8550 2500
+                 10250 3000
+
+                                                                                                          Capacity
+      Capacity
+                                                                                                                     6820 2000
+                 8550 2500
+
+
+                 6820 2000                                                                                           5100 1500
+
+                 5100 1500
+                                                                                                                     3400 1000
+
+                 3400 1000
+                                                                                                                     1700    500
+                 1700    500
+
+                                                                                                                                 0
+                             0
+                                                                                                                                     20   25          30        35        40            45       50    55 °C
+                                 20    25       30     35         40            45        50      55 °C
+                                                                                                                                     68   77          86        95       104        113         122   131 °F
+                                 68    77       86     95        104       113           122     131 °F
+                                                                                                                                                               Ambient Temperature TA
+                                                       Ambient Temperature TA
+
+                                                                                      Electrical Enclosure Internal Temperature Ti
+                                                                25°C / 77°F Enclosure               35°C / 95°F Enclosure                      45°C / 113° Enclosure
+
+
+
+                                      Protecting People, Machines and the Environment
+
+
+
+      1-886-689-0085
+      sales@pfannenbergusa.com
+      www.pfannenbergusa.com                                                                                FOR MORE
+                                                                                                          INFORMATION
+ver. BU1_027_4.26
+

@@ -1,0 +1,217 @@
+PKS 3000 AIR/AIR
+HEAT EXCHANGER
+
+
+
+
+PFANNENBERG
+KINETIC SYSTEM™
+The Technology of Cooling for Electric Enclosures
+                                                         PASSIVE COOLING                                                 ACTIVE COOLING
+
+                                                                                                       Cooling techniques relying on external devices to increase
+                                             Cooling techniques relying on natural heat transfer
+  Description                                                                                              the rate of heat removal using mechanical and/or
+                                                           using minimal energy.
+                                                                                                                            electrical energy.
+
+                                                                         Heat Exchangers
+  Technology                                Fans & Exhaust                                                    Cooling Units                      Thermo Electric Cooler
+                                                                   Air to Air           Air to Water
+
+
+
+  Level of Protection                        Open Loop           Closed Loop           Closed Loop            Closed Loop                              Closed Loop
+
+
+
+
+  Energy Usage
+
+
+                                                                                                                  Open Loop - Exchange of air inside of enclosure with surroundings.
+                                                                                                                Closed Loop - Sealed system separating internal and surrounding air.
+
+
+
+Air/Air Heat Exchangers
+One of the best technologies to use when the surrounding temperature is less than the target temperature is air to air technology (∆T≥10°C). An
+air/air heat exchanger removes heat from inside of the enclosure to the cooler environment using the least amount of energy while still providing
+a closed loop ingress protection.
+
+
+
+
+                                                              IDEAL APPLICATIONS
+
+FOOD & BEVERAGE                                                                                                                         AGRICULTURE
+• Temperature controlled environment                                                                                                    • Technology advancement with remote
+  providing required ∆T                                                                                                                   sensors and drives
+• Wash down requirement                                                                                                                 • Requires low maintenance solution
+• Protection against corrosion and contamination                                                                                        • Harsh environments with rain and dust
+• Energy conscious                                                                                                                      • Irrigation system with pumps and drives
+
+
+
+
+VARIABLE
+FREQUENCY DRIVES                                                                                                                        INDUSTRIAL AUTOMATION
+• Technology advancement in VFD                                                                                                         • Processing, assembling and
+• Drives are rated to a min. of 103°F; 		                                                                                                 packaging equipment
+ this allows for the required ∆T needed                                                                                                 • Automation, textile and paper finishing
+ for an air/air heat exchanger                                                                                                          • Indoor applications where avoiding
+                                                                                                                                          downtime is critical
+
+
+
+IT - INDUSTRIAL 4.0                                                                                                                     RUBBER/PLASTIC
+• Digital technology is more prominent                                                                                                  PROCESSING
+  and connectivity is crucial                                                                                                           • Harsh & corrosive environment
+• Stand alone IT racks in factories that house     		                                                                                   • Climate controlled environment
+  sensitive components                                                                                                                    providing the required ∆T
+• Components that require cooling and dust protection
+PKS 3000                                        AIR/AIR HEAT                       The PKS 3000 Series Air/Air Heat Exchangers use Pfannenberg’s Kinetic
+                                                EXCHANGERS                         System™ next generation cooling to remove heat from an electrical enclosure.
+                        S E R I E S
+                                                                                   This is a perfect solution when concerned with open loop designs that don’t
+
+22-100 W/°C                                                                        prevent corrosive gas, humidity and dust from entering the enclosure.
+                                                                                   Designed for cooling indoor, outdoor or remote cooling applications that
+                                                                                   require a closed loop system to protect electronics. Available in 4 models;
+                                                                                   PKS 320X, PKS 330X, PKS 336X.
+
+
+
+
+                      PFANNENBERG KINETIC SYSTEM™
+                      Next generation cooling technology that out-performs conventional heat exchanger and/or heat pipe solutions.
+
+
+
+
+Energy Efficient                                                                                                                     Closed Loop Design
+Utilizes lower temperature ambient                                                                                                   Designed to isolate external ambient
+air to cool warmer internal air without                                                                                              air from internal air eliminating the
+an active component such as a                                                                                                        risk of contaminants entering the
+compressor which consumes high                                                                                                       cabinet. Compared to Filterfans®
+amounts of energy.                                                                                                                   with Rainhoods; the PKS seals
+                                                                                                                                     against gaseous substances, humidity
+                                                                                                                                     and airborne particulates such as
+                                                                                                                                     dust, keeping it away from sensitive
+Narrow Width
+                                                                                                                                     components within the electrical
+Width of the unit is maintained at
+                                                                                                                                     enclosure.
+12 inches to fit onto the side of a
+smaller NEMA enclosure.
+
+
+                                                                                                                                     Easy Installation
+Reduced Maintenance                                                                                                                  Compact lightweight design means
+With only two mechanical                                                                                                             that the unit can be installed by just
+components (fans), potential                                                                                                         one person.
+failure point are reduced to ensure
+continuous uptime of your processes.
+
+                                                                                                                                     Self Protected from Harsh
+                                                                                                                                     Environments
+Flexible Mounting Options                                                                                                            Uniquely designed to operate in
+Unit can be installed vertically or                                                                                                  NEMA 3R, 4, and 4X environments.
+horizontally, allowing the cool air to                                                                                               An example of this is the location of
+be focused where it is needed most.                                                                                                  our control electronics within our dry,
+                                                                                                                                     cool interior circuit.
+
+
+
+                                                                                                                                     Eliminates Hotspots
+                                                                                                                                     High CFM fans with superior air flow,
+                                                                                                                                     ideal for eliminating hot spots.
+
+
+
+
+                                                         www.pfannenbergusa.com | 1-866-689-0085
+  PKS 3000 Kinetic System Air/Air Heat Exchangers
+                                                               Specific Cooling                                                                                                       Weight
+                                                  Voltage                       Cooling Capacity          Power        Nominal Run          Mounting Dimensions* (Inches)
+                                                                  Capacity
+    Model Number             Part Number         50/60 Hz                               @ rT = 20°C    Consumption       Current                                                  (without packaging)
+                                                    (VAC)                                 (BTU/hr)        (Watts)          (Amps)                                                        (lbs)
+                                                                (W/°C)     (W/°F)                                                           Width         Depth        Height
+
+                            12580511005             115           55        31            3,700             75               <1               12           11            35              44
+   PKS 3201
+   Indoor Rated             12580521005             230           55        31            3,700             75               <1               12           11            35              44
+   (NEMA Type 12)           12580531005           400/460         55        31            3,700             75               <1               12           11            35              47
+                            12580513005             115           50        28            3,400             75               <1               12           11            35              50
+   PKS 3203
+   Outdoor Rated            12580523005             230           50        28            3,400             75               <1               12           11            35              50
+   (NEMA Type 3R/4)         12580533005           400/460         50        28            3,400             75               <1               12           11            35              53
+                            12580514008             115           50        28            3,400             75               <1               12           11            35              50
+   PKS 3204
+   Washdown                 12580524008             230           50        28            3,400             75               <1               12           11            35              50
+   (NEMA Type 4/4x)         12580534008           400/460         50        28            3,400             75               <1               12           11            35              53
+                            12580811005             115           85        47            5,800            353               <3               12           11            35              54
+   PKS 3301
+   Indoor Rated             12580821005             230           85        47            5,800            245               <2               12           11            35              54
+   (NEMA Type 12)           12580831005           400/460         85        47            5,800            245               <1               12           11            35              64
+                            12580813005             115           75        42            5,100            345               <3               12           11            35              60
+   PKS 3303
+   Outdoor Rated            12580823005             230           75        42            5,100            245               <2               12           11            35              60
+   (NEMA Type 3R/4)         12580833005           400/460         75        42            5,100            245               <1               12           11            35              70
+                            12580814008             115           75        42            5,100            345               <3               12           11            35              60
+   PKS 3304
+   Washdown                 12580824008             230           75        42            5,100            245               <2               12           11            35              60
+   (NEMA Type 4/4x)         12580834008           400/460         75        42            5,100            245               <1               12           11            35              70
+                            12580911005             115          100        56            6,800            353               <3               12           11            35              54
+   PKS 3361
+   Indoor Rated             12580921005             230          100        56            6,800            245               <2               12           11            35              54
+   (NEMA Type 12)           12580931005           400/460        100        56            6,800            245               <1               12           11            35              64
+                            12580913005             115           85        47            5,800            345               <3               12           11            35              60
+   PKS 3363
+   Outdoor Rated            12580923005             230           85        47            5,800            245               <2               12           11            35              60
+   (NEMA Type 3R/4)         12580933005           400/460         85        47            5,800            245               <1               12           11            35              70
+                            12580914008             115           85        47            5,800            345               <3               12           11            35              60
+   PKS 3364
+   Washdown                 12580924008             230           85        47            5,800            245               <2               12           11            35              60
+   (NEMA Type 4/4x)         12580934008           400/460         85        47            5,800            245               <1               12           11            35              70
+
+
+
+  PKS Mini 30X2 (22 & 45 Watts/°C) Heatsink Air/Air Heat Exchangers
+  PKS 3042 12480112009   115   22   12     1,400         82       <1                                                                          12          7.89           12              17
+
+  PKS 3092 12480212009   115   45   25     3,000        163       <2                                                                          12          7.89         22.75             35
+
+           IP Rating:          ONLY available as washdown (NEMA Type 4/4X) design
+
+
+
+   Additional Data                          PKS 313X                     PKS 320X                 PKS 330X              PKS 336X                            PKS Mini 30X2
+   Ambient Temp. Range                                                    Min: -25°C / -13°F . . . +55°C / +131°F                                    -25°C to +55°C (-13°F to +131°F)
+
+   Control Range                                               20°C to 60°C (68°F to 140°F); Factory Setting 35°C (95°F)                                              N/A
+
+                                                      Housing/Cover: Indoor/Outdoor - powder coated RAL 7035 (light gray);                      Mounting Plate: powder coated aluminum
+   Design
+                                                                       Washdown - 304 Stainless Steel                                                  Cover: 316 stainless steel
+
+*Note the 3R/4/4x units have required louvers on the sides which add an additional              For additional technical data, drawings and templates visit www.pfannenbergusa.com
+3” to the width and a rainhood on the front which adds an additional 4” to the depth.                                                               Subject to technical amendments and misprints.
+
+
+
+
+                                                                                                                            Contact Your Local Representative:
+
+
+Pfannenberg Sales America, LLC
+68 Ward Road
+Lancaster, New York 14086 USA
+Phone: 716-685-6866
+Fax: 716-681-1521
+Email: sales@pfannenbergusa.com                                                                                      Subject to technical amendments and misprints.              BU1_011_1.12.26
+
+
+                                                                            www.pfannenbergusa.com
+

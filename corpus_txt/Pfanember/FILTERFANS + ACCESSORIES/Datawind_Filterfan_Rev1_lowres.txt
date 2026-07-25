@@ -1,0 +1,94 @@
+     PFANNENBERG
+     DATAWIND FILTERFAN®
+
+
+
+
+For over 60 years Pfannenberg has been protecting enclosure electronics from
+the damaging effects of too much heat, while also protecting the inside of the
+enclosure from the outside environment. Our original Filterfan® was one of the
+first thermal management products to cool electronics using natural convection for
+indoor, outdoor and washdown applications. Throughout the last 60 years we’ve
+continued to pioneer this technology.
+
+Introducing our newest product the Datawind Filterfan®. This externally mounted
+Filterfan was designed for the new IT space, the manufacturing floor. As IT moves
+away from the clean rooms and closer to the manufacturing equipment, cooling
+requirements and equipment need to change. This new Datawind Filterfan®
+delivers the same advantages as our Filterfans 4.0, protecting your IT equipment
+in much dirtier manufacturing environments without sacrificing critical rack space.
+
+
+  VALUE AND BENEFITS
+Zero Protrusion Into The Enclosure
+- Externally mounted, allowing for full use of all
+racks within the bays.                                 30° Sloped Top
+                                                       - Designed to avoid dust collection and improve safety.
+Maintenance Indication LED Light
+- LED indicator warns when the temperature             Cable to Adjustable Thermostat
+exceeds the desired temperature inside the cabinet.    - 13ft cable attached to an adjustable thermostat with
+- Indication of fan malfunction or clogged filter.     DIN mounted bracket allowing fan to toggle on/off
+                                                       depending on cooling need. This feature extends both       Filterfan® 4.0 Benefits
+IEC Power Connector 6ft Cable                          fan and filter lives.                                      - Design based on the Filterfan 4.0™ line to provide the
+(Located on center of fan to allow                                                                                same airflow as standard Filterfans® using a fluted filter
+door to hinge in both directions.)                     Fits Existing Filterfan® Cutout                            mat with a 3x longer service life.
+- Fan side - IEC C13 plug with lock mechanism.         - Only need to drill mounting holes with power tools.      - The Datawind Filterfan® is also designed to be used
+- Power side - NEMA 5-15P (115v) and IEC C14 (230v).   Pre-existing 2.5” hole cut to allow pass through wiring.   with our existing PFA exhaust filters.
+   CONFIGURATIONS
+   • Three unimpeded airflow ratings (38, 152, and 560 CFM)             • Available in black (RAL 9004) and white (RAL 9003)
+   • Use with existing PFA exhaust filters                              • Voltage 115v and 230v options
+   • Accessories – Replacement fluted filter mat, Hygrostats,
+     and Heaters
+
+
+      Datawind Filterfan
+                                                                                                                            Physical Dimensions
+             Part Number                  Unimpeded CFM                         Description
+                                                                                                                                H x W x D (inches)
+
+             18182000039                          38                   Datawind PF22000 115V RAL 9003                            9.4” x 6.8” x 2.8”
+
+             18182000040                          38                   Datawind PF22000 115V RAL 9004                            9.4” x 6.8” x 2.8”
+
+             18182000041                          38                   Datawind PF22000 230V RAL 9003                            9.4” x 6.8” x 2.8”
+
+             18182000042                          38                   Datawind PF22000 230V RAL 9004                            9.4” x 6.8” x 2.8”
+
+             18182000043                          152                 Datawind PF33000 SL 115V RAL 9003                         11.9” x 9.3” x 3.3”
+
+             18182000044                          152                 Datawind PF33000 SL 115V RAL 9004                         11.9” x 9.3” x 3.3”
+
+             18182000045                          152                 Datawind PF33000 SL 230V RAL 9003                         11.9” x 9.3” x 3.3”
+
+             18182000046                          152                 Datawind PF33000 SL 230V RAL 9004                         11.9” x 9.3” x 3.3”
+
+             18182000047                          560                  Datawind PF67000 115V RAL 9003                           17.5” x 14.9” x 5.5”
+
+             18182000048                          560                  Datawind PF67000 115V RAL 9004                           17.5” x 14.9” x 5.5”
+
+             18182000049                          560                  Datawind PF67000 230V RAL 9003                           17.5” x 14.9” x 5.5”
+
+
+
+
+                                                         17.5"
+                                                                                                   11.9"
+                                                                                                                                                  9.4"
+
+
+
+
+                           5.
+                             5"                                          3.3                                             2.8"
+                                          14.9"                             "          9.3"                                           6.8"
+
+
+
+
+                                                                                                                                                         Rev 1
+
+Design & Application Assistance • Web-based Sizing Software
+Online Certifications & Drawings • National / International Service
+
+pfannenbergusa.com                                                                                         ELECTRO-TECHNOLOGY FOR INDUSTRY
+

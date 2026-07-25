@@ -1,0 +1,164 @@
+Product Variety
+The new DTT Series is available in 3 sizes with 6 performances ranges:
+
+• Size 1: DTT 6201 (2,500 - 4,000 Btu/h) / DTT 6101 (1,200 - 2,000 Btu/h)
+• Size 2: DTT 6401 (5,500 - 7,000 Btu/h) / DTT 6301 (4,000 - 5,500 Btu/h)
+• Size 3: DTT 6801 (12,000 - 14,000 Btu/h) / DTT 6601 (7,000 - 10,000 Btu/h)
+
+
+
+Advantages of DTT Cooling Units:
+• Space-saving installation on top of the control cabinet:
+    Keep emergency exit routes and logistic paths clear. Free up space on the production floor.
+• Protected placement above the production floor. Unit is out of reach from fork lift trucks and other vehicles.
+• DTT cooling units fit on all manufacturers' cabinets.
+• 100 % protection against condensate due to patented seamless molded condensate tray.
+
+
+
+Ease of Installation and Service
+Wherever space is at a premium and ease of installation and maintenance is crucial, the Pfannenberg DTT Series offers
+several useful benefits.
+
+
+Simple to install (with optional Quick                Long service intervals                           Innovative Service Panel
+Installation Frame)                                   Larger fin spacing of the condenser              Design When a filter is used, it can be
+A screw-less locking mechanism makes                  coil prevents quick clogging and                 quickly replaced via the innovative
+it possible for the unit to be installed              allows for filter-less operation in              front service compartment. This also
+without any machine downtime, saving                  many industrial environments,                    provides easy access to controls,
+time and other resources. The pre-                    lengthening the intervals between                fuses and other components for
+installed gasket also ensures high                    service time.                                    quick troubleshooting under limited
+quality and time-saving installation.                                                                  space conditions without removing
+                                                                                                       the hood.
+
+
+
+
+Pfannenberg Incorporated
+68 Ward Road
+Lancaster, New York 14086 USA                         sales@pfannenbergusa.com
+Phone: 716-685-6866
+                                                      www.pfannenbergusa.com
+Fax: 716-681-1521
+               ε
+        DTT COOL SERIES
+TOP MOUNTED COOLING UNITS
+     With Active Condensate Management
+
+
+
+
+                   ELECTRO-TECHNOLOGY FOR INDUSTRY
+DTT 6101- 6201 Top Mounted Cooling Units
+ 1200 - 4000 Btu/h
+                                         Pfannenberg's DTT Series top mounted cooling units are 100% condensate safe.
+                                         These units are ideal for space-saving installation on the top of the control cabinet.
+
+                                         One of the main features of the DTT’s innovative condensate management design is the repo-
+                                         sitioning of the cooling circuits. Moving the cold area up prevents condensation from forming
+                                         in the cabinet where the cooling unit meets the enclosure. A widened airflow in the evapora-
+                                         tor stops the formation of condensate buildup. Finally return air channels are engineered to
+                                         increase the speed of the air leaving the cooling unit, ensuring cool air is effectively distributed
+                                         moisture-free within the enclosure.
+
+
+
+
+Active Condensate Management                                                                                                                          Energy Efficient
+Condensate evaporator uses heat to                                                                                                                    Our optional multi
+eliminate condensate even when the                                                                                                                    controller connected to
+system is not actively cooling.                                                                                                                       a sensor, automatically
+                                                                                                                                                      turns off the fan when it
+                                                                                                                                                      is not needed.
+
+
+ Durable and Reliable
+ Components
+ High quality compressor, fans and
+ heat exchangers provide dependable
+ cooling of electrical enclosure
+ components. The micro-channel
+ design provides a condenser coil that                                                                                                            Rugged Design
+ is harder to damage. Fin combing                                                                                                                 Powder coated steel
+ is not necessary to maintain proper                                                                                                              or stainless steel cover
+ airflow channels.                                                                                                                                designed for manufacturing
+                                                                                                                                                  environments. Easily painted
+                                                                                                                                                  to match enclosure or
+                                                                                                                                                  machine.
+
+
+                              Ultra Efficient Design              Fast and Easy Maintenance               Reduced Maintenance Costs
+                              Our micro-channel design            Removable cover allows for              Have a dirty environment? Use
+                              provides greater efficiency.        easy access to the front facing         our optional tool-free quick
+                              With up to 40% increased            control components. In addition         release filter mat mounting frame
+                              heat rejection vs. standard         the micro-channel condenser             and a standard Pfannenberg filter
+                              condensers, improving               design allows for an air path that      to extend the life of the unit and
+                              the transfer of heat from           clogs less and is significantly         reduce maintenance costs.
+                              the refrigerant into the            easier to clean during general
+                              ambient air.                        maintenance.
+
+
+
+
+ü Zero Sweat Guarantee                    ü Managed Water                     ü Eliminate the need for                        ü One Piece Leak-Proof
+    Condensate will not form                  Droplet Control                      Duct Work                                       Molded Tub
+    in the cabinet where the                  As the airflow passes                Return air channels are                         Industry’s only seamless molded
+    cooling unit meets the                    through the evaporator, any          engineered to increase the speed                condensate tray located at the top of
+    enclosure.                                condensate generated on              of the air leaving the cooling unit,            the unit eliminates the ability for water
+                                              the evaporator will not be           ensuring cool air is effectively                to drip into the cabinet.
+                                              carried into the enclosure.          distributed moisture-free within
+                                                                                   the enclosure.
+DTT – Guaranteed 4-fold condensate protection
+Cold Bridge
+
+                      The challenge:
+                      The lower, cold area of the cooling unit has direct contact with the ceiling of the warm electrical
+                      enclosure. As a result of this "cold bridge"effect, condensate can form on the inside ceiling of the
+                      electrical enclosure and drip into the inside.
+
+                      The Pfannenberg solution:
+                      The position of the air-conditioning circuits was changed. When the cold area of the cooling unit is at
+                      the top and the warm area is at the bottom, a "cold bridge" cannot form on the inside ceiling eliminating
+                      the risk of condensate dripping inside the electrical enclosure.
+
+
+Overflow of Condensate
+
+                      The challenge:
+                      The horizontal condensate discharge which runs along the unit’s floor makes the condensate drainage
+                      more difficult. Part of the condensate water that has accumulated in the cooling unit can overflow into
+                      the electrical enclosure via the air outlet opening.
+
+
+                      The Pfannenberg solution:
+                      Vertical drainage of the condensate. The positioning of the evaporator in the top part of the cooling unit
+                      allows for problem-free drainage of the condensate water without contact to the electrical enclosure.
+
+
+
+Condensate Build-Up
+
+                      The challenge:
+                      Concentrated warm air hits the evaporator. Parts of the condensate water formed there can be carried
+                      away by the airflow and can get into the electrical enclosure with the cold air.
+
+
+
+                      The Pfannenberg solution:
+                      The warm air is spread out over a large evaporator. The reduced air speed at the evaporator reduces the
+                      risk of water being carried through the air, guaranteeing a condensate-free airflow in the direction of the
+                      electrical enclosure.
+
+
+Air Hoses
+
+                      The challenge:
+                      The hoses conducting the cold air are surrounded by warm air from the electrical enclosure.
+                      As a result, condensate can form on the surface of the hose.
+
+
+                      The Pfannenberg solution:
+                      Integrated nozzles instead of air hoses. Air outlet nozzles are positioned on both sides of the cooling
+                      unit which accelerate the cold air and conduct it condensate-free down to the bottom of the electrical
+                      enclosure.
+

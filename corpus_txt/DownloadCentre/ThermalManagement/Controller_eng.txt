@@ -1,0 +1,142 @@
+Cabinet cooling
+
+
+
+
+The new
+Green Series
+Controller
+
+
+
+
+                  Keep temperatures under
+                  control at all times.
+    ONE CONTROLLER
+    FOR ALL
+    APPLICATIONS
+
+
+    The new Green Series Controller combines all the important functions that were previously separated
+    in the Standard Controller (SC) and Multicontroller (MC). The proven two-point control ensures that the
+    temperature in the control cabinet is reliably maintained. Supplemented by the now even more efficient
+    energy-saving mode in all variants, energy is consistently saved.
+
+
+    Advantages of the new Green Series controller
+
+    •     A door contact switches the cooling unit off when the en-         •   A service interface on the rear of the cooling unit, in
+          closure door is open.                                                 conjunction with the ‘Pfannenberg Control Centre’ soft-
+                                                                                ware, enables the temperature and error codes to be read
+    •     A collective fault message enables the output of any alarm            out and recorded, and the set temperature and switching
+          type to a service interface or the output of a simple visual          hysteresis to be set. A USB converter is required, which is
+          alarm. Supported alarm types are: max. temperature | pres-            available as an accessory.
+          sure in the coolant circuit too high | incorrect device setting
+          on the controller | temperature sensor defective.                 •   The energy-saving mode is now integrated in every control-
+                                                                                ler and is designed to beSteven more efficient.
+    •     An integrated self-test, which can be performed manually at
+          any time, enables OEMs to perform a simple and quick func-                                     St
+          tion test and to recognise the customer‘s machine availability.
+
+
+    The energy-saving mode
+
+    In energy-saving mode, the internal fan is switched off after 15 minutes without a cooling request. Maximum energy is saved. If the
+    controller detects an increase in temperature, it switches the internal fan on for three minutes and circulates the air. If the setpoint
+    temperature is not exceeded, the internal fan switches off again. By detecting a temperature rise regardless of the setpoint tempe-
+    rature, the energy-saving mode can be extended to the maximum, thus saving the most energy. The additional temperature sensor
+    inside the housing can be dispensed with.
+                                                                                                         Te
+
+
+
+    Temperature
+
+
+     37°C
+
+
+    35°C
+
+
+    33°C
+
+                                                                                                                    T
+  Heat load                                                                            T
+                            Cooling mode: Internal
+                            and external fan and
+Energy                      compressor switched on
+consumption                                                                                                   Only internal fan
+
+
+                                                                                                                                          Time
+
+
+
+                                                                                                      www.pfannenberg.com
+The controller is available in three versions
+
+The LED variant (LED) has an operating display that can only indicate fault-free operation or an error. The setpoint temperature is set
+via DIP switches on the controller board. The display variant (DIS) has a control element with which the parameters of the cooling
+unit can be changed externally. This variant also has a display for the actual temperature and possible error codes. The Connect
+variant (CON) has a control element like the Display variant. In addition, this variant is equipped with an RS485 interface that works
+with the Modbus RTU protocol.
+
+
+
+
+                                     LED                  DIS                 CON
+ Condensate Managment             x (not for DTFS)          x                    x
+
+ Status LED                              x                  -                    -                Condensate Management
+ Main fault contact                      x                  x                    x                Occurring condensate water will be col-
+                                                                                                  lected in a tray and with using the power
+ Door contact                            x                  x                    x                of the hot gas pipe evaporated.
+
+ Integrated self test                    -                  x                    x                Antifreeze Control
+                                                                                                  A separate temperature sensor prevents
+ Service interface                       x                  x                    x
+                                                                                                  the internal heat exchanger from icing up.
+ Pfannenberg Control Center              x                  x                    x
+                                                                                                  Dip switch
+ Antifreeze control                 optional             optional             optional            Small dip switches are directly on the
+                                                                                                  controller board to adjust the set tem-
+ Energy-saving mode                      x                  x                    x
+                                                                                                  perature
+ Temperature display                     -                  x                    x
+                                                                                                  Blackbox data storage
+ Set buttons                             -                  x                    x                In case of power supply loss, major
+                                                                                                  values from the last minutes are stored.
+ Modbus interface                        -                  -                    x
+                                                                                                  You‘ll get access with the Pfannenberg
+ Family Mode                             -                  -                    x                control center.
+
+ DIP switch                              x                  x                    x
+
+ Blackbox data storage                   x                  x                    x
+
+
+
+
+New interface and family mode
+
+New options are the Modbus RTU interface and the family mode. As a Connect variant (CON), which is only available with an ope-
+rating element, the service interface has been replaced by an RS 485 interface with Modbus RTU protocol. This enables particularly
+easy integration into machine communication. Set and actual values as well as error codes can be conveniently read out via the ma-
+chine control system. The same interface can also be used to interconnect several devices that are installed on a control cabinet and
+operate in a network. In family mode, the cooling task is distributed to equalise operating times. If one appliance is in operation more
+frequently than other cooling appliances, cooling appliances with fewer operating hours are preferentially switched on. This means
+that all cooling units are loaded equally, which increases the service life and reliability.
+
+
+With Family Mode, you can protect your cooling appliances by switching them off at high operating hours and homogeneous heat dis-
+tribution. This ensures fewer cycles, more consistent cooling behaviour and a longer service life for your appliances.
+
+
+
+
+Interested in finding out more about our Green Series controllers?
+
+Please get in touch with your Pfannenberg contact person
+or send us a message!
+

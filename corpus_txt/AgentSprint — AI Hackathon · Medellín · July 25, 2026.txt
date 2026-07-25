@@ -1,0 +1,498 @@
+24/7/26, 21:17                                           AgentSprint — AI Hackathon · Medellín · July 25, 2026
+
+
+
+       AgentSprint by ReshapeX                                                                       Scoring     Brands   Guide
+
+
+
+
+       AG E N T S P R I N T · M E D E L L Í N · J U LY 2 5 , 2 0 2 6
+
+
+
+       Build an AI Agent
+       in a Morning
+       The first AI agent hackathon in Medellín. Teams of 3–4 design and implement
+       a real agentic system from scratch — with ReshapeX engineers as mentors.
+
+       📅 July 25, 2026 · 8:00 AM – 12:00 PM 📍 Universidad EAFIT · Medellín
+       👥 Teams of 3–4 · Free entry ⏱ ~3.5-hour build
+
+           1ST PLACE                                    2ND PLACE                                   3RD PLACE
+
+           $2,000,000                                   $1,000,000                                  $500,000
+           Colombian pesos                              Colombian pesos                             Colombian pesos
+
+
+       By participating in this event you accept the following terms and conditions.
+
+
+
+
+        02 — How You're Judged
+
+
+       5 scoring dimensions
+       Judges score each team across five dimensions. All five matter — a great pitch without
+       technical substance won't win, and neither will strong code that can't be explained.
+
+
+
+
+https://reshapeautomation.github.io/reshape_hackathon/#brands                                                                     1/11
+24/7/26, 21:17                                      AgentSprint — AI Hackathon · Medellín · July 25, 2026
+
+       Progress                                  Scored by the highest milestone reached — each level
+       1 – 4 PTS · OBJECTIVE                     assumes the previous ones are met.
+
+       30% of total                                1 · Setup ready       2 · Something works          3 · Live demo
+
+                                                   4 · All answers grounded by knowledge tools
+
+
+
+
+       Presentation                              Not just what you built — how clearly you explain it and how
+       1 – 10 · 5 JUDGES AVG                     well you sell the idea. Judges look for a clear narrative,
+                                                 confident delivery, and answers that hold up under questions.
+       10% of total
+
+       Innovation                                How novel, creative, or unexpected the solution is versus the
+       1 – 10 · 5 JUDGES AVG                     obvious approach. Judges reward teams that found a use
+                                                 case, flow, or experience others wouldn't have thought of —
+       30% of total                              originality matters as much as technical execution.
+
+
+
+       Code Quality                              A technical judge reviews the repository directly. Key
+       0 – 5 PTS · REPO REVIEW                   question: does what was built actually work, or is it mocked?
+                                                 Judges look for correctness, clean project structure, proper
+       10% of total                              secrets management, and a traceable commit history. Heavy
+                                                 mocking caps the score regardless of code style.
+
+
+
+       Technical Checklist                       Judges verify whether key agent architecture components
+       0 – 5 PTS · ARCH REVIEW                   are effectively implemented and working — not just named in
+                                                 the code. Up to 5 components are evaluated; each one that
+       20% of total                              demonstrably does its job adds to the score. Naming a
+                                                 component in a comment doesn't count — it has to work.
+
+
+
+
+        03 — Brands
+
+
+       Pick your brand
+https://reshapeautomation.github.io/reshape_hackathon/#brands                                                         2/11
+24/7/26, 21:17                                      AgentSprint — AI Hackathon · Medellín · July 25, 2026
+
+       Each team chooses one brand from the list below. Start exploring their products, APIs,
+       and documentation before the event — the more you know your brand, the faster you'll
+       build.
+
+
+                       Sick                                     Banner                                       WEG
+
+
+                       Teco                                Pfannenberg                               Pepperl+Fuchs
+
+
+                      Lenze                                 LS Electric                                     Invertek
+
+
+                      Balluff                                     LG                                    Decathlon
+
+
+                    Logitech                                    Haceb                                  Bosch Tools
+
+
+                     Corona                                     Michelin                               Homecenter
+
+
+                      Familia                                   Xiaomi
+
+
+                                                                 Éxito
+
+
+
+
+        04 — Resources
+
+
+       Come prepared
+       The sprint starts at minute one. The teams that win have their environment working before
+       they arrive.
+
+
+
+
+https://reshapeautomation.github.io/reshape_hackathon/#brands                                                          3/11
+24/7/26, 21:17                                      AgentSprint — AI Hackathon · Medellín · July 25, 2026
+
+
+
+
+             H AC K AT H O N G U I D E
+
+
+             Building AI Agents
+             A map of the pieces that go into an AI agent — the concepts, the moving
+             parts, and the tools — so you can pick what your project needs and skip
+             the rest.
+
+             Theme: AI agents for OEMs (industrial & beyond)            Date: 2026-07-25
+             Format: ~3.5-hour build        Checked: July 2026
+
+
+                  Sections 01–03 cover the concepts and how an agent works. Sections 04–06 are
+                  the toolbox, a default stack, and a build-time plan — go straight there if you already
+                  know the concepts.
+
+                  Before the event: have one clear idea and a working API key. The setup checklist at
+                  the end covers both.
+
+
+
+
+                      THE WHOLE IDEA IN THREE SENTENCES
+
+                      An AI agent is just a language model that you let take actions, not only
+                      chat. You give it a goal and a few tools (things it can do, like search a
+                      product catalog or call a company API), and it works in a loop: think, act,
+                      look at the result, repeat, until the job is done.
+
+                      Everything below is detail on those three pieces: the model, the tools,
+                      and the loop. If you remember nothing else, remember that.
+
+
+
+
+                 01      Concepts
+                         The terms used throughout this guide and this weekend, defined once for
+                         reference.
+
+
+                         LLM (large language model)             The model itself: trained on large amounts of
+                                                                text to predict likely next words. Gemini, GPT,
+                                                                Claude, and Llama are all LLMs.
+https://reshapeautomation.github.io/reshape_hackathon/#brands                                                     4/11
+24/7/26, 21:17                                      AgentSprint — AI Hackathon · Medellín · July 25, 2026
+                                                                C aude, a d a a a e a                   s
+
+
+                     Prompt                                     What you send the model: your instructions
+                                                                plus the question. Clear instructions help,
+                                                                but for an agent the bigger lever is usually
+                                                                what information you put in front of the
+                                                                model, not how you word the request.
+
+
+                     Token                                      The small chunks models read and write in,
+                                                                roughly three quarters of a word. Length
+                                                                limits and pricing are counted in tokens, not
+                                                                words.
+
+
+                     Context window                             How much text the model can "see" at once:
+                                                                its short-term memory. Feed it too much and
+                                                                the oldest text falls out of view.
+
+
+                     API & API key                              The API is how your code talks to the model
+                                                                over the internet. The key is your private
+                                                                password for it. Never share it or paste it into
+                                                                public code.
+
+
+                     Agent                                      An LLM that can take actions in a loop to
+                                                                reach a goal, instead of answering just once.
+                                                                This is the thing you are building.
+
+
+                     Tool / function calling                    Giving the model things it can do: search a
+                                                                database, call an API, run code. "Function
+                                                                calling" is the standard way the model asks
+                                                                to use one, and your code actually runs it.
+
+
+                     MCP (Model Context                         A shared standard for connecting tools to
+                     Protocol)                                  models. Build a tool once as an MCP "server"
+                                                                and any MCP-compatible app can use it.
+                                                                Think of it as USB-C for AI tools.
+
+
+                     RAG (retrieval augmented                   Giving the model your own documents so it
+                     generation)                                answers from real facts instead of guessing.
+                                                                It first retrieves the relevant pages, then
+                                                                writes the answer using them.
+
+
+                     Vector database                            Where RAG stores your documents so the
+https://reshapeautomation.github.io/reshape_hackathon/#brands                                                      5/11
+24/7/26, 21:17                                      AgentSprint — AI Hackathon · Medellín · July 25, 2026
+                       ecto database                               e e G sto es you docu e ts so t e
+                                                                agent can quickly find the parts that match a
+                                                                question by meaning, not just by matching
+                                                                keywords.
+
+
+                      Guardrails                                Rules and checks that keep the agent from
+                                                                doing something wrong or unsafe, such as
+                                                                refusing off-topic requests or validating an
+                                                                answer before acting on it.
+
+
+                      Hallucination                             When a model states something false with
+                                                                total confidence. This is the main risk in
+                                                                business agents, and the reason grounding it
+                                                                with RAG and tools matters so much.
+
+
+                      Orchestration                             How the steps are connected and
+                                                                sequenced. For most hackathon agents, this
+                                                                is just a simple loop.
+
+
+
+
+                 02   How an AI agent actually works
+                      Simple or fancy, almost every agent runs the same loop. Once you see it, the
+                      rest of the tools are just different ways to build each box.
+
+
+                           1     You give it a goal + tools
+                                 "Find the right replacement part for this discontinued model." Plus a
+                                 tool: search the product catalog.
+
+                                                                       ↓
+
+                          2      The model thinks
+                                 "To match a replacement I first need the specs of the old part."
+
+                                                                       ↓
+
+                          3      It uses a tool
+                                 It calls search_catalog("old part number") . Your code runs it and
+                                 returns the specs.
+
+                                                                       ↓
+https://reshapeautomation.github.io/reshape_hackathon/#brands                                                   6/11
+24/7/26, 21:17                                      AgentSprint — AI Hackathon · Medellín · July 25, 2026
+
+                          4      It reads the result
+                                 Now it has real data. It decides whether it needs another lookup or has
+                                 enough to answer.
+
+
+                                                 ↻ steps 2–4 repeat until the goal is met
+
+
+                                                                       ↓
+
+                          ✓      It answers
+                                 "The matching part is X, because the specs line up. Here is the
+                                 source." Grounded, not guessed.
+
+
+
+                         Why this example, and why it matters here: the agents at this hackathon are
+                         business tools for manufacturers and distributors, so being correct matters
+                         far more than being clever. An agent that confidently invents a part number is
+                         worse than useless. That is why almost every good B2B agent leans on tools
+                         and real documents (steps 1 and 3) instead of trusting the model to just know
+                         the answer.
+
+
+
+
+                 03   What you actually need
+                      The most common mistake is building too much. Start with the smallest thing
+                      that works, then add a piece only when you hit a real wall. Here is roughly what
+                      different ideas require.
+
+                      Answer questions from a set of                       model + RAG. The classic OEM idea.
+                      documents (manuals, catalogs,
+                      policies)
+
+
+                      Do something in another system (look                 model + tools (function calling).
+                      up an order, check stock, open a
+                      ticket)
+
+
+                      Reason or draft text (summaries,                     model + a good prompt. No tools
+                      emails, spec sheets, translations)                   needed.
+
+
+                      A mix of the above                                   model + tools + RAG. Still one agent.
+
+
+                      Truly separate jobs that must run on                 multiple agents — rarely worth it in a
+https://reshapeautomation.github.io/reshape_hackathon/#brands                                                       7/11
+24/7/26, 21:17                                  AgentSprint — AI Hackathon · Medellín · July 25, 2026
+
+                      their own                                       ~3.5-hour build.
+
+                        If you are unsure: start with "model + a good prompt," get it working end to end
+                        with fake data, then add one tool or RAG. A tiny thing that fully works beats a big
+                        thing that half-works.
+
+
+
+                 04   The toolbox
+                      Tools grouped by the role they fill in the loop above, with a default pick per
+                      group. You do not need one from every group.
+
+                        The model — the brain where the intelligence comes from
+                      Google Gemini                         START HERE   Free, no credit card, generous
+                                                          daily limit, and it handles text and images. Get
+                                                          a key at Google AI Studio in two minutes.
+
+                      Groq                                Also free, no card, and extremely fast. Runs
+                                                          open models like Llama. Great if you want
+                                                          snappy, real-time replies.
+
+                      Ollama                              Runs a model on your own laptop with no
+                                                          signup at all. Needs a fairly capable machine.
+                                                          Good if your data cannot leave your
+                                                          computer.
+
+                      Claude / GPT                        Best in class, but they need paid credits. Use
+                                                          one if a teammate already has access.
+
+                        Tip: pick one and move on. You can swap models later with almost no code
+                        changes.
+
+                        Building the agent — the loop how the model decides what to do next
+                      Plain function calling                START HERE  Just a simple loop you write
+                                                          yourself, using the model's own SDK. For most
+                                                          hackathon agents this is genuinely all you
+                                                          need. No extra framework to learn.
+
+                      OpenAI Agents SDK /                 Light frameworks that handle the loop, tool
+                      Claude Agent SDK                    calls, and tracing for you. Reach for one only if
+                                                          your own loop gets messy.
+
+                      LangGraph                               Powerful but heavy, for complex branching
+                                                              workflows. Almost certainly overkill for a ~3.5-
+https://reshapeautomation.github.io/reshape_hackathon/#brands
+                                                              hour build                                         8/11
+24/7/26, 21:17                                      AgentSprint — AI Hackathon · Medellín · July 25, 2026
+                                                                hour build.
+
+                         Tip: a framework you have to learn during the hackathon usually costs more time
+                         than it saves. Familiar and simple wins.
+
+                         Giving it tools — letting it act
+
+                     Function calling                            START HERE     Built into every major model. You
+                                                                describe what a tool does, the model asks to
+                                                                use it, your code runs it and hands back the
+                                                                result. This is the normal way.
+
+                     MCP                                        Wrap a tool once and reuse it across different
+                                                                apps. Nice to have, not required for a
+                                                                hackathon.
+
+
+                         Giving it knowledge — RAG only if your idea depends on documents
+
+                     Chroma                                      START HERE   A vector database that runs in a
+                                                                few lines of code with no setup. The easy
+                                                                default for storing your documents.
+
+                     Pinecone                                   A managed vector database with a free tier.
+                                                                Reach for it if you'd rather not run anything
+                                                                locally.
+
+                     LlamaIndex                                 The fastest way to load your PDFs and files and
+                                                                wire up retrieval on top of them.
+
+                         Tip: skip this group entirely if your idea does not truly depend on specific
+                         documents. RAG is the single easiest thing to over-build in a short sprint.
+
+                         Seeing what it does — observability so you can debug the loop
+                     LangSmith                                  Shows you every step the agent took and
+                                                                every tool it called. Turn it on early. The first
+                                                                time your agent loops forever, a trace tells you
+                                                                why in seconds.
+
+
+                         Showing it off — the demo a working agent nobody can see does not win
+                     Streamlit / Gradio                          START HERE   A clickable chat interface in a few
+                                                                lines of Python. The fastest way to make your
+                                                                agent demoable.
+
+                     Next.js + Vercel AI SDK                    A polished web app, if your team already
+                                                                knows React Better first impression more
+https://reshapeautomation.github.io/reshape_hackathon/#brands                                                       9/11
+24/7/26, 21:17                                      AgentSprint — AI Hackathon · Medellín · July 25, 2026
+                                                                knows React. Better first impression, more
+                                                                work.
+
+                           Tip: budget the last ~35 minutes for the demo. Judges react to what they can
+                           click, not to your code.
+
+
+
+
+                      D E FAU LT S TAC K
+
+
+                      The quick-start stack
+                      A minimal stack that gets an agent running quickly. Add a layer only when a
+                      real problem forces you to.
+
+                      MODEL                           Gemini free tier (or Groq for speed). Free, five-
+                                                      minute signup, no credit card.
+
+                      THE AGENT                       Start with plain function calling in the model's
+                                                      SDK. Add an Agents SDK only if the loop gets
+                                                      messy.
+
+                      TOOLS                           Function calling for anything the agent needs to
+                                                      do. Add MCP only if you want to reuse a tool
+                                                      elsewhere.
+
+                      KNOWLEDGE                       Only if you have documents → Chroma or
+                                                      Pinecone + LlamaIndex. Otherwise skip it.
+
+                      SEE WHAT HAPPENS                LangSmith, tracing on from the first run.
+
+                      DEMO                            Streamlit or Gradio, run on your laptop.
+
+
+                        In one line: get a free Gemini key, write a simple loop with function
+                        calling, add documents only if you need them, and save the last ~35
+                        minutes for a Streamlit demo.
+
+
+
+
+                 05      How to spend your ~3.5 hours
+                        A rough time budget for a team of 3–4, for the roughly 3 to 3:30 of real build
+                        time you'll have. The exact minutes do not matter; the shape does — and having
+                        everyone stare at one laptop is the fastest way to fall behind. Split up wherever
+https://reshapeautomation.github.io/reshape_hackathon/#brands                                                10/11
+24/7/26, 21:17                                      AgentSprint — AI Hackathon · Medellín · July 25, 2026
+
+
+           ⚠ Reminder: Do not use confidential information from the companies you work for in your agent
+           or demo materials.
+
+
+
+
+       AgentSprint by ReshapeX                         July 25, 2026 · Universidad EAFIT · Medellín · Powered by ReshapeX
+
+       By participating in this event you accept the following terms and conditions.
+
+
+
+
+https://reshapeautomation.github.io/reshape_hackathon/#brands                                                               11/11
+

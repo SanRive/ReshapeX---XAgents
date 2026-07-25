@@ -1,0 +1,116 @@
+Signaling Solutions for SIL requirements
+Alarm and Warning Devices to Enhance the Safety
+of Operating Machinery and Industrial Processes
+                                                                        Purpose
+                                                                        SIL or Safety Integrity Level is the target statistical representation
+                                                                        of the reliability of a Safety Instrumented System (SIS). In order to
+                                                                        achieve the target SIL rating, all components of the SIS must realize
+                                                                        the target SIL. To support the safety goals of machinery and pro-
+                                                                        cesses that strive to comply with SIL, all risks must be adequately
+                                                                        mitigated. Even after all possible design criteria and complemen-
+                                                                        tary safety barriers are considered, a risk gap may still remain for
+                                                                        many circumstances. In such situations, a signaling solution will
+                                                                        help narrow the risk gap.
+                                                                        Pfannenberg offers audible and visual signaling devices that are
+                                                                        specifically designed to meet SIL 1 and SIL 2 requirements. Backed
+                                                                        with documented statistical data, self monitoring, and fault report-
+                                                                        ing, these units eliminate the need for redundant devices.
+
+  Standards and Regulations Relating to SIL                             Applications for SIL Signaling
+  Process Hazards Analysis (PHA) is effective for determining           Systems that require SIL signaling are generally divided into two
+  whether a SIL should be assigned for critical systems. Criteria for   application categories: machinery alarms and process alarms.
+  such analysis can be found in written standards that address the
+  safety measures for processes and machinery. These include:           Machinery Alarm Systems:
+                                                                          • Startup Alarms
+  ANSI/ISA 84.00.01-2004: “Application of Safety Instrumented Sys-
+                                                                          • Failure Alarms
+  tems. (SIS) for Process Industries”, International Society of Auto-
+  mation, Standards and Practices                                         • Muting Alarms (for situations where the safety barrier is
+                                                                            temporarily disengaged such as for set-up or maintenance)
+  IEC-61508: “Functional safety of electrical/electronic/program-
+  mable electronic safety-related systems”, International Electro-      Process Alarm Systems
+  technical Commission, Technical Committee.                              • Alarm systems for toxic gas leaks or chemical spills
+  IEC-61511: “Functional safety - Safety instrumented systems for         • High pressure and temperature situations
+  the process industry sector”, International Electrotechnical Com-       • High voltage situations
+  mission, Technical Committee.                                           • Chemical vapor recovery systems
+  29 CFR Part 1910.119: Process Safety Management of Highly               • Natural gas pipeline, supply, and transport systems
+  Hazardous Chemicals, OSHA.                                              • Hazardous substance handling
+
+
+SIL signaling devices from Pfannenberg can help protect personnel from dangerous and life-threatening situations and narrow
+the risk gap associated with hazardous process systems and machinery.
+
+
+
+
+Pfannenberg Inc.                                                                                                    Toll-free: 866-689-0085
+68 Ward Road, Lancaster, NY 14086 USA                                                              Phone: 716-685-6866 Fax: 716-681-1521
+www.pfannenbergusa.com                                                                               Subsidiary of the Pfannenberg Group
+Signaling Solutions for SIL requirements
+Alarm and Warning Devices to Enhance the Safety
+of Operating Machinery and Industrial Processes
+
+Typical SIL Applications                                                      Available SIL Products
+Machinery Start-up Alarm                                                                Series DS 5-SIL / DS 10-SIL
+Especially for large machines such as paper making machines and textile                 Robust multi-tone sounder for audible alarm and
+machines, or hazardous operating equipment such as laser cutting tools.                 warning, even in harsh environments. Excellent
+                                                                                        tonal amplitude and frequency range permits
+Mechanical or Process Failure Alarm                                                     signals to penetrate walls and transmit over further
+Trouble with machinery operation, jammed feedstock mechanisms, failed                   distances, thereby reducing the number of sounders
+operator safety guards, inoperable overfill shut-off, ruptures & leaks, and             required for large area installations. Self-monitoring
+problems with other plant-wide controlled processes.                                    relay contact closure permits remote notification or
+                                                                                        system lockout in the event of malfunction.
+Muting Alarm                                                                              •   Nominal 105 dB (A) or 110 dB (A) SPL
+Situations where safety barriers or other mechanisms are temporarily                      •   Cast aluminium housing
+disengaged or “muted”, often for setup, maintenance, or startup.                          •   Robust, weatherproof construction: IP 66, IP 67
+                                                                                          •   31 unique tones, 4 stages
+Toxic, Combustible, or Hazardous Gas Leaks and Chemical Spills                            •   Versions for 24 VDC, 115 VAC, and 230 VAC
+Evacuation alarm systems for electrochemical plants, oil refineries, phar-
+maceuticals production, and chemical production facilities.                             Series PMF 2015-SIL
+Temperature and Pressure Control                                                        High-visibility flashing xenon strobe beacon with
+                                                                                        either bracket mounting or direct surface mounting.
+Situations where controlled processes fail or exceed normal operating
+                                                                                        Prismatic Fresnel lens provides the highest signaling
+parameters and pose a safety risk.
+                                                                                        effect for generating a visual impact which can span
+High Voltages                                                                           wide areas. Self-monitoring relay contact closure
+                                                                                        permits remote notification or system lockout in the
+Situations where personnel may be vulnerable to contact with dangerous                  event of malfunction.
+electrical apparatus, such as an electric arc furnace or plasma cutter.
+                                                                                          •   Up to 200 cd light intensity (clear lens)
+Chemical Vapor Recovery Systems                                                           •   10 Joules flash energy
+                                                                                          •   60 flashes per minute
+Situations where gas and vapor collection devices or ventilation systems                  •   Surface mount or bracket mount
+fail, thereby posing danger to personnel.                                                 •   Weatherproof, IP 55 construction
+                                                                                          •   Offered in clear, amber, red, green, blue
+Natural Gas Pipeline, Supply, and Transport Systems
+                                                                                          •   Versions for 24 VDC and 230 VAC
+Situations where there is risk of tank or pipeline rupture.
+
+                                                                                        Series Quadro F12-SIL
+                                                                                        High-visibility flashing xenon strobe beacon for
+                                                                                        direct mounting, particularly for machinery safety
+                                                                                        requirements. Strong, polycarbonate construction
+                                                                                        offers a high degree of impact resistance. Self-moni-
+                                                                                        toring relay contact closure permits remote notifica-
+                                                                                        tion or system lockout in the event of malfunction.
+                                                                                          • Up to 118 cd light intensity (clear lens)
+                                                                                          • 10 Joules flash energy
+                                                                                          • 60 flashes per minute
+                                                                                          • Rugged, polycarbonate construction
+                                                                                          • IK 08 rated impact survivability per EN 50102
+                                                                                          • Flash tube secured by steel clamp for durability
+                                                                                          • Weatherproof, IP 66, IP 67 construction
+                                                                                          • Offered in clear, white, yellow amber, red,
+                                                                                            green, blue
+                                                                                          • Versions for 24 VDC, 115 VAC, and 230 VAC
+
+
+
+
+SIL Signaling-1011
+
+Pfannenberg Inc.                                                                                                  Toll-free: 866-689-0085
+68 Ward Road, Lancaster, NY 14086 USA                                                            Phone: 716-685-6866 Fax: 716-681-1521
+www.pfannenbergusa.com                                                                             Subsidiary of the Pfannenberg Group
+

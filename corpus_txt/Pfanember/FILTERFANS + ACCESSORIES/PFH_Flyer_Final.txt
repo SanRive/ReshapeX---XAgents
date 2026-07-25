@@ -1,0 +1,119 @@
+PFH-T
+COMPACT FAN HEATER
+200 W - 1200 W
+
+FLEXIBLE MOUNTING OPTIONS
+Unit can be direct mounted or connected to standard
+DIN rail without tools using the
+                                                                         PTC HEATER TECHNOLOGY
+included snap fastener.                                                  Uses a self regulating heating element
+                                                                         designed to prevent overheating and
+                                                                         safe operation within your application.
+
+
+
+
+COMPACT
+DESIGN                                                                                   INTEGRATED
+Wide range for                                                                           THERMOSTAT
+heat options from
+                                                                                         Built in thermostat allows
+200W to 1200W all
+                                                                                         our heater to be set to
+housed in the same
+                                                                                         the precise temperature
+compact housing.
+                                                                                         required for your
+                                                                                         application.
+
+
+
+
+TOUCH-SAFE
+                                                                                        UL CERTIFIED
+OUTER HOUSING                                                                           Heaters are UL Recognized
+Well insulated ABS high-                                                                to NITW2 and NITW8
+temperature resistant plastic                                                           standards allowing for easy
+housing material ensures that                                                           integration into UL 508A
+unit remains cool and safe to                                                           panels.
+touch during operation.
+
+
+
+
+INTEGRATED FAN                                          QUICK CONNECTS
+Compact fan moves air across the heater elements to     Wires too long, too short or wrong color? Save time
+provide quick and efficient heating of the enclosure.   and money when installing or moving the unit with our
+                                                        UL listed quick connects.
+
+
+
+
+www.pfannenbergusa.com
+PFH-T
+COMPACT FAN HEATER
+                                              Pfannenberg’s PFH-T Compact Fan Heater is perfect for maintaining precise temperatures
+                                              required for the proper function of electronics while also protecting equipment from damaging
+200W-1200W                                    condensation caused by changes in temperature or humidity.
+
+
+                                                  Heating            Power       Airflow      Starting
+        Model                   Part No.                                                                  Width         Length        Height         Weight
+                                                Performance*      Consumption    Volume       current
+
+                                                     W                 W        CFM (m3/h)       A        in (mm)       in (mm)       in (mm)         lb (kg)
+
+ PFH-T 200 (115 V)            170 2071 5034          200              215         30 (50)        9       3.46 (88)    5.24 (133)    5.59 (142)       1.6 (.74)
+
+ PFH-T 200 (230 V)            170 2071 0034          200              215         30 (50)        9       3.46 (88)    5.24 (133)    5.59 (142)       1.6 (.74)
+
+ PFH-T 400 (115 V)            170 4071 5034          400              415         30 (50)        15      3.46 (88)    5.24 (133)    5.59 (142)       1.6 (.74)
+
+ PFH-T 400 (230 V)            170 4071 0034          400              415         30 (50)        15      3.46 (88)    5.24 (133)    5.59 (142)       1.6 (.74)
+
+ PFH-T 650 (115 V)            170 6571 5034          650              665         30 (50)        20      3.46 (88)    5.24 (133)    5.59 (142)       1.6 (.74)
+
+ PFH-T 650 (230 V)            170 6571 0034          650              665         30 (50)        20      3.46 (88)    5.24 (133)    5.59 (142)       1.6 (.74)
+
+ PFH-T 800 (115 V)            170 8071 5034          800              815         30 (50)        31      3.46 (88)    5.24 (133)    5.59 (142)       1.6 (.74)
+
+ PFH-T 800 (230 V)            170 8071 0034          800              815         30 (50)        31      3.46 (88)    5.24 (133)    5.59 (142)       1.6 (.74)
+
+ PFH-T 1000 (115 V)           170 9971 5034         1000             1015         30 (50)        25      3.46 (88)    5.24 (133)    5.59 (142)       1.6 (.74)
+
+ PFH-T 1000 (230 V)           170 9971 0034         1000             1015         30 (50)        25      3.46 (88)    5.24 (133)    5.59 (142)       1.6 (.74)
+
+ PFH-T 1200 (230 V)           170 9981 0034         1200             1215         30 (50)        31      3.46 (88)    5.24 (133)    5.59 (142)       1.6 (.74)
+
+ *Heating performance (Ta = +68 °F/+20 °C)
+
+
+
+INDUSTRIES & APPLICATION EXAMPLES
+
+
+
+
+  Self-service Kiosks          Irrigation & Outdoor Pump Control Systems
+
+
+
+                                                                                Surveillance and CCTV Systems                 Telecommunication Systems
+
+
+
+
+           Traffic Control Systems                         ATMs                     Rooftop Control Systems                   Parking Control Enclosures
+
+
+
+
+                                                                                                Contact Your Local Representative:
+
+Pfannenberg Incorporated
+68 Ward Road, Lancaster, New York 14086 USA
+Phone: 716-685-6866 Fax: 716-681-1521
+
+orders@pfannenbergusa.com
+www.pfannenbergusa.com                                                                                               Subject to technical amendments and misprints.
+

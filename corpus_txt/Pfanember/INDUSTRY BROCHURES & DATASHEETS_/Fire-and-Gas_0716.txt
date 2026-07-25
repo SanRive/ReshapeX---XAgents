@@ -1,0 +1,118 @@
+Fire and Gas Alarm Notification Appliances
+for Large, Noisy Industrial Facilities
+Louder Horns and Brighter Strobes offer Better Warning and Greater Effective Coverage
+                                                                                                           Purpose
+                                                                                                           Noisy machinery, hearing protection in use, distractive procedures,
+                                                                                                           process alarms, bright lights, molten sparks, moving equipment,
+                                                                                                           poor visibility, confined spaces, obstructed areas - these are just
+                                                                                                           some of the factors affecting the ability of workers to be notified of
+                                                                                                           a dangerous situation inside an industrial facility.
+                                                                                                           Mass notification system design must take ambient noise as well as
+                                                                                                           sounder performance into consideration when ascertaining the ef-
+                                                                                                           fective coverage area of an alarm horn. Likewise, installation loca-
+                                                                                                           tion and proximity to workers is vitally important for strobe lights.
+                                                                                                           With modern designs, Pfannenberg signaling devices possess the
+                                                                                                           performance characteristics needed to fulfill NFPA requirements
+                                                                                                           for evacuation alarms in and around industrial facilities.
+
+   Pfannenberg’s Modern Signaling Devices Provide Advanced Features and Benefits
+                                                              Brighter Strobe Lights Deliver Superior Visual Notification:
+                                                                • Choice of 5, 10, or 15 Joules flash energy to ensure adequate warning over specified coverage areas.
+                                                                • Pyramid shape with prismatic lens achieves the most effective light dispersion in all directions.
+                                                                • Rated lifespan of 8,000,000 flashes.
+                                                                • Strobe can be controlled simultaneously or independent from audible alarm sounder.
+                                                                • Adjustable flash rate and automatic flash sync for multiple units (some models).
+                                                                • Choice of lens colors to suit specific applications: clear, white, yellow, amber, red, green, blue.
+
+                                                              Louder Horns Deliver Superior Audible Notification:
+                                                                • Sounder includes onboard choice of 80 unique tones - many conforming to international alarm standards.
+                                                                • Multiple alarm stages permits one device to emit a different tone for up to 4 distinctive events.
+                                                                • Choice of 100, 105, 110, and 120 dB(A) (SPL) nominal output levels to ensure adequate warning
+                                                                  over specified coverage areas.
+                                                                • Optimized horn design projects audible signal for greatest effective range.
+
+                                                              Other Features Common to All Models:
+                                                                • 10-year warranty.
+                                                                • Quick, safe, and error free installation.
+                                                                • Optional tamper-proof fastener plugs.
+
+
+ Certifications and Objectives                                                A Variety of Configurations are Available within the PATROL and
+ • Certifications*:                                                           PYRA Series Notification Appliances to Suit Many Requirements
+   ▪ UL 464 - Audible Signal Appliances
+   ▪ UL 1638 - Visual Signaling Appliances -
+      Private Mode Emergency and General Utility Signaling
+   ▪ CSA C22.2 No. 205 - M1983, Signaling Equipment -
+      Consumer and Commercial Products
+   ▪ CAN/ULC - S525 – 07, Audible Signal Devices for Fire
+      Alarm Systems, Including Accessories
+   ▪ MED - A.1/3.53 Fire Protection Devices (EU) 2015/559
+   ▪ DIN EN 54-23 Fire detection and fire alarm systems -
+      Part 23 : Fire alarm devices - Visual alarm devices
+   ▪ DIN EN 54-3 Fire detection and fire alarm systems -
+      Part 3: Fire alarm devices - Sounders
+ • Objectives:
+   ▪ NFPA 72 : National Fire Alarm and Signaling Code
+      (National Fire Protection Association)
+   ▪ OSHA 29CFR 1910.165 : Employee alarm systems
+      (Occupational Safety & Health Administration)
+* All certifications may not apply to all versions and operating voltages. See website for posted certificates or contact factory for details.
+
+Pfannenberg Inc.                                                                                                                                                  Toll-free: 866-689-0085
+68 Ward Road, Lancaster, NY 14086 USA                                                                                                            Phone: 716-685-6866 Fax: 716-681-1521
+www.pfannenbergusa.com                                                                                                                             Subsidiary of the Pfannenberg Group
+Effective Coverage Area Must Be Considered
+for Notification Appliances in Noisy Facilities
+Horn Design and Strobe Intensity Play Vital Roles for Successful Hazard Alarming
+                                                                              Comparing coverage area for two competitive 100 dB sounders:
+                                                                              The polar diagrams at left depict third party test results for two multi-tone
+                                                                              sounders, each claiming on their respective data sheets to generate 100
+                                                                              dB(A) at 1 meter.
+                                                                              These plots show the actual effective range over a 180° projection. For this
+                                                                              test, the same DIN tone (German emergency signal) was selected from the
+                                                                              tone menu of each unit. Also, the effective SPL is assumed to be 75 dB(A),
+                                                                              derived from: 65 dB(A) ambient SPL plus 10 dB(A) desired alarm offset - so
+                                                                              the outer boundary of the shaded areas are the distances at which the SPL
+                                                                              has dissipated to 75 dB(A). The red lines depict a “smoothed” performance
+                                                                              from which the square meter coverage area is computed. Note: The dis-
+                                                                              tance axis has been scaled to fit the diagrams into a similar space.
+                                                                              Conclusions: 1). The actual effective coverage area can vary significantly
+                                                                              between units that are marketed to have the same output SPL on their
+                                                                              data sheets. 2). The sound projection geometry is a function of the effi-
+    Digisound Model BSE 128                 Pfannenberg Model PA 1            ciency of the horn design. 3). Installation location, such as the maximum
+    Effective area for minimum 75           Effective area for minimum 75     height at which the unit can effectively be located, is a function of the cov-
+    dB(A) SPL is 48 square meters.          dB(A) SPL is 678 square meters.
+                                                                              erage area and projection geometry. 4). Data sheet information alone is
+                                                                              typically insufficient for sizing and suitable installation location purposes.
+    Strobe light considerations:
+    For large facilities with high ceilings, it is necessary to consider the effective light output range for strobe lights. Whether ceiling or wall-
+    mounted, the coverage area must be adequate to satisfy NFPA and EN standards.
+
+
+
+Tools and Support for the Consulting/Specifying Engineer
+Sales Representative and Pfannenberg Regional Managers:
+  • Field personnel who can bring additional equipment for evaluation and
+    assistance with details surrounding project needs.
+Applications Engineers:
+  • Factory personnel are available to assist with proper sizing and configuration
+Sizing Software:
+  • Free software is available online at www.pfannenbergusa.com to assist with
+    proper sizing and configuration of signaling devices for multichannel installa-
+    tions.
+Guide Specifications:
+  • Many CSI formatted guide specifications are available for download at
+    www.pfannenbergusa.com
+Master Specifications:
+  • Pfannenberg will help specifying engineers create their own master
+    specification for thermal management or signaling solutions.
+
+
+
+
+Fire-and-Gas-Notification-Appliances_0716
+
+Pfannenberg Inc.                                                                                                                   Toll-free: 866-689-0085
+68 Ward Road, Lancaster, NY 14086 USA                                                                             Phone: 716-685-6866 Fax: 716-681-1521
+www.pfannenbergusa.com                                                                                              Subsidiary of the Pfannenberg Group
+

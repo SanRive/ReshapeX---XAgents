@@ -1,0 +1,751 @@
+TITLE:
+Pfannenberg Support Center
+Copia offline completa: 32 articulos de las 4 secciones del centro de soporte
+Fuente: info.pfannenbergusa.com/support  ·  capturado el 24 de julio de 2026  ·  contenido © Pfannenberg Sales America
+Installation & Mounting 13
+Setting up the IP on Grid connect Modbus RTU to TCP Adapter
+Active Condensate Management Tray Operation
+Adjusting the Enclosure Temperature Setting
+DTI 6000 Green Series Installation
+DTS 31X1 Series Installation
+DTS 3021, 3031, and 3031 Stainless Steel Installation
+DTS 30X1 Series Installation
+DTS Cooling Unit Installation
+Filterfan Configurations
+Reversing the Airflow Direction 4th Generation Filterfans
+Thermostats in a Filterfan Systems
+Parallel vs Series Piping
+Closed Expansion EB 250-550
+Maintenance & Troubleshooting 4
+Standard Operational Mode of DTS 3000 Series Cooling Units
+Internal Wiring to Power Terminal
+Terminal/Transformer Tap (Internal Jumper)
+Air to Air Heat Exchanger Preventative Maintenance
+Frequent Q&A 5
+PSS Tutorial
+Why do electronic components function nominally at 95˚F
+How often should you change filters?
+Impact of IP55 vs IP54 filter media
+Why Pfannenberg AC Units Do Not Need a Filter
+General Info 10
+How to Submit an Order and what to Include
+Filter media
+NEMA Ratings Explained
+304 V.S. 316 Grade Stainless Steel
+Controlling humidity and eliminating condensation inside your enclosure
+H2S Gas Corrosivity
+X54-Doorswitch & Fault Signal Connection
+Features of Pfannenberg's Outdoor and Washdown Units
+Condensation Coil Prefilter
+Active External Condensate Management
+Installation & Mounting
+Guias de instalacion y montaje
+Setting up the IP on Grid connect Modbus RTU to TCP Adapter
+info.pfannenbergusa.com/support/benefits-forced-air-out-at-the-top-of-the-cabinet-lowers-the-chance-for-hotspots-to-form.-drawbacks-negative-pressure-inside-of-the-cabinet-allowing-fo-1698149889852
+DTS 3000 Series with Modbus TCP Adapter
+First make sure you have the MAC Address of the adapter this can be found on the
+adapter.
+[img: mac add]
+Download the device installer from the bottom of the following page
+and scroll down to the downloads section and it will take you to a new webpage where the device installer will download.
+[img: downloads] [img: websetup]
+Run the DeviceInstaller setup.exe
+Once the DeviceInstaller is setup open the program and locate the correct device.
+[img: setup]
+Open the web configuration on the device.
+[img: webcon]
+Go to network and the static IP can be set there.
+[img: fig]
+Go to Modbus/TCP and make sure that Protocol is set to Modbus/TCP Server Attached to slave(s) and make sure the Fixed Slave ID is set to 0 for the Gateway.
+[img: modbus]
+Once you have finished setting up the Modbus/TCP Protocol and Fixed Slave Address
+click OK at the bottom of the screen then click Apply Settings. This will save the IP and
+Protocol setting to the Gateway.
+Active Condensate Management Tray Operation
+info.pfannenbergusa.com/support/active-condensate-management-tray-operation
+To understand installation and operation of the Active Condensate Management Tray. The heated condensate collection pan boils this off thereby
+eliminating the need for drain tubes and buckets.
+Installation
+Verify electrical connection between condensate tray and unit.
+[img: 1-4]
+Locate inside the Pfannenberg accessory pack to your unit a section of drainage tube.
+Install the condensate drainage hose to the drain located in the cooling unit base using the screw on hose clamp. In the event of overflow, this will allow overflow condensation that is not evaporated off by the tray to flow out of the unit. This is highly unlikely and will usually be a symptom of a larger problem.
+[img: x]
+Operation
+During operation, the moisture in the air inside of the electrical panel enclosure condenses on the fins of the evaporator and is collected as condensate. To avoid any damage to the electrical panel enclosure contents or to the cooling unit, the condensate must be removed from the cooling unit.
+The condensate is removed as follows: The condensate drains into a condensate tray located at the bottom of the cooling unit and is evaporated into the ambient air by means of an electrical heating element. The free discharge of any accumulated condensate must be provided for to ensure trouble-free operation of the cooling unit. The PTC-heater starts heating immediately on the application of power to the cooling unit. The PTC heater is self-controlled, and its temperature will vary depending on the level of condensate in the condensate tray.
+[img: warning2]
+Adjusting the Enclosure Temperature Setting
+info.pfannenbergusa.com/support/adjusting-the-enclosure-temperature-setting
+To understand how to adjust the temperature settings on DTS 3000 Series Units
+Explanation
+Electronic enclosures can operate at a temperature that would seem undesirable to a person. The default setting for Pfannenberg air-conditioning units is 95˚F internal and 95˚F external temperature. These settings can be altered depending on the application that the unit is installed in and that will affect the cooling capacity of the unit.
+DTS 30X1 Series
+Some models will have a mechanical thermostat on the back of the unit. This can be adjusted by using a flathead screwdriver.
+[img: temp setting]
+All Other DTS Series (DTS 31X1, 31X1 SL, 31X5 115/230V, 32X1, 32X5 115/230V, 34X1C, 36X1C)
+These models will utilize a PCB control board with a 3-DIP switch setting to
+regulate the enclosure temperature. This board is accessible from the service panel on
+the back of the unit, if mounted inside the enclosure.
+[img: tempp]
+Inside this panel, the control board is located with temperature settings and a reference
+chart for dip switch position changeable on the red box.
+[img: tempp-1]
+DTS 31X5 and 32X5 460V
+These models will utilize a PCB control board with a 4-DIP switch setting to
+regulate the enclosure temperature. This board is accessible from the service panel on
+the back of the unit, if mounted inside the enclosure.
+[img: tempp]
+Inside this panel, the control board is located with temperature settings and a reference
+chart for dip switch position changeable on the red box. The 4th dip switch is only used to reference °C or °F which will not impact setpoint setting. The "On" Position is considered "1" on the Temperature Setpoint Diagram.
+DTI 6000 Green Series Installation
+info.pfannenbergusa.com/support/dti-6000-green-series-installation
+Installation Video for our DTI 6201, 6301, 6401, 6501, and 6801
+Video (no incluido en la copia offline): https://www.youtube.com/embed/dxOZa_P2ceQ
+Watch the following video for help on installing our green series cooling units.
+The video will cover:
+The necessary precautions
+What is included in the accessory pack
+How to cut the correct opening in the enclosure
+Steps for securely attaching the unit to the enclosure
+How to snap in the fastening springs
+Preparing and connecting the WAGO connector
+How to switch to 460V power
+How to connect the X50 Plug
+How to confirm the unit is operational in the Start-up Mode
+DTS 31X1 Series Installation
+info.pfannenbergusa.com/support/dts-31x1-installation
+Installation video for DTS 3141, 3161, and 3181 cooling units
+Video (no incluido en la copia offline): https://www.youtube.com/embed/s8HE0q-ZuIs
+Watch the following video for help on installing our DTS 31X1 cooling units.
+The video will cover:
+The necessary precautions
+What is included in the accessory pack
+How to cut the correct opening in the enclosure
+How to apply the sealing strips
+Steps for securely attaching the unit to the enclosure
+Preparing and connecting the WAGO connector
+How to confirm the unit is operational in the Start-up Mode
+DTS 3021, 3031, and 3031 Stainless Steel Installation
+info.pfannenbergusa.com/support/dts-3021-3031-and-3031-stainless-steel-installation-videp
+Video (no incluido en la copia offline): https://www.youtube.com/embed/85_ueoc3Xgg
+Watch the following video for help on installing our DTS 3021, 3031 and 3031 stainless steel cooling units.
+The video will cover:
+The necessary precautions
+What is included in the accessory pack
+How to cut the correct opening in the enclosure
+How to apply the sealing strips
+Steps for securely attaching the unit to the enclosure
+Preparing and connecting the WAGO connector
+How to confirm the unit is operational in the Start-up Mode
+DTS 30X1 Series Installation
+info.pfannenbergusa.com/support/dts-30x1-series-installation
+Installation video for DTS 3041, 3061, and 3081 cooling units
+Video (no incluido en la copia offline): https://www.youtube.com/embed/nk138_83xFk
+Watch the following video for help on installing our DTS 3041, 3061 and 3081 cooling units.
+The video will cover:
+The necessary precautions
+What is included in the accessory pack
+How to cut the correct opening in the enclosure
+How to apply the sealing strips
+Steps for securely attaching the unit to the enclosure
+Preparing and connecting the WAGO connector
+How to confirm the unit is operational in the Start-up Mode
+DTS Cooling Unit Installation
+info.pfannenbergusa.com/support/dts-cooling-unit-installation
+Installation video for Pfannenberg DTS Cooling unit.
+Video (no incluido en la copia offline): https://www.youtube.com/embed/eQvCvr7Vf8M
+Watch the following video for help on installing our DTS cooling units.
+The video will cover:
+The necessary precautions
+What is included in the accessory pack
+How to cut the correct opening in the enclosure
+How to apply the sealing strips
+Steps for securely attaching the unit to the enclosure
+Preparing and connecting the WAGO connector
+How to confirm the unit is operational in the Start-up Mode
+Filterfan Configurations
+info.pfannenbergusa.com/support/filter-fan-configurations
+To understand the configurations for filterfans. Filterfans are a passive cooling unit that can be
+installed in different configurations to meet the customer’s needs.
+Fan-In With a Single Exhaust
+This is the standard configuration that is recommended for a standard application. It is a Filter Fan installed on the bottom of a cabinet with the Exhaust installed at the top of the cabinet. Preferably on opposite sides of the cabinet like in Figure 1 below.
+[img: figure 1]
+Benefits
+• A positive pressure is created in the cabinet which assists with keeping particulates from entering the enclosure from other small unseen openings the cabinet may have.
+• The fan is not exposed to the warmer temperatures at the top of the cabinet
+• Forced air into the bottom of the cabinet allows for a more developed turbulent flow of cooler
+ambient air to cool electronics.
+Drawbacks
+• Forced air into the bottom of the cabinet can cause the creation of hotspots to occur near the top of the cabinet (this can be mitigated with the exhaust installed on opposite sides of the cabinet)
+Fan-Out With a Single Exhaust
+This configuration is a reverse flow Filter Fan installed on the top of a cabinet with the Exhaust installed at the bottom of the cabinet. Preferably on opposite sides of the cabinet like in Figure 2 below.
+[img: figure 2]
+Benefits
+• Forced air out at the top of the cabinet lowers the chance for hotspots to form
+Drawbacks
+• Negative pressure inside of the cabinet allowing for particulates to enter through unseen openings in the cabinet
+• The fan motor is exposed to a higher temperature at the top of the cabinet
+Fan-In With Two Exhausts
+This configuration is similar to the Fan-In with a single exhaust but with the two exhausts. It is recommended to have the have the filter fan be installed at the bottom middle of the door with the exhausts being installed at the top on opposite sides from each other like in Figure 3
+Benefits
+• Increased CFM through the cabinet in comparison to a single exhaust due to a lower pressure build up inside of the cabinet
+• A positive pressure is created in the cabinet which assist with keeping particulates from entering the enclosure from other small unseen openings the cabinet may have.
+• The fan is not exposed to the warmer temperatures at the top of the cabinet
+• Forced air into the bottom of the cabinet allows for a more developed turbulent flow of cooler ambient air to cool electronics
+Drawbacks
+• Lower pressure inside the cabinet (harder to overcome in tightly packed cabinets)
+• Forced air into the bottom of the cabinet can cause the creation of hotspots to occur near the top of the cabinet (this can be mitigated with being installed on opposite sides of the cabinet
+Fan-In With a Fan-Out
+This configuration is a Filter Fan installed on the bottom of a cabinet with a reverse flow Filter Fan installed at the top of the cabinet. Preferably on opposite sides of the cabinet like in Figure 4 below.
+Benefits
+• Increased pressure system which results in a higher CFM through the cabinet compared to a fan-in with a single exhaust
+• Can overcome a more tightly packed cabinet with minimal effect on the overall CFM
+• Forced air into the bottom of the cabinet allows for a more developed turbulent flow of cooler ambient air to cool electronics
+• Forced air out at the top of the cabinet lowers the chance for hotspots to form.
+• Smaller temperature gradient inside of the cabinet due to increased internal velocity and more developed turbulent flow throughout the cabinet
+Drawbacks
+• Fan at the top of the cabinet is exposed to warmer air
+Reversing the Airflow Direction 4th Generation Filterfans
+info.pfannenbergusa.com/support/reversing-the-airflow-direction-4th-generation-filterfans
+Instructions on reversing the airflow direction in Filterfans for PF 11000 - PF 43000 series
+Material Needed: Phillips Screwdriver
+1. Remove the (4) screws on back surface of the fan (see image below for example)
+2. Physically flip the fan over 180°
+3. Reinstall the (4) screws to hand tightness.
+Filterfan Model PF 65000 - 67000 Including Slim Line Fans:
+Material Needed: Thin wedge, shim, or scrap material to prevent tab from closing while moving around the fan
+1. Starting at the bottom left tab of the fan, push down to release the tab
+2. Once the first tab is open, use a type of thin wedge, shim, or any type of scrap material and place it between the fan and the housing of the fan. Release both bottom tabs first and place your wedge or shim underneath them.
+3. Once all four tabs are released, physical flip the fan unit 180° and snap back into position starting with the bottom edge first.
+Thermostats in a Filterfan Systems
+info.pfannenbergusa.com/support/thermostats-in-a-filterfan-systems
+Demonstrating a cost savings method to increase the life of your filter fan, reduce energy costs and decrease maintenance for filter replacement by utilizing a thermostat.
+Thermostat with Filter Fans
+When an enclosure uses a filter fan to cool electronics, it is important to use a thermostat to power the fan when cooling is required. Without the thermostat the fan runs continuously whenever the enclosure is powered regardless of temperature. The addition of a thermostat in the system will reduce the overall cost of ownership and in most cases have a return on investment of less than a year.
+To Reduce Costs
+Adding a normally open Thermostat to the fan circuit and setting the temperature to the desired cabinet temperature, would cut power to the fan until the enclosure temperature reaches the set point. This reduces fan operation when the facility is cooler or when the machine is idle.
+This reduces energy cost since fan only runs when required.
+The maintenance cost is reduced by increasing the time between filter changes. (The filters do not get dirty when fan is not running.)
+Extend the life of the filter fan. All fans have an L10 life based on temperature and operating hours.
+Protect Electronics
+Adding a normally open Thermostat to an enclosure with filterfans and setting the temperature to the maximum desired cabinet temperature, will close the switch indicating a clogged filter. The airflow through the enclosure is reduced to a point it can no longer maintain temperature. The output of the thermostat can be wired to an LED or a PLC to indicate the overtemperature and a required filter change.
+This protects the cabinet from high temperatures which reduce electronic life.
+It allows for filter replacement only when required. The maintenance cycle for filter replacement differs depending on location in plant, particulate in the air, varying production hours or seasonal temperatures in the facility. Not all filters need replacing at the same intervals.
+Depending on safety factor built into the thermal calculations for enclosure, if an enclosure has a higher safety factor the filter can tolerate more dirt before needing to be replaced.
+Solution
+The FLZ 530 is designed for use with a fan and can handle multiple voltages from 100-250 VAC or 30W DC. The thermostat can be used for either application.
+[img: flz 530]
+The FLZ 543 is a dual Thermostat option with independent temperature settings for both applications in a single unit. [img: flz 541]
+Did You Know? [img: term]
+Did you know that the Pfannenberg thermostats mounts on the back of our exhaust filters so that you can measure the enclosure temperature at the exhaust where the air should be the warmest? This saves cabinet space and makes it easier to add a thermostat in the field.
+Parallel vs Series Piping
+info.pfannenbergusa.com/support/parallel-vs-series-piping
+Understanding the difference in Parallel and Series Piping in Heat Exchangers
+[img: heat exchanger]
+Comparison
+Why shouldn’t I pipe in series?
+When piping in series heat is absorbed by the cooling liquid in the first heat exchanger,
+this causes the cooling liquid to be at a higher temperature when entering the second heat
+exchanger and lowers its effective cooling capacity.
+Why should I pipe in parallel?
+Piping in parallel allows the same temperature liquid to enter both heat exchangers at the
+same time. This allows both heat exchangers to utilize their effective cooling capacities.
+Advantages of series pumps
+Able to pump fluid from a low level to a relatively high level
+Disadvantages of series pumps
+Low fluid flow rate
+Uneven heat dissipation throughout system
+Advantages of parallel pumps
+There is a limitation on pumping fluid from a low level to a relatively high level
+Disadvantages of parallel pumps
+Low pressure may not be able to overcome static pressures of heat exchangers
+More piping is used, more complicated piping design
+Closed Expansion EB 250-550
+info.pfannenbergusa.com/support/closed-expansion-eb-250-550
+To understand the Closed Expansion System
+Closed Expansion Tank & Fill Kit
+Facilitates filling of a closed, pressurized cooling loop
+Provides confident use of glycol-water coolants by maintaining concentration without periodic top-off
+Provides automatic make-up for water coolant systems that require periodic opening of the cooling circuit
+Allows chiller placement at any point in the closed loop circuit
+[img: chiller]
+Install components as shown making sure that valves A & B are open and valve C is closed
+Connect a hose from a pressurized source (pump discharge for glycol or tap for water) to inlet of regular (D)
+Loosen or remove the brass cap from the auto-vent (E) to allow air to escape as coolant is added
+Open regular valve (F) and add coolant until the auto-vent stops issuing air and the coolant circuit pressure indicated on the pump gauge (not shown) rises to 1.5 bar
+Operate the chiller pump to allow air trapped in the coolant circuit to be vented through the auto-vent. Several cycles of filling and venting may be required to completely vent the circuit
+The auto-vent can be left open as it will continue to provide venting without allowing coolant to escape
+A relief valve (G) is included to allow the chiller tank to operate safely below 3 bar pressure
+Maintenance & Troubleshooting
+Mantenimiento y solucion de problemas
+Standard Operational Mode of DTS 3000 Series Cooling Units
+info.pfannenbergusa.com/support/standard-operational-mode-of-dts-3000-series-cooling-units
+Understanding the functionality of a cooling unit in regards to temperature.
+The following is an example of cooling units standard temperature setpoint and the components which will be operational. The factory default temperature setpoint is 95°F. The temperature setpoint can be modified by the customer depending on their application needs.
+The cooling cycle of the unit automatically activates when the cabinet temperature exceeds the default setpoint of 95°F, maintaining optimal conditions for sensitive components. The internal fan continues to run, ensuring airflow across the temperature sensor for accurate monitoring. Simultaneously, the compressor and external fan engage to cool the air until the temperature returns to the desired level, preventing overheating and ensuring reliable equipment performance.
+Cabinet Temp Below Target Setpoint:
+Internal Fan is always ON to blow cabinet air across the temperature sensor
+Compressor and External Fan are OFF
+Cabinet Temp Above Target Setpoint:
+Internal Fan is always ON
+Compressor and External Fan are ON to cool the air
+[img: Picture1-3]
+Examples:
+Cabinet Temp Below Reference
+Internal temp 90ºF Set Point 95ºF
+Internal fan always running
+Air blowing across temp sensor, monitoring conditions
+Compressor and exterior fan are off
+LED sequence “solid green”
+Fault signal contact is closed
+Cabinet Temp Above Reference
+Internal temp 100ºF Set Point 95ºF
+Internal fan always running
+Air blowing across temp sensor, monitoring conditions
+Controller Set-point Met turning on External fan and compressor.
+Cooling continues until reference met
+LED sequence “solid green”
+Fault signal contact is closed
+Internal Wiring to Power Terminal
+info.pfannenbergusa.com/support/internal-wiring-to-power-terminal
+Internal Wiring to Power Terminal DTS 31x1, 31x1 SL, 32x1, 32x5, 33X1, 35X1, and 36x1
+Tools Needed
+A WAGO Screwdriver
+General Requirements for Safe and Reliable Operation
+Main supply connection
+[img: warning]
+Potential hazard due to incorrect cables
+An incorrect cable cross-section will cause the cable to overheat. Scorched insulation can cause fires.
+The cable cross-section matches the output required for the power consumption and is 1 – 2.5mm² or AWG18 to AWG14.
+[img: danger] Electric arcing can cause electric shock and burns.
+When disconnecting and connecting the plug connector for mains connection under load
+or voltage, electric arcing, dangerous voltage and electric shock can occur.
+• The plug connector for mains connection must never be plugged in or disconnected under
+load/voltage.
+• Work on plug connectors must only be carried out with adequate lighting.
+• Always disconnect power to unit.
+The following general requirements must be ensured for safe and reliable operation of the
+cooling units:
+• Upstream installation of a supply-side temperature regulator is prohibited.
+• Connect the upstream fuse specified on the type plate as wiring protection; see Type plate.
+• Ensure that the type plate specifications for rated values match the present values for
+mains voltage and mains frequency; see Type plate.
+• Always connect the cooling unit to the mains by means of a separating device (switch/contactor).
+[img: danger]
+Life-threatening hazard due to electric shock
+Circuit breaker systems that are not connected or attached incorrectly can generate hazardous voltages and electric shock and cause severe accidents.
+• Work on electrical connections must be carried out exclusively by trained, qualified electricians.
+• Circuit breakers systems must be provided in accordance with DIN EN 60204-1, chapter 8.2.
+• Each element of electrical equipment must be connected to the circuit breaker system.
+• Never interrupt the circuit breaker system if electrical equipment is attached to covers, doors or
+cover panels.
+• If parts are removed, e.g. for maintenance work, ensure that the circuit breaker system is not
+interrupted for the remaining parts
+Requirements
+• All general requirements for safe and reliable operation are assured
+• The cooling unit is de-energized.
+Procedure
+• Feed the power cable into the unit.
+• Use Figures 1, 2, and 3 to determine the correct connection terminal that
+corresponds with the power cable connection.
+• Insert a WAGO screwdriver firmly into the WAGO opening terminal. Never twist the
+screwdriver: otherwise, the terminal will be damaged.
+• After inserting the correct power cable connection remove the WAGO screwdriver and move
+to the next connection.
+• Repeat until all connections are inserted correctly.
+• Before switching on, ensure that the mains voltage matches the upstream fuse; see Type plate.
+• The cooling unit is connected electrically
+[img: aa11]
+Terminal/Transformer Tap (Internal Jumper)
+info.pfannenbergusa.com/support/terminal/transformer-tap-internal-jumper
+Steps for Transformer Tap Adjustment 400v/460v DTS 3xxx Series Cooling Units
+All DTS 3xxx 460V units use a transformer to reduce the voltage to 230V for the control voltage. The primary side of the transformer allows the user to connect to either 460V(standard) or 400V. To simplify this process a jumper plug has been added in the electrical compartment. Factory wiring has been prewired to both taps on the primary side of the transformer. In order for the choose the correct voltage the jumper should be placed between the common location (incoming power) and the desired voltage tap. See pictures below for reference.
+[img: Picture1]
+[img: Picture2]
+Only qualified personnel should attempt to perform this task.
+Steps for changing the incoming voltage:
+Disconnect main power to the unit.
+Remove the service cover from the unit.
+Remove the voltage jumper plug.
+Identify what location the Jumper is [1+3] = 460V Jumper [2+3] = 400V. Move the jumper pin to the appropriate Jumper location. This can be completed by releasing the cage clamp connection in the connector.
+Replace the Jumper plug.
+Re-connect main power to unit.
+Example of the Transformer Tap Locations:
+[img: Picture3-1] DTS 3245 Model
+[img: Picture4]
+DTS 3241 Model
+Air to Air Heat Exchanger Preventative Maintenance
+info.pfannenbergusa.com/support/pks-preventative-maintenance
+Unit Type
+PKS Series Models
+WARNING!
+Disconnect the cooling unit from the power supply before any cleaning or maintenance.
+Cleaning
+The cleaning intervals depend upon the relevant operating conditions. In particular,
+observe the following instructions:
+Disconnect the cooling unit from the power supply
+Remove the external cover
+[img: an001] Clean the heat exchanger regularly using a soft brush or pressurized air
+[img: an0011]
+The cooling unit is largely maintenance free. The components around the external air
+circuit require periodic cleaning and maintenance depending on the environmental
+conditions. Proper maintenance will ensure the reliable operation. Pfannenberg is
+not liable for damage as a result of poor maintenance and any resulting damage would
+be repaired at the user's expense. All maintenance should be performed by qualified
+personnel, following all safety procedures.
+Frequent Q&A
+Preguntas frecuentes
+PSS Tutorial
+info.pfannenbergusa.com/support/pss-tutorial
+How to use Pfannenberg Sizing Software (PSS) to correctly size a thermal solution for your enclosure.
+Tip:
+Please do not click the back button in the browser.  If the back button is clicked, this will create an error message on the page and the program will need to be restarted. Instead, use the PSS tabs to move back and forth within the project.
+Getting Started
+For values that are not in PSS by standard (°C, Watts (W) Heat Loss, or mm), select preferences in the top left-hand corner to go to the page below. Once the values are selected, click the "OK" button and the values will change over in the software.
+Contacts Page
+This is the first page when entering into the PSS Project. The "Project Name" will be the name of the file when downloaded. The other fields are optional.
+Enclosure Information Page
+Once the contacts page is complete, click the "Continue" button. This will bring up the Enclosure Information Tab.
+Field Explanations:
+Enclosure Dimensions: Input the Height, Width, and Depth of the enclosure.
+Temperature in Switch Cabinet: Input the minimum and maximum temperature in the enclosure that is acceptable. The maximum temperature will be taken into consideration when calculating a properly sized solution for the enclosure.
+Housing Material: Select from the dropdown for the material used for the enclosure or manually input the material information. Ensure color is selected accurately for outdoor applications as solar loading will vary depending on the color of the enclosure.
+Supply Voltage for Air Conditioning Components: Select a voltage that can be used from the dropdown table. Please note this can change which units show in the final solution page.
+Operating Environment Page
+Once finished with the Enclosure Tab, click the "Continue" button. On the next tab labelled "Environment", the page below will be displayed.
+Field Explanations:
+Location: Select where the enclosure will be located - Indoor (NEMA Type 12), Outdoor (NEMA Type 3R/4), or Washdown (NEMA Type 4/4X)
+Solar Load: If the enclosure is in direct sunlight outside, please select this checkmark box.
+Wind Speed: If the enclosure is outside and in a very windy space (such as on a bridge or on top of a building), please select the wind speed dropdown.
+Installation Characteristics: Select from the dropdown table on how the enclosure will be mounted. This relates directly to the surface area available for heat transfer of the environment into the enclosure or heat transfer from the enclosure into the environment.
+Ambient Temperature: Input the minimum and maximum ambient air temperatures into this selection.
+Heat Dissipation Page
+Once finished with the Environment Tab, click the "Continue" button. The page below will be displayed.
+Field Explanations:
+Indicate Known Total Dissipation: Input the total heat loss within the cabinet if it is known.
+Calculate Dissipation Based on Components in Enclosure: Use this tab to select from a few different components if total heat loss is not known. It is recommended to still verify heat loss of each individual component as these values might be higher than the actual components that are being used. Utilization on the component page refers to part load.
+Calculate Dissipation based on Recorded Temperature: If total heat load is unknown or an incomplete component list, use this tab. It is recommended to calculate the main heat generators' heat load within the cabinet (this is typically for larger drives). The temperature outside the enclosure and the temperature recorded inside the enclosure is needed to calculate heat load within the cabinet. This is typically for existing enclosures in the field.
+Results Page
+Once finished with the Dissipation Tab, click the "Continue" button. The last page, confirm the correct solution for the application. Select the product family to determine which solution will cool the enclosure effectively. The picture below states filter fan and air/air heat exchanger are not possible, this is because the ambient temperature selected (100°F) is higher than the maximum allowable temperature inside the enclosure (95°F).
+Click the cooling units or heat exchanger button to check which unit could work best, the example below is for cooling units. The dropdown will list which AC unit can cool the electrical enclosure at the worst-case scenario (highest ambient temperature and highest electrical enclosure temperature). The quantity can be changed if a two/multiple unit solution is needed. Different mounting styles can be selected (side / flush mount, integrated / recessed mount, or top mount). Once a unit is selected, click the "OK" button.
+After this, click on the "Detail Results" or "Download Detail Results as PDF" to receive a page with all of the calculations taken into factor and showing the unit selected as an effective solution for the custom application.
+The "Download Project" downloads a HTML file which can be opened up by the PSS. Images are shown below for more information on how to open the project. Whenever sending in a message to PSS support, please include a download of the project (either HTML or PDF).
+- Select the HTML file downloaded before / that was sent. Then click import.
+Why do electronic components function nominally at 95˚F
+info.pfannenbergusa.com/support/why-do-electronic-components-function-nominally-at-95f
+The purpose is to explain why Pfannenberg air conditioners have their default setpoint set to 95/95˚F
+The intent of the cooling unit is not to keep the cabinet cold as we are not trying to comfort cool a drive. Our factory setpoint is 95°f as VFD drives have an operational temp of 100°f, so to rid the heat building up in the cabinet while maintaining the drives operational temperature too cold would cause condensation.
+Most of the time the internal fan of the cooling unit will just be running, conditioning the air maintaining the temps in the 90’s. Once the temperature increases the cooling unit refrigeration circuit turns on and the external fan and compressor run, and the exit temp would be 20 degrees lower while we convert the hot air to cool.
+[img: AN003]
+• Bracketed in “green” is the cooling capacity of the unit represented in British thermal
+units and watts.
+• Bracketed in “red” is the nominal range of temperatures inside the enclosure that the unit
+can effectively cool.
+• Bracketed in “blue” is the nominal range of temperature outside the unit or the ambient
+conditions that the unit can effectively cool.
+It is clear to see from the graphical representation of hysteresis for this example cooling unit,
+that the enclosure and ambient temperatures can drastically affect the cooling capacity of the unit.
+If the ambient temperature is lower than the enclosure temperature, the cooling capacity can exceed the upper limit of 1300 BTU/hr, leading to significant condensate buildup and icing inside the unit or enclosures, which can result in failures. On the other hand, if the ambient temperature is higher, the unit may struggle to provide the necessary cooling capacity for the enclosure.
+If the enclosure temperature is set to a higher temperature, the unit will be using less energy but also the components inside the enclosure might not be able to handle those higher temperatures. If the unit is set to the low-end temperature, the unit will be running for long, which sacrifices efficiency and increase the risk of condensation buildup. Setting the cooling units to 95˚F ambient temperature and 95˚F enclosure temperature provides a sound compromise between cooling the enclosure and limiting the accumulation of condensation.
+How often should you change filters?
+info.pfannenbergusa.com/support/how-often-should-you-change-filters
+Guide to understanding how often filter media should be changed
+Pfannneberg's filter fans and exhaust filters all come with the IP55 fluted filter, with the exception of PF 11000 and PFA 10000 which include an IP54 filter mat. A common question often arises regarding the frequency of changing the filter media and how to determine when it requires cleaning. The answer to "how often should you change the filter media" depends based on your specific application and the environmental conditions it operates in.
+In environments with light dust, changing filters may be infrequent, possibly only once or twice a year. In settings like automotive plants where oil mist is prevalent, more frequent filter changes would be needed, possibly once or twice a month. It is recommended to regularly inspect your filter every month for any signs of clogging. A clear indication that a filter change is needed is if your cabinet starts running hotter unexpectedly, indicating reduced airflow due to a clogged filter. The design of Pfannenberg's IP55 Fluted Filter allows airflow to pass through even when the filter is dirty. However, it is important to note that if the filter is not changed promptly, it will eventually become completely clogged, preventing any airflow from passing through.
+The IP55 fluted filters from Pfannenberg can be gently tapped against a surface to remove surface dust and contaminants, aiding in prolonging the filter's lifespan. Avoid using water to clean these filters as it may compromise the hydrophobic coating and potentially damage the filter, depending on the water pressure applied.
+The table below highlights certain environments for general guidelines for how often you should change filters.
+Ambient Conditions
+Fleece Filter Mat
+Fluted Filter
+Coarse Particles
+Minimum of 2 times per year
+Minimum of 1 time per year
+Dust-laden / spray mist
+Minimum of 6 times per year
+Minimum of 3 times per year
+Very high oil content*
+Minimum of 1 time per week
+Minimum of 2 times a month
+Without corresponding loads
+Minimum of 2 times per year
+Minimum of 1 time per year
+*Closed Loop Cooling solutions (AC Unit, Air/Water Heat Exchanger) are recommended for oily environments, please review application with Applications Team with Pfannenberg
+Impact of IP55 vs IP54 filter media
+info.pfannenbergusa.com/support/impact-of-ip55-vs-ip54-filtermedia
+Understanding the difference between IP54 filter mats and IP55 fluted filters
+Pfannenberg provides a choice of two filter options for filterfans: IP54 filter mats and IP55 fluted filters. Both effectively remove dust and contaminants from the air, but the fluted filter offers superior protection against certain airborne particles such as cement dust.
+The IP55 fluted filters have a larger surface area compared to the IP54 filter mat due to their unique accordion shape. This design provides more pathways for air to pass through the filter, increasing airflow and allowing for better filtration of dirt and debris. As a result, these filters offer an extended lifespan, making them a durable and effective choice for maintaining air quality.
+All of Pfannenberg's filterfans will come with the IP55 fluted filter by standard (except for PF 11000) and can be ordered in packs of 5.
+FILTER MEDIA
+PFANNENBERG
+FLEECE
+FILTER MATS G4
+PFANNENBERG
+FLUTED
+FILTER MATS G4
+Filtration efficiency
+>90 %
+Sand
+•
+Dust
+•
+Wood chips
+•
+Paint fumes
+•
+Air conditioning
+•
+Cement particles
+•
+Longer service life (up to 300 %)
+•
+Protection against water jets
+•
+Pfannenberg Series
+IP54 Available
+IP55 Available
+PF 11000
+•
+PF 2X000
+•
+PF 3X000
+•
+PF 4X000
+•
+PF 6X000
+•
+NEMA 3R Outdoor Filterfans
+•
+PTF 1200
+•
+IP55 Fluted Filters
+[imagen no disponible]
+IP55 Fluted Filter Zoomed In
+Why Pfannenberg AC Units Do Not Need a Filter
+info.pfannenbergusa.com/support/why-pfannenberg-ac-units-do-not-need-a-filter
+To understand why Pfannenberg AC units do not need to have a filter installed.
+Unit Type
+DTS Series Models
+Filter-Less Design
+[img: after]
+Maintenance
+The DTS 3000 Series cooling unit is largely maintenance free. The components around the external air circuit require periodic cleaning and maintenance depending on the environmental conditions. Proper maintenance will ensure the reliable operation. Pfannenberg is not liable for damage as a result of poor maintenance and any resulting damage would be repaired at the user's expense. All maintenance should be performed by qualified personnel, following all safety procedures.
+WARNING!
+Disconnect the cooling unit from the power supply before any cleaning or
+maintenance.
+DTS Maintenance Video
+Video (no incluido en la copia offline): https://www.youtube.com/embed/dkzWjpLx0Xk
+General Info
+Informacion general de producto
+How to Submit an Order and what to Include
+info.pfannenbergusa.com/support/how-to-submit-a-order-and-what-to-include
+Guide on submitting purchase and service orders to Pfannenberg
+In order to place an order with Pfannenberg, you must have an active account with us. If you need assistance verifying whether you have an account or to obtain your account number, please contact your local sales representative here or reach out to our customer service team at orders@pfannenbergusa.com.
+Purchase Orders
+Please send all purchase orders to our customer service team at orders@pfannenbergusa.com
+What to include:
+Company name and branch number if applicable
+PO number
+Company billing and shipping address information
+Shipping contact if there is a designated person
+Shipping accounts numbers for ground and freight carriers if available. If none are provided Pfannenberg will ship collect with the lowest cost and on time rate percentage carrier.
+If you have a preference for whether the order should be shipped in full or in partial shipments based on item availability.
+Pfannenberg's 11-digit part number of the item. If you need assistance in providing the part number, please reach out to our applications department at sales@pfannenbergusa.com
+The preferred date for delivery of the order
+Service Orders
+Please send all service orders to our service team at service at service@pfannenbergusa.com
+In addition to what is required for purchase orders, please also include the SRO number that is provided by our service team to reference the repair. To get started on a repair request, submit a service ticket to our team here.
+Filter media
+info.pfannenbergusa.com/support/filtermedia
+A list of the manufacturing part numbers of Pfannenberg filter media
+Filterfan Series
+Filter No.
+Filter Part Number
+Filter Size
+IP Rating
+PF/PFA 11000
+30162-031
+18611600029
+87mm x 87mm
+IP54
+PF/PFA 22000
+30167-032
+18611600034
+119mm x 119mm
+IP55
+PF/PFA 3X000
+30167-033
+18611600035
+170mm x 170mm
+IP55
+PF/PFA 4XX00
+30167-034
+18611600036
+216mm x 216mm
+IP55
+PF/PFA 6X000
+30167-035
+18611600037
+284mm x 284mm
+IP55
+Pfannenberg's IP55 filter media is a G4 fluted filter that meets the highest standards of efficiency and economy. Our innovative folded structure provides a larger filter surface, which allows higher airflow rates and increased resistance to moisture and water jets.
+Advantages at a Glance
+Lasts 300% Longer
+Due to fluted filter, which has 3-1/2 times the surface area. (When compared to conventional synthetic fiber filter mats) Saves time and money on maintenance.
+Unrivalled Airflow
+The fluted filter mat’s folded structure provides an unrivaled airflow guaranteeing Nema Type 12 protection. Dirt collects in the valley’s of the fluted filter, allowing the air to flow through the ridges. The larger surface area on the filter mat allows for a high filtration level and maximum airflow.
+Efficient and Economical
+G4 rated filter mats meet the highest standards of efficiency and economy.
+Moisture Resistant
+The innovative folded structure provides resistance to moisture and water jets.
+Need a quote or place a order? Locate your rep here: Representatives
+NEMA Ratings Explained
+info.pfannenbergusa.com/support/nema-ratings-explained
+A guide to understanding the meaning of NEMA Ratings and what each one specifically means
+North American enclosures operate with a standard of NEMA ratings for electrical enclosures, but what is NEMA? NEMA stands for The National Electrical Manufacturers Association, an organization developed to form the technical standards for the manufacturing of electrical equipment and medical imaging equipment. NEMA utilizes a standardized rating system that outlines the suitable environments for the operation of electrical enclosures and often indicates the capacity of a fixed enclosure to endure specific environmental conditions.
+When trying to cool down electrical enclosures, the cooling solution will have to conform to the enclosure's NEMA rating. If the solution does not conform to the rating, the enclosure will not be rated to the standard and compromises the enclosure's protection.
+Most thermal solutions for enclosures will have 4 different type ratings:
+NEMA Type 12: Indoor Rating
+NEMA Type 3R: Outdoor Rating
+NEMA Type 4: Outdoor Washdown Rating
+NEMA Type 4X: Washdown / Corrosion Proof Rating
+A walkthrough of NEMA ratings, taken from this website here.
+NEMA 12 Rating Requirements:
+Constructed (without knockouts) for indoor use to provide a degree of protection to personnel against access to hazardous parts
+To provide a degree of protection of the equipment inside the enclosure against ingress of solid foreign objects (falling dirt and circulating dust, lint, fibers)
+And to provide a degree of protection with respect to harmful effects on the equipment due to the ingress of water (dripping and light splashing)
+NEMA 3R Rating Requirements:
+Enclosures constructed for either indoor or outdoor use to provide a degree of protection to personnel against access to hazardous parts
+To provide a degree of protection of the equipment inside the enclosure against ingress of solid foreign objects (falling dirt)
+To provide a degree of protection with respect to harmful effects on the equipment due to the ingress of water (rain, sleet, snow)
+And that will be undamaged by the external formation of ice on the enclosure
+NEMA 4 Rating Requirements:
+Indoor or outdoor use to provide a degree of protection to personnel against access to hazardous parts
+To provide a degree of protection of the equipment inside the enclosure against ingress of solid foreign objects (falling dirt and windblown dust)
+To provide a degree of protection with respect to harmful effects on the equipment due to the ingress of water (rain, sleet, snow, splashing water, and hose directed water)
+And that will be undamaged by the external formation of ice on the enclosure
+NEMA 4X Rating Requirements:
+Indoor or outdoor use to provide a degree of protection to personnel against access to hazardous parts
+To provide a degree of protection of the equipment inside the enclosure against ingress of solid foreign objects (windblown dust)
+To provide a degree of protection with respect to harmful effects on the equipment due to the ingress of water (rain, sleet, snow, splashing water, and hose directed water)
+That provides an additional level of protection against corrosion
+And that will be undamaged by the external formation of ice on the enclosure
+304 V.S. 316 Grade Stainless Steel
+info.pfannenbergusa.com/support/304-v.s.-316-grade-stainless-steel
+To understand the differences between 304 Grade and 316 Grade stainless steel applications
+Pfannenberg offers a 304 stainless steel version on all DTS 3000 series. This unit is made to be resistant to corrosion and is certified up to NEMA Type 4/4X.
+Pfannenberg offers a 316 stainless steel option instead of the standard 304 stainless steel.
+Recommended Applications
+304 is recommended for standard wash-down and outdoor applications.
+316 is recommended on applications that will be exposed to strong bases and acids such as pharmaceuticals and laboratories, and a higher quantity of chloride such as in a coastal/marine environment.
+Both are durable and provide excellent resistance to corrosion and rust. 304 is the most versatile and widely used austenitic stainless steel in the world, due to its corrosion resistance
+Composition and Corrosion Protection
+304 contains 18% chromium and 8% nickel
+316 contains 16% chromium, 10% nickel and 2% molybdenum
+Molybdenum primarily increases the corrosion resistance of stainless steels against pitting agents, such as strong bases and acids, and chloride. As well as increasing its resistance to stress corrosion at temperatures above 60°C.
+304 considered resistant to pitting corrosion in potable water with up to 200mg/L chlorides
+316 considered resistant to pitting corrosion in potable water with up to 1,000mg/L chlorides
+[img: an007]
+Strength
+Both 304 and 316 grade stainless steel have the same Typical Mechanical Properties required for annealed material covered by ASTM-A240 standard.
+Yield Strength .2% offset = 30,000 Psi
+Tensile Strength = 80,000 Psi
+Elongation = 50%
+Controlling humidity and eliminating condensation inside your enclosure
+info.pfannenbergusa.com/support/controlling-humidity-and-condensation-inside-your-enclosure
+How to handle condensation issues inside your enclosure and how to lower humidity inside enclosures
+Condensation within electrical enclosures can present risks to the functionality and lifespan of the equipment within the enclosure. As warm, moist air is introduced into the enclosure and comes into contact with cooler surfaces, condensation forms, resulting in the build-up of moisture.
+The most important initial step is to ensure that the enclosure is sealed properly. If left open to the surrounding environment, it can lead to the ingress of humidity, raising the risk of condensation forming inside. Avoid using open loop cooling methods like filterfans and exhaust filters in humid conditions, as these can allow humidity to get into the enclosure. Instead, closed loop solutions such as an AC unit can keep the ambient air separated from the electrical enclosure. Continuously opening the doors of the enclosure introduces unconditioned air, making it harder to eliminate excess humidity once it enters the cabinet.
+When utilizing AC units, it's crucial to cool the electrical enclosure to the designed temperature rather than setting it lower unnecessarily. If the AC units are adjusted to a colder temperature than they were designed for, they will run more frequently and for longer durations, leading to condensation issues. Make sure your AC unit includes a condensate evaporate tray to eliminate any collected moisture, reducing the risk of condensation being reintroduced inside the enclosure. Properly functioning AC units should help dehumidify the enclosure as long as they are not excessively cooling to a very low temperature.
+Hydrostat Solution
+[imagen no disponible]Another effective solution involves using a hygrostat in combination with a heater. A hygrostat is a device that regulates the humidity levels within an enclosed space. Similar to a thermostat but operates on humidity control rather than temperature, the hygrostat ensures that the relative humidity remains below where condensation can form inside the enclosure. When the hygrostat detects an increase in humidity above the setpoint, it activates the heater to lower the humidity within the enclosure. It's important to note that while this method doesn't eliminate existing humidity, it effectively maintains it below a specific threshold to prevent condensation.
+Thermostat Solution
+An alternative solution involves utilizing a normally closed thermostat in combination with a heater. This setup is designed to maintain the enclosure at a specific temperature, with the thermostat set to the dew point temperature. The dew point temperature is the point at which air reaches saturation with moisture, leading to the condensation of water vapor into liquid form (commonly known as condensation). By using the dew point temperature, which directly reflects the moisture content in the air, you can decrease the likelihood of condensation forming.
+Higher dew points indicate higher moisture levels, while lower dew points suggest drier air. If the air temperature reaches the dew point, it has the potential to create condensation (similar to dew forming on grass in the morning due to lower temperatures). In most situations where dew point temperatures are unknown, a range between 50-60°F can be used, especially in controlled temperature environments. If you wish to go deeper into dew point temperatures, this weblink provides some good information. Psychrometric Chart Use (psu.edu).
+H2S Gas Corrosivity
+info.pfannenbergusa.com/support/h2s-gas-corrosivity
+To understand the corrosivity of H2S gas to metals, plastics, polymers and enamels under most
+ambient conditions. (E.g. moisture, temperature and volatility of substance)
+Definition
+H2S - Hydrogen sulfide is a colorless, flammable, extremely hazardous gas with a “rotten egg” smell. It occurs naturally in crude petroleum and natural gas, and can be produced by the breakdown of organic matter and human/animal wastes (e.g. sewage and waste water facilities).
+Corrosivity to Metal (Wet Conditions)
+Wet H2S is corrosive to copper, brass, bronze, cast iron, types 1010 and 1020 carbon steel, lead, Monel and 400 series stainless steels. Wet H2S is not corrosive to types 3003 and Cast B-365 aluminum, high nickel cast iron, high silicon cast iron, 300 series stainless steels, nickel-based alloys (e.g. Inconel and Incoloy) at room temperature (Up to 40°C). Wet H2S is not corrosive to Incoloy, tantalum and titanium at high temperatures (Up to 150°C).
+Corrosivity to Metal (Dry Conditions)
+Dry H2S is corrosive to ductile cast iron, copper, silicon-copper, aluminum bronze and silicon bronze, carbon steel. Dry H2S is not corrosive to types 1075 and 1095 carbon steel, stainless steel (types 305, 446 and Carpenter-20 Cb-3), types 3003 and 6061-T6 aluminum, nickel and nickel-based alloys at room temperature. (Up to 40°C). Dry H2S is not corrosive to types 316 and 317 stainless steels, chromium-molybdenum alloy steels, high nickel cast iron (Ni-Resist), Monel, and tantalum at high temperatures (up to 315° C).
+Corrosivity to Non-Metals
+Dry H2S can attack plastics, such as nylon and polyurethane. Elastomers such as Viton A,
+chlorinated polyethylene, hard rubber, polyacrylate and silicone VMQ are also susceptible to
+attack.
+Wet H2S can attack plastics such as acetal, nylon and polyurethane. Elastomers such as Viton A, chlorinated polyethylene, natural rubber, soft rubber, isoprene, Nitrile Buna-N (NBR), styrene-butadiene (SBR), polyacrylate, polyurethane and silicone VMQ are also susceptible to attack.
+Dry and Wet H2S do not attack plastics such as chlorinated polyvinyl chloride (CPVC), Teflon, Kynar (PVDF), polyethylene, polypropylene, polystyrene, polyvinyl chloride (PVC), ethylene propylene, ethylene propylene diene, chloroprene, Butyl rubber (isobutyleneisoprene), Hypalon, neoprene, and ethylene vinyl acetate
+X54-Doorswitch & Fault Signal Connection
+info.pfannenbergusa.com/support/x54-doorswitch-fault-signal-connection
+To understand the X54; Doorswitch & Fault Signal Connection in DTS 3000 Series and PKS 3000 Series
+X54 Connection
+The X54 terminal connection is utilized for two purposes:
+Fault Contact
+Terminals 1 and 2 of this connector are a Normally Open circuit that will close while the unit is connected to power and not in a fault condition.
+Conditions that will cause the fault contact to change state include:
+• Loss of power to the unit
+• Activation of high-pressure switch in the refrigeration circuit
+• Alarm temperature set on the control board is reached
+• The temperature sensor is defective or has not been detected
+Door Switch Terminals
+Terminals 3 and 4 of this connector allow for a voltage regulated switching terminal for door contact switch/power disconnection.
+If a door contact switch has not been connected, the connection contact terminals 3 and 4 must be jumped.
+DTS 3021/31/31 SS and 30X1 series units' door contact is supplied with high voltage, the fault contact is unavailable. Terminals 1 and 2 are utilized for door switch connection
+[img: x54]
+Diagram showing the DTS 3021/31/31 SS and 30X1 Door Contact
+[img: 54]
+Diagram showing the X54 Contact for DTS 3000 and PKS 3000 Series
+Photo showing the X54 Wago Connector included with all DTS 3000 series
+Features of Pfannenberg's Outdoor and Washdown Units
+info.pfannenbergusa.com/support/features-of-pfannenbergs-outdoor-and-washdown-units
+To understand the options and features included on our standard outdoor and washdown units
+Pfannenberg currently offers 3 different versions of the DTS 3000 Series Cooling units in:
+Indoor - NEMA Type 12
+Outdoor - NEMA Type 3R/4
+Washdown - NEMA 4/4X
+Pfannenberg's AC units (except for the DTS 3021 /31/31SS) come with a condensate management inside of the units. As condensation generate and falls downward, the condensate tray will boil the water off.
+Key Features for Outdoor and Washdown Units
+Pfannenberg's outdoor and washdown units are equipped with a sump heater on the compressor to safeguard against low ambient conditions. This feature prevents the compressor oil from becoming too cold, which could lead to the compressor seizing up. The sump heater on Pfannenberg's units is designed to effectively maintain a suitable temperature for the compressor oil, ensuring optimal performance and longevity of the unit.
+Outdoor and washdown units are equipped with an epoxy-coated evaporator coil and compressor piping that is hand-painted with epoxy on the external side of the unit. This protective coating helps prevent corrosive gases and other corrosive elements, like saltwater vapor, from causing corrosion on the metals exposed to the elements. By safeguarding against corrosion, this feature ensures the longevity and optimal performance of the AC unit.
+Low Ambient Option
+Pfannenberg offers a low-ambient version on most outdoor and washdown AC units that includes low ambient fan control and a heater inside of the unit. The low ambient fan control is to prevent the condenser fan from turning on in low ambient conditions when it could potentially cause damage to the refrigeration circuit.
+The enclosure heater inside of it can be wired to a thermostat (included with the low ambient option) and can be used in two different scenarios: to prevent condensation within the enclosure and protect components from low ambient conditions. Any relative humidity above 60-65% has potential for condensation to occur.
+Condensation Coil Prefilter
+info.pfannenbergusa.com/support/condensation-coil-prefilter
+Showing the common misconception of adding the wrong prefilter to the A/C external air loop to protect the air conditioner.
+Example:
+Adding the wrong filter to the external air circuit of an air conditioner can reduce the air flow across the condenser coil by as much as 35%.
+[img: coill]
+Results:
+This reduces the cooling capacity of the air conditioner by as much as 35% due to reduce air flow over the condenser coil.
+They could cause high pressure in the refrigeration circuit resulting in unscheduled downtime
+The compressor and condenser fan works harder, which reduces the life of the air conditioner
+The air conditioner under preforms resulting in the electronics/drives seeing higher temperatures and reduced life.
+Solution
+The Pfannenberg PQF filter is designed to work as a prefilter for industrial air conditioners and filter fans. The filter has an IP54 rating and reduces airflow through the coil by less than 15%. [img: pqf]
+Provides a simple solution to one of the most common equipment failures - overheating caused by a clogged airflow path.
+Filters out harmful contaminants including oil mist, preventing clogging of the air-flow path and protecting your critical components from failure.
+Filters out oil residue from entering the equipment, which can lead to a sticky surface that attracts dust and particulates.
+No downtime or lockout-tagout procedure to install or replace filter.
+This quick and easy solution protects the life of your equipment, is easy to install and maintain. It is available in multiple widths to eliminate the time and expense to cut individual filters.
+Active External Condensate Management
+info.pfannenbergusa.com/support/active-external-condensate-management
+Providing an alternative solution to having buckets collect condensate from industrial air conditioners on the factory floor.
+Example:
+Many brands of industrial enclosure air conditions do not have an active condensate management system which results in buckets being placed beneath the A/C to collect condensation. [img: bucket]
+The buckets become a trip hazard or slip risk if the condensate is not empty continuously.
+The condensation can be mixed with oils or chemicals in the air making it more difficult to dispose of.
+Emptying the buckets uses up maintenance resources that can be better spent on other projects.
+Condensation Management
+The first step in condensation management is making sure the Air conditioner is set properly for the internal temperature of the enclosure. In most applications the temperature of the enclosure should be set to 95°F (35°C). This optimizes the life of your electronics and reduces condensation as well as energy costs. Setting to lower temperature results in the A/C running more often with little payback to the life of the electronics.
+Condensation Solution
+Pfannenberg offers an external active condensate management system, that when liquid is sensed the PTC heater will heat-up to burn off the condensate. The condensate tray is mounted under a unit and connected by the condensate hose. [img: conden solution]
+Easy installation with voltage range of 110 - 250 VAC
+The heater only activates when liquid is present to save energy costs.
+Eliminates the need for buckets reducing risk of trips, slips and maintenance costs.
+Pfannenberg P/N 18314000001
+Documento archivado para uso personal. Las imagenes se recomprimieron (max 1000 px de ancho). Los videos incrustados no forman parte de la copia: se indica su URL en su lugar.
