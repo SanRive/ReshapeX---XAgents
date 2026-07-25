@@ -118,6 +118,18 @@ export const DEFAULTS = {
   air_quality: {
     cita: 'Thermal_Management_Catalog_12_Page-Final_2024 p.2 — matriz de tecnología, fila "High Ambient and/or Very Harsh, Dirty Conditions"',
   },
+  /**
+   * REGLA DE CLASIFICACIÓN. Sin ella, «la zona se lava a presión» no se puede
+   * convertir en `washdown`: no está literal, así que iría a `missing` y la
+   * compuerta no correría nunca. Pasó en la primera prueba end-to-end.
+   */
+  location: {
+    cita: 'PSS Tutorial · Environment — "Indoor (NEMA Type 12), Outdoor (NEMA Type 3R/4), or Washdown (NEMA Type 4/4X)"',
+  },
+  /** REGLA DE CLASIFICACIÓN: «montado contra la pared» → `wall_mounted`. */
+  installation: {
+    cita: "PSS Tutorial · Environment — Installation characteristics: free standing, wall mounted, recessed in line",
+  },
   housing_material: {
     value: "painted_steel" as HousingMaterial,
     cita: "Catálogo NA — acabado estándar de la serie DTS (RAL 7035)",

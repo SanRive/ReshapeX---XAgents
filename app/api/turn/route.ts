@@ -1,51 +1,102 @@
 import { NextResponse } from "next/server";
+import { generateText } from "ai";
+import { createOpenAI } from "@ai-sdk/openai";
+
+import { FUERA_DE_ALCANCE_RESPUESTA, detectOutOfScope } from "@/lib/fixtures/out-of-scope";
+import { providerHealth, PROVIDER_CHAIN } from "@/lib/llm/providers";
+import { extract } from "@/lib/extract/extract";
+import { validateExtraction, sumComponentList, mergeSpec } from "@/lib/extract/validate";
+import { buildAllowedValues, postCheckProse } from "@/lib/extract/post-check";
 import {
-  FUERA_DE_ALCANCE_RESPUESTA,
-  detectOutOfScope,
-} from "@/lib/fixtures/out-of-scope";
-import { providerHealth } from "@/lib/llm/providers";
-import type { TurnResult } from "@/lib/turn";
+  evaluateTechnologyGate,
+  evaluateCoolingUnitShortlist,
+  gateThresholdMet,
+  fieldGuideFor,
+  CAPACITY_MARGIN_FACTOR,
+  WATTS_TO_BTU_PER_HOUR,
+} from "@/lib/rules";
+import { engineeringCopilotTools } from "@/lib/tools/agent-tools";
+import { adaptCitation, adaptGate, adaptShortlist } from "@/lib/turn/adapt-rules";
+import { missingForShortlist, valueOf, type ProjectSpec } from "@/lib/project-spec";
+import type { BlockingQuestion, ProviderTrace, TurnResult } from "@/lib/turn";
+
+/** Entrada del log tal como la modela el contrato (`ProjectSpec["decision_log"]`). */
+type LogEntry = ProjectSpec["decision_log"][number];
 
 /**
  * I1/I2/I3 — EL PUNTO DE INTEGRACION. QUE LO ABRA UNA SOLA PERSONA.
  *
- * Esto es el esqueleto, no la implementacion. Lo que ya corre:
+ * Las tres capas de §7.2, en orden fijo:
  *
- *   ✅ I3 · guardrail de fuera de alcance por keywords, ANTES de llamar al LLM
- *   ✅ A2 · cadena de proveedores con rotacion de claves (lib/llm/providers.ts)
+ *   1. Espina determinista — el modelo NO decide el orden
+ *        extract → validate → merge → sumar componentes → gate → shortlist
+ *   2. Loop conversacional de SOLO LECTURA — 4 tools, ninguna escribe
+ *   3. Post-check numerico sobre la prosa
  *
- * Lo que falta, en el orden fijo de la espina determinista (§7.2). Cada paso ya
- * tiene su tipo definido y su dueño:
+ * El modelo toca el estado exactamente una vez, en `extract`, y `validate` es
+ * el guardia de esa puerta. Ninguna tool escribe. El brief lo ensambla codigo.
  *
- *   extract(msg, spec)    → sobres          · pista A · lib/extract/extract.ts
- *   validate(sobres, msg) → sobres limpios  · pista A · lib/extract/validate.ts
- *   merge(spec, limpios)  → ProjectSpec     · pista A
- *   gate(spec)            → veredictos+cita · pista B · lib/rules/gate.ts
- *   shortlist(spec)       → modelos+cita    · pista B · lib/rules/shortlist.ts
- *   loop conversacional   → prosa           · I2 · generateText + maxSteps: 5
- *   postCheck(prosa, …)   → prosa o plantilla · pista A · lib/extract/post-check.ts
- *
- * El contrato de cada uno esta en `docs/contratos-de-modulo.md`. La respuesta
- * SIEMPRE es un `TurnResult` — es lo que la UI ya consume, y respetarlo hace que
- * I4 sea cambiar una funcion en `app/page.tsx` y nada mas.
- *
- * Regla que no se rompe: las claves no salen de este proceso. Toda llamada al
- * LLM pasa por aqui; nada de `NEXT_PUBLIC_` para una API key.
+ * Las claves no salen de este proceso. Nada de NEXT_PUBLIC_ para una API key.
  */
 
 export const runtime = "nodejs";
+export const maxDuration = 60;
 
 interface TurnRequest {
   message: string;
-  /** El spec acumulado. El estado vive en el cliente y viaja en cada turno; si
-   *  los cuatro proveedores fallan, se devuelve intacto y la ficha no se mueve. */
-  spec: TurnResult["spec"];
+  /** El spec acumulado. Viaja en cada turno; si todo falla se devuelve intacto. */
+  spec: ProjectSpec;
+  /** Mensajes previos del cliente, para rastrear cantidades de turnos anteriores. */
+  history?: string[];
 }
+
+/** Une el log del validador con lo que aporten las reglas. */
+function toDecisions(entries: LogEntry[]): LogEntry[] {
+  return entries;
+}
+
+/** Maximo 3 preguntas por turno (§3.3 fase 2), sacadas del FIELD_GUIDE. */
+function buildQuestions(spec: ProjectSpec): BlockingQuestion[] {
+  return missingForShortlist(spec)
+    .slice(0, 3)
+    .map((field) => {
+      const g = fieldGuideFor(field);
+      if (!g) {
+        return {
+          field,
+          why: "Hace falta para cerrar el analisis.",
+          where: "",
+          alternative: null,
+          antipattern: null,
+        };
+      }
+      return {
+        field,
+        why: g.whyItMatters,
+        where: g.whereToFindIt,
+        alternative: g.alternativeEvidence || null,
+        antipattern: g.antiPattern || null,
+        citation: adaptCitation(g.citation),
+      };
+    });
+}
+
+const SYSTEM_AGENTE = `Eres el copiloto de ingenieria de Pfannenberg hablando con un CLIENTE que no es experto.
+
+Tu trabajo es que el cliente entienda que hace falta y por que, para que un ingeniero de aplicacion pueda dimensionar en PSS.
+
+REGLAS
+- Los veredictos y los numeros ya estan decididos por el motor de reglas. Tu los NARRAS, no los recalculas.
+- No des ninguna cifra que no venga del estado o de una herramienta. Si no la tienes, dilo.
+- Nunca conviertas la potencia nominal de un motor o variador (kW) en disipacion termica (W).
+- Si te preguntan algo fuera de climatizacion de gabinetes, di que lo ve el ingeniero de aplicacion.
+- Castellano, directo, sin florituras. Maximo 6 frases.`;
 
 export async function POST(request: Request) {
   const body = (await request.json()) as TurnRequest;
+  const decisions: LogEntry[] = [];
 
-  // ── I3 · guardrail determinista, antes de gastar una llamada ──────────────
+  // ── I3 · guardrail determinista, ANTES de gastar una llamada ──────────────
   const keyword = detectOutOfScope(body.message);
   if (keyword) {
     const result: TurnResult = {
@@ -55,24 +106,161 @@ export async function POST(request: Request) {
       questions: [],
       disclaimers: [],
       outOfScope: { keyword, response: FUERA_DE_ALCANCE_RESPUESTA },
-      message: {
-        id: `oos-${Date.now()}`,
-        speaker: "agent",
-        text: FUERA_DE_ALCANCE_RESPUESTA,
-      },
+      message: { id: `oos-${Date.now()}`, speaker: "agent", text: FUERA_DE_ALCANCE_RESPUESTA },
     };
     return NextResponse.json(result);
   }
 
-  // ── I1 · la espina determinista ───────────────────────────────────────────
-  return NextResponse.json(
-    {
-      error: "not_implemented",
-      detail:
-        "La espina determinista (extract → validate → merge → gate → shortlist) todavía no está conectada. Ver docs/contratos-de-modulo.md.",
+  // ── I1 · CAPA 1 · la espina determinista ──────────────────────────────────
+  let spec = body.spec;
+  let trace: ProviderTrace | undefined;
+
+  try {
+    const extraction = await extract(body.message, spec);
+    trace = extraction.trace;
+
+    const validated = validateExtraction(extraction.raw, body.message);
+    decisions.push(...toDecisions(validated.log));
+
+    // Fusion, NO spread: el modelo re-extrae solo del mensaje nuevo, asi que
+    // todo lo que no aparezca ahi vuelve como missing. Un spread borraria lo que
+    // el cliente ya declaro en turnos anteriores.
+    const merged = mergeSpec(spec, validated.spec);
+
+    // La conversacion acumulada: las cantidades suelen venir de un turno previo.
+    const conversacion = [...(body.history ?? []), body.message].join("\n");
+    const summed = sumComponentList(merged, conversacion);
+    decisions.push(...toDecisions(summed.log));
+
+    spec = { ...spec, ...summed.spec } as ProjectSpec;
+  } catch (err) {
+    // Fallaron todos los proveedores. El estado NO se toca y la ficha no se mueve.
+    const detalle = err instanceof Error ? err.message : String(err);
+    const degradado: TurnResult = {
+      spec: body.spec,
+      gate: null,
+      shortlist: null,
+      questions: buildQuestions(body.spec),
+      disclaimers: [],
+      message: {
+        id: `err-${Date.now()}`,
+        speaker: "system",
+        text: `No pude leer ese mensaje: ningun proveedor respondio. Tu ficha sigue intacta, vuelve a intentarlo. (${detalle})`,
+      },
+    };
+    return NextResponse.json(degradado);
+  }
+
+  // Derivados: conversion de unidades y margen citado. Codigo puro, nunca el modelo.
+  const totalW = valueOf(spec.total_dissipation_w) as number | undefined;
+  spec = {
+    ...spec,
+    derived: {
+      required_w: totalW === undefined ? null : Math.round(totalW * CAPACITY_MARGIN_FACTOR * 100) / 100,
+      required_capacity_btuh:
+        totalW === undefined ? null : Math.round(totalW * CAPACITY_MARGIN_FACTOR * WATTS_TO_BTU_PER_HOUR),
+      nema_required: spec.derived?.nema_required ?? null,
+      available_mounting_faces: spec.derived?.available_mounting_faces ?? null,
     },
-    { status: 501 },
-  );
+    decision_log: spec.decision_log ?? [],
+  };
+
+  // Compuerta: corre en cuanto hay 3 datos, ANTES de conocer la carga termica.
+  const gate = gateThresholdMet(spec) ? adaptGate(evaluateTechnologyGate(spec)) : null;
+  if (gate) {
+    decisions.push({ field: "gate", action: "accepted", reason: `Compuerta resuelta: ${gate.length} familias evaluadas.`, proposed: null });
+  }
+
+  const shortlistRaw = evaluateCoolingUnitShortlist(spec);
+  const enclosures = (valueOf(spec.enclosure_count) as number | undefined) ?? 1;
+  const shortlist = adaptShortlist(shortlistRaw, enclosures);
+  if (shortlist) {
+    decisions.push({
+      field: "shortlist",
+      action: "accepted",
+      reason: `Shortlist con ${shortlist.candidates.length} candidatos y ${shortlist.rejected.length} descartados.`,
+      proposed: null,
+    });
+  }
+
+  const questions = buildQuestions(spec);
+
+  // ── I2 · CAPA 2 · loop conversacional de SOLO LECTURA ─────────────────────
+  let prose = "";
+  const toolResults: string[] = [];
+
+  try {
+    const cfg = PROVIDER_CHAIN[0]!;
+    const key = process.env.GROQ_API_KEYS?.split(",")[0] ?? process.env.GROQ_API_KEY ?? "";
+    const provider = createOpenAI({ apiKey: key, baseURL: cfg.baseURL });
+
+    const res = await generateText({
+      model: provider(cfg.model),
+      system: SYSTEM_AGENTE,
+      prompt:
+        `ESTADO VALIDADO:\n${JSON.stringify(spec)}\n\n` +
+        `VEREDICTOS DE LA COMPUERTA:\n${JSON.stringify(gate)}\n\n` +
+        `LO QUE FALTA:\n${JSON.stringify(questions)}\n\n` +
+        `MENSAJE DEL CLIENTE:\n${body.message}`,
+      tools: engineeringCopilotTools,
+      // Tope duro: una demo colgada es peor que una degradada.
+      stopWhen: ({ steps }) => steps.length >= 5,
+    });
+
+    prose = res.text;
+    for (const step of res.steps) {
+      for (const tr of step.toolResults ?? []) {
+        toolResults.push(JSON.stringify(tr));
+        decisions.push({ field: "tool", action: "accepted", reason: `Herramienta consultada: ${tr.toolName}`, proposed: null });
+      }
+    }
+  } catch {
+    // Si el loop falla, la espina ya produjo todo lo que importa. Se narra con
+    // plantilla: ficha, compuerta y shortlist siguen siendo validos.
+    prose = "";
+  }
+
+  // ── CAPA 3 · post-check numerico ──────────────────────────────────────────
+  const rechazadas = gate?.filter((g) => g.verdict === "rejected").map((g) => g.label) ?? [];
+  const plantilla = gate
+    ? `Con lo que me has contado ya puedo descartar tecnologias${
+        rechazadas.length > 0 ? `: ${rechazadas.join(", ")} quedan fuera` : ""
+      }.${questions.length > 0 ? ` Para cerrar el equipo me falta: ${questions.map((q) => q.field).join(", ")}.` : ""}`
+    : "Necesito tres datos para poder descartar tecnologias: la temperatura ambiente maxima, si el tablero esta en interior, a la intemperie o en zona de lavado, y como de sucio es el entorno.";
+
+  const check = postCheckProse(prose || plantilla, buildAllowedValues(spec, toolResults), plantilla);
+  if (check.substituted) {
+    decisions.push({
+      field: "post_check",
+      action: "degraded",
+      reason: `Post-check numerico: respuesta sustituida por contener cifras sin respaldo (${check.offenders
+        .map((o) => o.text)
+        .join(", ")}).`,
+      proposed: check.offenders.map((o) => o.text).join(", "),
+    });
+  }
+
+  // El log de decisiones viaja dentro del spec: es la prueba de que el
+  // guardrail actuo, y de ahi lo lee el generador de brief.
+  const result: TurnResult = {
+    spec: {
+      ...spec,
+      decision_log: [...(spec.decision_log ?? []), ...decisions],
+    },
+    gate,
+    shortlist,
+    questions,
+    disclaimers: shortlistRaw.notAsserted,
+    message: {
+      id: `t-${Date.now()}`,
+      speaker: "agent",
+      text: check.safe,
+      provider: trace,
+      postCheckReplaced: check.substituted,
+    },
+  };
+
+  return NextResponse.json(result);
 }
 
 /** Diagnostico del pool de claves. No devuelve ninguna clave, solo su estado. */

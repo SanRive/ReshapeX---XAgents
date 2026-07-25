@@ -202,6 +202,45 @@ export function validateExtraction(raw: ExtractedSpec, input: string): Validatio
 }
 
 // ---------------------------------------------------------------------------
+// Fusión entre turnos
+// ---------------------------------------------------------------------------
+
+/**
+ * Combina el estado acumulado con lo que aporta el turno nuevo.
+ *
+ * ⚠️ NO es un spread. El modelo re-extrae **solo del mensaje nuevo**, así que
+ * todo campo que no aparezca ahí vuelve como `missing`. Un `{...prev, ...next}`
+ * machaca con esos `missing` lo que ya estaba resuelto, y el agente acaba
+ * preguntando dos veces por un dato que el cliente ya dio — que es justo lo que
+ * este producto existe para evitar.
+ *
+ * Regla: un campo resuelto solo lo pisa otro campo resuelto. Un `missing` nunca
+ * borra un `declared` ni un `inferred`.
+ */
+export function mergeSpec(previous: ExtractedSpec, incoming: ExtractedSpec): ExtractedSpec {
+  const out = { ...previous } as Record<string, unknown>;
+
+  for (const key of FIELD_KEYS) {
+    const nuevo = incoming[key] as AnyField | undefined;
+    const viejo = previous[key] as AnyField | undefined;
+    if (!nuevo) continue;
+
+    const nuevoResuelto = nuevo.status !== "missing" && nuevo.value !== null;
+    const viejoResuelto = !!viejo && viejo.status !== "missing" && viejo.value !== null;
+
+    if (nuevoResuelto || !viejoResuelto) out[key] = nuevo;
+  }
+
+  // La lista de componentes solo se sustituye si el turno nuevo trae una.
+  if (incoming.component_list && incoming.component_list.length > 0) {
+    out.component_list = incoming.component_list;
+  }
+  if (incoming.measured_temps) out.measured_temps = incoming.measured_temps;
+
+  return out as unknown as ExtractedSpec;
+}
+
+// ---------------------------------------------------------------------------
 // El camino alterno de la carga térmica — SUMA, no estimación
 // ---------------------------------------------------------------------------
 

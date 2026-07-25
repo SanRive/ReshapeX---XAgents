@@ -99,8 +99,26 @@ REGLAS ABSOLUTAS
    cadena se descarta y el campo se degrada a "missing":
 ${CITAS_PERMITIDAS}
 
-6. Preferir "missing" antes que adivinar. Un numero inventado es peor que un dato
-   ausente: un dato ausente se pregunta, un dato inventado se propaga.
+6. Preferir "missing" antes que adivinar UN VALOR QUE NO ESTA. Pero si el dato SI
+   esta en el texto, extraelo: dejar en "missing" algo que el cliente ya declaro
+   obliga a preguntarselo dos veces, y eso tambien es un fallo.
+
+EJEMPLOS DE LO QUE SI HAY QUE EXTRAER
+
+  "Son 4 gabinetes de 2000 x 800 x 600 mm"
+     → height_mm declared 2000, width_mm declared 800, depth_mm declared 600,
+       enclosure_count declared 4. Los cuatro con evidence "2000 x 800 x 600 mm"
+       o "Son 4 gabinetes" segun corresponda.
+
+  "montados contra la pared del pasillo"
+     → installation inferred "wall_mounted", basis "installation".
+
+  "La zona se lava a presion"
+     → location inferred "washdown", basis "location".
+     → air_quality inferred "very_harsh", basis "air_quality".
+
+  "hemos medido hasta 38 grados de ambiente"
+     → ambient_temp_max_c declared 38, evidence "hasta 38 °C de ambiente".
 
 Se te pasa el estado actual del proyecto. Conserva lo que ya estaba resuelto y
 rellena solo lo que aporte el mensaje nuevo. No degrades a "missing" un campo que

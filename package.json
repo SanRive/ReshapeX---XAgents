@@ -11,12 +11,13 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^4.0.20",
+    "ai": "^7.0.37",
     "next": "16.2.11",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "server-only": "0.0.1",
-    "zod": "4.4.3",
-    "ai": "^7.0.37"
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.3",
