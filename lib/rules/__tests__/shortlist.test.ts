@@ -19,7 +19,7 @@ import {
 } from "../shortlist";
 import { CAPACITY_MARGIN_FACTOR, CITATIONS, WATTS_TO_BTU_PER_HOUR } from "../catalog-data";
 import type { CoolingUnitCandidate } from "../types";
-import { declaredField, emptyProjectSpec } from "../../project-spec";
+import { emptyProjectSpec } from "../../project-spec";
 import { barranquillaConRespuesta, barranquillaSinRespuesta, makeSpec } from "./fixtures";
 
 function bySeries(candidates: CoolingUnitCandidate[], series: string): CoolingUnitCandidate {
@@ -75,13 +75,10 @@ describe("resolución de PD", () => {
 
   it("suma la lista de componentes — es suma, no estimación", () => {
     const spec = emptyProjectSpec();
-    spec.component_list = declaredField(
-      [
-        { name: "Variador", w: 650, qty: 2 },
-        { name: "PLC", w: 50, qty: 1 },
-      ],
-      "650 W por variador y 50 W el PLC",
-    );
+    spec.component_list = [
+      { name: "Variador", w: 650, qty: 2 },
+      { name: "PLC", w: 50, qty: 1 },
+    ];
     const { totalDissipationW, source } = resolveTotalDissipationW(spec);
     expect(totalDissipationW).toBe(1350);
     expect(source).toBe("component_sum");

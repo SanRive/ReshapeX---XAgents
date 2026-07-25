@@ -1,48 +1,59 @@
 /**
- * T0.2 — EL CONTRATO ENTRE LAS CUATRO PISTAS.
+ * EL CONTRATO — tarea T0.2 del plan de implementación.
  *
- * Escrito en Zod, con los tipos TS derivados por `z.infer<>`. **No crear una segunda
- * definición**: si A lo reescribe en Zod para `generateObject` habrá dos definiciones que
- * se desincronizan solas (docs/plan-de-implementacion.md, T0.2).
+ * Es la frontera entre las cuatro pistas. Si A y D no coinciden en la forma
+ * de este objeto, se pierde media hora en el merge.
  *
- * Forma tomada de `docs/superpowers/specs/2026-07-24-…-design.md` §3.5 (campos, enums y
- * defaults) y de `CLAUDE.md` (el sobre `Field` de cuatro claves: status/value/evidence/basis).
+ * Escrito en Zod y NO como `interface`: el mismo schema alimenta a
+ * `generateObject` del AI SDK y produce los tipos TS por `z.infer<>`. Una sola
+ * definición, imposible que se desincronice.
  *
- * Este archivo lo creó la Pista B porque no existía todavía y el motor de reglas no
- * compila sin él. **Es el contrato mínimo necesario y respeta la forma descrita en el
- * spec**; si la persona dueña de T0.2 lo amplía (fixtures, campos de identificación
- * adicionales), que amplíe *este* archivo — no que cree otro.
+ * Referencia: spec §3.5 (contrato de datos) y §7 (agente conversacional).
  */
 
 import { z } from "zod";
 
-/* ------------------------------------------------------------------ *
- * El sobre por campo (CLAUDE.md · "El validador de evidencia")
- * ------------------------------------------------------------------ */
+// ---------------------------------------------------------------------------
+// El sobre por campo — el corazón del diseño
+// ---------------------------------------------------------------------------
 
-export const FieldStatusSchema = z.enum(["declared", "inferred", "missing"]);
-export type FieldStatus = z.infer<typeof FieldStatusSchema>;
+export const FieldStatus = z.enum(["declared", "inferred", "missing"]);
+export type FieldStatus = z.infer<typeof FieldStatus>;
 
 /**
- * Fabrica el sobre `Field` para un tipo de valor concreto.
+ * Construye el sobre de un campo con su tipo de valor concreto.
  *
- * - `declared`  → `evidence` es un substring LITERAL del input del cliente.
- * - `inferred`  → `basis` es una cita del catálogo de la lista blanca `DEFAULTS`.
- * - `missing`   → `value` se fuerza a `null`.
+ * Reglas que el validador determinista impone DESPUÉS de la llamada al LLM
+ * (ver `lib/extract/validate.ts`). El modelo no las cumple por buena fe:
  *
- * El validador determinista (Pista A) es quien hace cumplir esas tres reglas. El motor
- * de reglas (Pista B) solo *lee* el sobre y trata `missing` como dato ausente.
+ *   declared → `evidence` tiene que ser substring LITERAL del input,
+ *              normalizando espacios y mayúsculas. Si no → missing.
+ *   numérico → los dígitos de `value` tienen que aparecer en `evidence`.
+ *              Esto es lo que caza el «38 °C → 380».
+ *   inferred → `basis` tiene que coincidir con una entrada de DEFAULTS.
+ *              Si no → missing.
+ *   missing  → `value` se fuerza a null.
  */
-export function field<T extends z.ZodTypeAny>(valueSchema: T) {
+export function field<T extends z.ZodTypeAny>(value: T) {
   return z.object({
-    status: FieldStatusSchema,
-    value: valueSchema.nullable(),
-    evidence: z.string().nullable().default(null),
-    basis: z.string().nullable().default(null),
+    status: FieldStatus,
+    value: value.nullable(),
+    /** Substring literal del input. Solo si status === "declared". */
+    evidence: z.string().nullable(),
+    /** Clave de DEFAULTS que justifica el valor. Solo si status === "inferred". */
+    basis: z.string().nullable(),
   });
 }
 
-/** Sobre genérico ya resuelto, útil para firmas que no dependen del tipo del valor. */
+/** Sobre genérico, para código que opera sobre cualquier campo sin importar el tipo. */
+export type AnyField = {
+  status: FieldStatus;
+  value: string | number | boolean | null;
+  evidence: string | null;
+  basis: string | null;
+};
+
+/** Sobre genérico tipado para consumidores deterministas como el motor de reglas. */
 export type Field<T> = {
   status: FieldStatus;
   value: T | null;
@@ -50,155 +61,310 @@ export type Field<T> = {
   basis: string | null;
 };
 
-/* ------------------------------------------------------------------ *
- * Enums — el vocabulario copia el del catálogo para que las citas mapeen 1:1 (§3.5)
- * ------------------------------------------------------------------ */
+// ---------------------------------------------------------------------------
+// Vocabulario — copia el del catálogo para que las citas mapeen 1:1
+// ---------------------------------------------------------------------------
 
-export const HousingMaterialSchema = z.enum(["painted_steel", "stainless_steel"]);
-export type HousingMaterial = z.infer<typeof HousingMaterialSchema>;
+export const Location = z.enum(["indoor", "outdoor", "washdown"]);
+export const AirQuality = z.enum(["clean_or_slightly_dirty", "dirty", "very_harsh"]);
+export const HousingMaterial = z.enum(["painted_steel", "stainless_steel"]);
+export const SupplyVoltage = z.enum(["115V", "230V", "400_460V_3ph"]);
+export const Installation = z.enum(["free_standing", "wall_mounted", "recessed_in_line"]);
+export const NemaType = z.enum(["12", "3R_4", "4_4X"]);
 
-/** PSS · Enclosure: "Supply Voltage for Air Conditioning Components". */
-export const SupplyVoltageSchema = z.enum(["115V", "230V", "400_460V_3ph"]);
-export type SupplyVoltage = z.infer<typeof SupplyVoltageSchema>;
+export type Location = z.infer<typeof Location>;
+export type AirQuality = z.infer<typeof AirQuality>;
+export type HousingMaterial = z.infer<typeof HousingMaterial>;
+export type SupplyVoltage = z.infer<typeof SupplyVoltage>;
+export type Installation = z.infer<typeof Installation>;
+export type NemaType = z.infer<typeof NemaType>;
 
-/** PSS · Environment: Indoor (Type 12) · Outdoor (Type 3R/4) · Washdown (Type 4/4X). */
-export const LocationSchema = z.enum(["indoor", "outdoor", "washdown"]);
-export type Location = z.infer<typeof LocationSchema>;
+// ---------------------------------------------------------------------------
+// Lista blanca de defaults — `basis` DEBE ser una de estas claves
+// ---------------------------------------------------------------------------
 
-export const InstallationSchema = z.enum(["free_standing", "wall_mounted", "recessed_in_line"]);
-export type Installation = z.infer<typeof InstallationSchema>;
+/**
+ * Un `inferred` cuyo `basis` no esté aquí se degrada a `missing`.
+ * Esto es lo que impide que el modelo invente una justificación creíble.
+ *
+ * ⚠️ Pendiente de verificar contra el corpus antes de la demo (pista B):
+ * la cita de `internal_temp_max_c` puede estar anclada a una frase sobre
+ * EFICIENCIA y no sobre temperatura MÁXIMA. Si es así, hay que cambiar el
+ * texto de la cita — no el valor.
+ */
+export const DEFAULTS = {
+  internal_temp_max_c: {
+    value: 35.0,
+    cita: 'Catálogo NA p.2 — "Electronics are typically most efficient in low humidity with a temperature around 95°"',
+  },
+  housing_material: {
+    value: "painted_steel" as HousingMaterial,
+    cita: "Catálogo NA — acabado estándar de la serie DTS (RAL 7035)",
+  },
+  housing_color: {
+    value: "RAL 7035",
+    cita: "Catálogo NA p.7 — acabados disponibles: RAL 7035, ANSI 61, inoxidable",
+  },
+  enclosure_count: {
+    value: 1,
+    cita: "Alcance del MVP: un gabinete por análisis (spec §3.4)",
+  },
+} as const;
 
-/** Vocabulario de la matriz de tecnología del catálogo NA p.2. */
-export const AirQualitySchema = z.enum(["clean_or_slightly_dirty", "dirty", "very_harsh"]);
-export type AirQuality = z.infer<typeof AirQualitySchema>;
+export type DefaultKey = keyof typeof DEFAULTS;
 
-export const ComponentSchema = z.object({
-  name: z.string(),
-  w: z.number(),
-  qty: z.number().int().positive().default(1),
-});
-export type Component = z.infer<typeof ComponentSchema>;
+// ---------------------------------------------------------------------------
+// Lo que el LLM puede rellenar — y nada más
+// ---------------------------------------------------------------------------
 
-/* ------------------------------------------------------------------ *
- * ProjectSpec (§3.5)
- * ------------------------------------------------------------------ */
-
-export const ProjectSpecSchema = z.object({
+/**
+ * El modelo SOLO devuelve esto. Los derivados los calcula código puro, y por
+ * eso no aparecen aquí: si el modelo no puede escribirlos, no puede inventarlos.
+ */
+export const ExtractedSpecSchema = z.object({
   // A · Identificación — no bloquea nada
   project_name: field(z.string()),
   customer: field(z.string()),
-  enclosure_count: field(z.number().int().positive()),
 
-  // B · Gabinete (tab Enclosure de PSS)
+  // B · Gabinete — tab Enclosure de PSS
   height_mm: field(z.number()),
   width_mm: field(z.number()),
   depth_mm: field(z.number()),
   internal_temp_max_c: field(z.number()),
   internal_temp_min_c: field(z.number()),
-  housing_material: field(HousingMaterialSchema),
+  housing_material: field(HousingMaterial),
   housing_color: field(z.string()),
-  supply_voltage: field(SupplyVoltageSchema),
+  supply_voltage: field(SupplyVoltage),
 
-  // C · Entorno (tab Environment de PSS)
-  location: field(LocationSchema),
+  // C · Entorno — tab Environment de PSS
+  location: field(Location),
   ambient_temp_max_c: field(z.number()),
   ambient_temp_min_c: field(z.number()),
   solar_load: field(z.boolean()),
   wind_exposure: field(z.boolean()),
-  installation: field(InstallationSchema),
-  air_quality: field(AirQualitySchema),
-
-  /**
-   * Extensión de la Pista B sobre §3.5. El spec pide en §5 que PWS quede como
-   * alternativa "requiere agua de proceso, no declarada"; sin un campo para ese dato la
-   * compuerta no puede distinguir "no hay agua" de "no lo sabemos". Respaldado por el
-   * catálogo NA p.9: "If there is a chilled water supply readily available at the enclosure."
-   */
+  installation: field(Installation),
+  air_quality: field(AirQuality),
+  /** Condición de aplicabilidad de PWS; falta de dato bloquea, `false` descarta. */
   process_water_available: field(z.boolean()),
 
-  // D · Carga térmica (tab Heat Dissipation de PSS)
-  /** Bloqueante duro del shortlist. **Nunca se estima.** */
+  // D · Carga térmica — tab Heat Dissipation de PSS
+  /** BLOQUEANTE DURO del shortlist. NUNCA se estima. Ver regla 1. */
   total_dissipation_w: field(z.number()),
-  /** Camino alterno: se **suma**. Suma, no estimación. */
-  component_list: field(z.array(ComponentSchema)),
-  /** Se detecta y se deriva a PSS. El cálculo NO se implementa. */
-  measured_temps: field(z.object({ inside_c: z.number(), outside_c: z.number() })),
+  /** Camino alterno: si dan lista de componentes con W, se SUMAN. Suma, no estimación. */
+  component_list: z
+    .array(z.object({ name: z.string(), w: z.number(), qty: z.number() }))
+    .nullable(),
+  /** Tercer camino de PSS. Se DETECTA y se deriva a PSS; no se implementa el cálculo. */
+  measured_temps: z
+    .object({ inside_c: z.number(), outside_c: z.number() })
+    .nullable(),
+
+  /** Cuántos gabinetes iguales. Fuera del alcance analizar más de uno, pero se cita. */
+  enclosure_count: field(z.number()),
+});
+
+export type ExtractedSpec = z.infer<typeof ExtractedSpecSchema>;
+
+/** Las claves de los campos que son sobres (excluye component_list y measured_temps). */
+export const FIELD_KEYS = [
+  "project_name", "customer",
+  "height_mm", "width_mm", "depth_mm",
+  "internal_temp_max_c", "internal_temp_min_c",
+  "housing_material", "housing_color", "supply_voltage",
+  "location", "ambient_temp_max_c", "ambient_temp_min_c",
+  "solar_load", "wind_exposure", "installation", "air_quality",
+  "process_water_available",
+  "total_dissipation_w", "enclosure_count",
+] as const;
+
+export type FieldKey = (typeof FIELD_KEYS)[number];
+
+/** Campos numéricos: sobre estos corre la regla de «los dígitos en la evidencia». */
+export const NUMERIC_FIELD_KEYS: readonly FieldKey[] = [
+  "height_mm", "width_mm", "depth_mm",
+  "internal_temp_max_c", "internal_temp_min_c",
+  "ambient_temp_max_c", "ambient_temp_min_c",
+  "total_dissipation_w", "enclosure_count",
+];
+
+// ---------------------------------------------------------------------------
+// Derivados — los calcula código, nunca el modelo
+// ---------------------------------------------------------------------------
+
+export const DerivedSchema = z.object({
+  /** Conversión de unidades, no ingeniería: W × 3.412 */
+  required_capacity_btuh: z.number().nullable(),
+  /** Margen documentado: PD × 1.10 — DTS_2017, "should exceed ... by approximately 10%" */
+  required_w: z.number().nullable(),
+  /** location → NEMA. PSS Tutorial: Indoor→12 · Outdoor→3R/4 · Washdown→4/4X */
+  nema_required: NemaType.nullable(),
+  /** installation → caras libres para montar la unidad */
+  available_mounting_faces: z.number().nullable(),
+});
+
+export type Derived = z.infer<typeof DerivedSchema>;
+
+// ---------------------------------------------------------------------------
+// El objeto completo que viaja entre capas
+// ---------------------------------------------------------------------------
+
+export const ProjectSpecSchema = ExtractedSpecSchema.extend({
+  derived: DerivedSchema,
+  /**
+   * Log de decisiones del validador. Cada vez que degrada un campo escribe aquí.
+   * Va al brief: es la prueba en papel de que el guardrail actuó.
+   */
+  decision_log: z.array(
+    z.object({
+      field: z.string(),
+      action: z.enum(["degraded", "defaulted", "summed", "accepted"]),
+      reason: z.string(),
+      proposed: z.string().nullable(),
+    }),
+  ),
 });
 
 export type ProjectSpec = z.infer<typeof ProjectSpecSchema>;
-export type ProjectSpecFieldName = keyof ProjectSpec;
 
-/* ------------------------------------------------------------------ *
- * Lectura del sobre — helpers puros usados por el motor de reglas
- * ------------------------------------------------------------------ */
+// ---------------------------------------------------------------------------
+// Umbrales — spec §3.6
+// ---------------------------------------------------------------------------
 
-/** Devuelve el valor del sobre, o `undefined` si el campo está `missing` o vacío. */
-export function valueOf<T>(f: Field<T> | undefined): T | undefined {
-  if (f === undefined) return undefined;
-  if (f.status === "missing") return undefined;
-  if (f.value === null) return undefined;
-  return f.value;
+/**
+ * Umbral 1 · correr la compuerta de 4 familias.
+ * Con esto el agente ya entrega valor sin conocer la carga térmica:
+ * «necesitas lazo cerrado y esta es la razón física».
+ */
+export const GATE_REQUIRED: readonly FieldKey[] = [
+  "ambient_temp_max_c",
+  "location",
+  "air_quality",
+];
+
+/** Umbral 2 · shortlist de modelos. Los 3 de arriba más estos. */
+export const SHORTLIST_REQUIRED: readonly FieldKey[] = [
+  "total_dissipation_w",
+  "supply_voltage",
+  "height_mm",
+  "width_mm",
+  "depth_mm",
+];
+
+/** Un campo cuenta como resuelto si está declarado o inferido con base válida. */
+export function isResolved(f: AnyField | undefined): boolean {
+  return !!f && f.status !== "missing" && f.value !== null;
 }
 
-/** Sobre vacío. Es el estado por defecto de todo campo antes de la primera extracción. */
+/** Qué falta para poder correr la compuerta. Array vacío = se puede correr. */
+export function missingForGate(spec: ExtractedSpec): FieldKey[] {
+  return GATE_REQUIRED.filter((k) => !isResolved(spec[k] as AnyField));
+}
+
+/**
+ * Qué falta para poder emitir el shortlist. Array vacío = se puede emitir.
+ *
+ * `housing_material` solo bloquea **si el entorno es washdown** (spec §3.6):
+ * en indoor el material es cosmético, en washdown decide si el modelo existe
+ * en inoxidable y por tanto si es elegible.
+ */
+export function missingForShortlist(spec: ExtractedSpec): FieldKey[] {
+  const required: FieldKey[] = [...GATE_REQUIRED, ...SHORTLIST_REQUIRED];
+
+  if (spec.location.status !== "missing" && spec.location.value === "washdown") {
+    required.push("housing_material");
+  }
+
+  return required.filter((k) => !isResolved(spec[k] as AnyField));
+}
+
+// ---------------------------------------------------------------------------
+// Constructor de un spec vacío
+// ---------------------------------------------------------------------------
+
+const emptyField = (): AnyField => ({
+  status: "missing",
+  value: null,
+  evidence: null,
+  basis: null,
+});
+
+/** Spec en blanco: todo `missing`. Es el estado inicial de una conversación. */
+export function emptySpec(): ProjectSpec {
+  const base = Object.fromEntries(
+    FIELD_KEYS.map((k) => [k, emptyField()]),
+  ) as unknown as ExtractedSpec;
+
+  return {
+    ...base,
+    component_list: null,
+    measured_temps: null,
+    derived: {
+      required_capacity_btuh: null,
+      required_w: null,
+      nema_required: null,
+      available_mounting_faces: null,
+    },
+    decision_log: [],
+  };
+}
+
+/** Alias conservado para el motor de reglas y sus fixtures. */
+export const emptyProjectSpec = emptySpec;
+
 export function missingField<T>(): Field<T> {
   return { status: "missing", value: null, evidence: null, basis: null };
 }
 
-/** Sobre declarado por el cliente, con el fragmento textual que lo respalda. */
 export function declaredField<T>(value: T, evidence: string): Field<T> {
   return { status: "declared", value, evidence, basis: null };
 }
 
-/** Sobre inferido, con la cita de catálogo que justifica el default. */
 export function inferredField<T>(value: T, basis: string): Field<T> {
-  return { status: "inferred", value, basis, evidence: null };
+  return { status: "inferred", value, evidence: null, basis };
 }
 
-/**
- * `ProjectSpec` con todos los sobres vacíos. Punto de partida de la conversación y base
- * para construir specs parciales en los tests sin repetir 22 campos.
- */
-export function emptyProjectSpec(): ProjectSpec {
-  return {
-    project_name: missingField<string>(),
-    customer: missingField<string>(),
-    enclosure_count: missingField<number>(),
-    height_mm: missingField<number>(),
-    width_mm: missingField<number>(),
-    depth_mm: missingField<number>(),
-    internal_temp_max_c: missingField<number>(),
-    internal_temp_min_c: missingField<number>(),
-    housing_material: missingField<HousingMaterial>(),
-    housing_color: missingField<string>(),
-    supply_voltage: missingField<SupplyVoltage>(),
-    location: missingField<Location>(),
-    ambient_temp_max_c: missingField<number>(),
-    ambient_temp_min_c: missingField<number>(),
-    solar_load: missingField<boolean>(),
-    wind_exposure: missingField<boolean>(),
-    installation: missingField<Installation>(),
-    air_quality: missingField<AirQuality>(),
-    process_water_available: missingField<boolean>(),
-    total_dissipation_w: missingField<number>(),
-    component_list: missingField<Component[]>(),
-    measured_temps: missingField<{ inside_c: number; outside_c: number }>(),
-  };
+export function valueOf<T>(envelope: Field<T> | undefined): T | undefined {
+  if (!envelope || envelope.status === "missing" || envelope.value === null) return undefined;
+  return envelope.value;
 }
 
-/**
- * Vista plana del spec: cada campo colapsado a su valor o `undefined`.
- * El motor de reglas trabaja sobre esto — así la lógica no repite `valueOf(...)` 20 veces
- * y "campo ausente" es una única condición (`=== undefined`) en todo el módulo.
- */
+/** Vista de solo lectura consumida por B; colapsa sobres sin alterar `ProjectSpec`. */
 export type ResolvedSpec = {
-  [K in ProjectSpecFieldName]: NonNullable<ProjectSpec[K]["value"]> | undefined;
+  project_name?: string;
+  customer?: string;
+  enclosure_count?: number;
+  height_mm?: number;
+  width_mm?: number;
+  depth_mm?: number;
+  internal_temp_max_c?: number;
+  internal_temp_min_c?: number;
+  housing_material?: HousingMaterial;
+  housing_color?: string;
+  supply_voltage?: SupplyVoltage;
+  location?: Location;
+  ambient_temp_max_c?: number;
+  ambient_temp_min_c?: number;
+  solar_load?: boolean;
+  wind_exposure?: boolean;
+  installation?: Installation;
+  air_quality?: AirQuality;
+  process_water_available?: boolean;
+  total_dissipation_w?: number;
+  component_list?: Array<{ name: string; w: number; qty: number }>;
+  measured_temps?: { inside_c: number; outside_c: number };
 };
 
 export function resolveSpec(spec: ProjectSpec): ResolvedSpec {
-  const out = {} as Record<string, unknown>;
-  for (const key of Object.keys(spec) as ProjectSpecFieldName[]) {
-    out[key] = valueOf(spec[key] as Field<unknown>);
+  const resolved: ResolvedSpec = {
+    ...(spec.component_list === null ? {} : { component_list: spec.component_list }),
+    ...(spec.measured_temps === null ? {} : { measured_temps: spec.measured_temps }),
+  };
+  for (const key of FIELD_KEYS) {
+    const envelope = spec[key] as Field<unknown>;
+    const value = valueOf(envelope);
+    if (value !== undefined) {
+      (resolved as Record<string, unknown>)[key] = value;
+    }
   }
-  return out as ResolvedSpec;
+  return resolved;
 }
