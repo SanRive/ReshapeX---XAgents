@@ -12,6 +12,7 @@ export type ModelSpecs = {
     frequency?: string;
     currentA?: number;
     citation: Citation;
+    currentCitation?: Citation;
   }>;
   capacity?: { min?: number; max?: number; unit: "W" | "Btu/h"; citation: Citation };
   mounting?: "side" | "integrated" | "top";
@@ -31,34 +32,49 @@ export type ModelLookupResult =
 type ElectricalVariant = ModelSpecs["articleNumbers"][number];
 const COMPACT_CATALOG = "DownloadCentre/CompactCatalogue/Pfannenberg_Compact_catalogue_30_en.pdf";
 
+/**
+ * Fila "Current consumption" de la p.18 del Compact Catalogue: aplica a las
+ * cuatro variantes (230V/400V x Standard/Multi Controller) — es una única
+ * fila de tabla compartida, no una síntesis por variante.
+ */
+const DTT_6301_CURRENT_CITATION: Citation = {
+  documento: COMPACT_CATALOG,
+  pagina: 18,
+  texto_citado: "Current consumption 5.73 | 7 A 3.75 | 3.6 A",
+};
+
 const DTT_6301_ELECTRICAL: readonly ElectricalVariant[] = [
   {
     articleNumber: "13256341055",
     voltage: "230 V AC",
     frequency: "50 | 60 Hz",
     currentA: 5.73,
-    citation: { documento: COMPACT_CATALOG, pagina: 18, texto_citado: "DTT 6301 230 V 13256341055 13256371055; Current consumption 5.73 | 7 A" },
+    citation: { documento: COMPACT_CATALOG, pagina: 18, texto_citado: "DTT 6301 230 V 13256341055 13256371055" },
+    currentCitation: DTT_6301_CURRENT_CITATION,
   },
   {
     articleNumber: "13256349055",
     voltage: "400 V 2~ AC",
     frequency: "50 | 60 Hz",
     currentA: 3.75,
-    citation: { documento: COMPACT_CATALOG, pagina: 18, texto_citado: "DTT 6301 400 V 13256349055 13256379055; Current consumption 3.75 | 3.6 A" },
+    citation: { documento: COMPACT_CATALOG, pagina: 18, texto_citado: "DTT 6301 400 V 13256349055 13256379055" },
+    currentCitation: DTT_6301_CURRENT_CITATION,
   },
   {
     articleNumber: "13256371055",
     voltage: "230 V AC",
     frequency: "50 | 60 Hz",
     currentA: 7,
-    citation: { documento: COMPACT_CATALOG, pagina: 18, texto_citado: "DTT 6301 230 V 13256341055 13256371055; Current consumption 5.73 | 7 A" },
+    citation: { documento: COMPACT_CATALOG, pagina: 18, texto_citado: "DTT 6301 230 V 13256341055 13256371055" },
+    currentCitation: DTT_6301_CURRENT_CITATION,
   },
   {
     articleNumber: "13256379055",
     voltage: "400 V 2~ AC",
     frequency: "50 | 60 Hz",
     currentA: 3.6,
-    citation: { documento: COMPACT_CATALOG, pagina: 18, texto_citado: "DTT 6301 400 V 13256349055 13256379055; Current consumption 3.75 | 3.6 A" },
+    citation: { documento: COMPACT_CATALOG, pagina: 18, texto_citado: "DTT 6301 400 V 13256349055 13256379055" },
+    currentCitation: DTT_6301_CURRENT_CITATION,
   },
 ] as const;
 
@@ -83,7 +99,7 @@ function buildSpecs(query: string, model: CoolingUnitModel): ModelSpecs {
   const articleNumbers = model.serie === "DTT 6301" ? [...DTT_6301_ELECTRICAL] : [];
   const citations = uniqueCitations([
     ...variants.flatMap((variant) => [variant.cita, ...(variant.citaRating ? [variant.citaRating] : [])]),
-    ...articleNumbers.map((article) => article.citation),
+    ...articleNumbers.flatMap((article) => [article.citation, ...(article.currentCitation ? [article.currentCitation] : [])]),
     CITATIONS.CAPACIDAD_VARIA_POR_VOLTAJE,
   ]);
   const ratings = [...new Set(variants.flatMap((variant) => variant.ratingsNema))];
