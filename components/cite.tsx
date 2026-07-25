@@ -1,4 +1,4 @@
-import type { Citation } from "@/lib/project-spec";
+import type { Citation } from "@/lib/turn";
 
 /**
  * Sin cita no sale a la UI.

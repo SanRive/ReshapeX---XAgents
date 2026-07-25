@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
-import { detectOutOfScope, RESPONSE_OUT_OF_SCOPE } from "@/lib/fixtures/out-of-scope";
+import {
+  FUERA_DE_ALCANCE_RESPUESTA,
+  detectOutOfScope,
+} from "@/lib/fixtures/out-of-scope";
 import { providerHealth } from "@/lib/llm/providers";
 import type { TurnResult } from "@/lib/turn";
 
@@ -50,18 +53,12 @@ export async function POST(request: Request) {
       gate: null,
       shortlist: null,
       questions: [],
-      decisions: [
-        {
-          kind: "guardrail",
-          text: `Keyword «${keyword}» detectada antes de llamar al modelo. Respuesta fija, sin gastar la llamada.`,
-        },
-      ],
       disclaimers: [],
-      outOfScope: { keyword, response: RESPONSE_OUT_OF_SCOPE },
+      outOfScope: { keyword, response: FUERA_DE_ALCANCE_RESPUESTA },
       message: {
         id: `oos-${Date.now()}`,
         speaker: "agent",
-        text: RESPONSE_OUT_OF_SCOPE,
+        text: FUERA_DE_ALCANCE_RESPUESTA,
       },
     };
     return NextResponse.json(result);

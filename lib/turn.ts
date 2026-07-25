@@ -1,14 +1,35 @@
 /**
- * La forma de un turno — el seam entre la UI (pista D) y la integracion (I1).
+ * La forma de un turno — el seam entre la UI (pista D) y la integración (I1).
  *
  * `POST /api/turn` devuelve exactamente un `TurnResult`. La UI no conoce nada
- * mas del backend: ni proveedores, ni tools, ni el motor de reglas. Si esta
- * forma se respeta, D e I1 pueden avanzar sin abrir el mismo archivo.
+ * más del backend: ni proveedores, ni tools, ni el motor de reglas.
+ *
+ * Lo que YA está en el contrato de T0.2 no se redefine aquí. En concreto el
+ * `decision_log` vive dentro del `ProjectSpec` y se re-exporta tal cual: un
+ * segundo tipo de log se desincronizaría solo.
  *
  * Referencia: spec §7.2 (las tres capas) y §7.4 (manejo de errores).
  */
 
-import type { Citation, ProjectSpec } from "./project-spec";
+import type { ProjectSpec } from "./project-spec";
+
+/** El log de decisiones es del contrato, no de la UI. */
+export type DecisionEntry = ProjectSpec["decision_log"][number];
+export type DecisionAction = DecisionEntry["action"];
+
+/* ==========================================================================
+   Citas del catálogo
+   --------------------------------------------------------------------------
+   El contrato usa `basis` como clave de DEFAULTS para los valores por defecto.
+   Esto es lo otro: las citas que acompañan a los veredictos de la compuerta y
+   a los descartes del shortlist, que son salida del motor de reglas (pista B).
+   ========================================================================== */
+
+export interface Citation {
+  documento: string;
+  pagina: string;
+  texto_citado: string;
+}
 
 /* ==========================================================================
    Compuerta de 4 familias (§4.1)
@@ -20,10 +41,10 @@ export type Verdict = "viable" | "conditional" | "rejected";
 
 export interface FamilyVerdict {
   family: Family;
-  /** Nombre comercial tal como aparece en el catalogo. */
+  /** Nombre comercial tal como aparece en el catálogo. */
   label: string;
   verdict: Verdict;
-  /** Una frase. La razon, en castellano, sin numeros que no vengan del spec. */
+  /** Una frase. La razón, sin números que no vengan del spec. */
   reason: string;
   citations: Citation[];
 }
@@ -48,7 +69,7 @@ export interface ModelCandidate {
   /** side | recessed | top — codificado en la serie: DTS / DTI / DTT. */
   mounting: "side" | "recessed" | "top";
   nema_available: string[];
-  /** Corriente publicada por modelo y voltaje. Es la unica cifra electrica que
+  /** Corriente publicada por modelo y voltaje. Es la única cifra eléctrica que
    *  damos: no hay precios ni potencia por modelo en el corpus (§3.4). */
   current_a?: number;
   article_no?: string;
@@ -58,36 +79,13 @@ export interface ModelCandidate {
 }
 
 export interface Shortlist {
-  /** Disipacion declarada o sumada de la lista de componentes. Nunca estimada. */
-  total_dissipation_w: number;
-  /** total x 1.10 — margen citado de DTS_2017. */
-  required_w: number;
-  required_btuh: number;
   candidates: ModelCandidate[];
   rejected: ModelCandidate[];
-  /** Advertencia de base de rating cuando el punto de operacion es mas severo
+  /** Advertencia de base de rating cuando el punto de operación es más severo
    *  que DIN 35/35. La escribe el motor de reglas, no el modelo. */
   derating_note: string | null;
+  /** Cuántas unidades hacen falta: una por gabinete. */
   units_needed: number;
-}
-
-/* ==========================================================================
-   Log de decisiones — la prueba de que el guardrail actuo
-   ========================================================================== */
-
-export type DecisionKind =
-  | "extract"
-  | "degraded"
-  | "default"
-  | "gate"
-  | "shortlist"
-  | "guardrail"
-  | "tool";
-
-export interface DecisionEntry {
-  kind: DecisionKind;
-  text: string;
-  citation?: Citation;
 }
 
 /* ==========================================================================
@@ -100,19 +98,16 @@ export interface ChatMessage {
   id: string;
   speaker: Speaker;
   text: string;
-  /** Fragmentos del propio texto que la extraccion uso como evidencia. La UI los
-   *  resalta in situ: es la costura visible entre el chat y la ficha. */
-  highlights?: { text: string; status: "declared" | "inferred" }[];
-  /** Que proveedor respondio este turno. El fallback es visible, no silencioso. */
+  /** Qué proveedor respondió este turno. El fallback es visible, no silencioso. */
   provider?: ProviderTrace;
-  /** Campos que este turno cambio de estado, para animarlos en la ficha. */
+  /** Campos que este turno cambió de estado, para animarlos en la ficha. */
   touched?: string[];
-  /** Se disparo el post-check numerico y se sustituyo la prosa. */
+  /** Se disparó el post-check numérico y se sustituyó la prosa. */
   postCheckReplaced?: boolean;
 }
 
 export interface ProviderTrace {
-  /** groq-1 · groq-2 · mistral-1 · … El indice es la posicion en el pool. */
+  /** groq-1 · groq-2 · mistral-1 · … El índice es la posición en el pool. */
   id: string;
   model: string;
   latency_ms: number;
@@ -121,18 +116,19 @@ export interface ProviderTrace {
 }
 
 /* ==========================================================================
-   Preguntas bloqueantes — maximo 3 por turno (§3.3 fase 2)
+   Preguntas bloqueantes — máximo 3 por turno (§3.3 fase 2)
    ========================================================================== */
 
 export interface BlockingQuestion {
+  /** Una clave de FIELD_KEYS. */
   field: string;
-  /** Por que lo necesito. Sale del FIELD_GUIDE, no del modelo. */
+  /** Por qué lo necesito. Sale del FIELD_GUIDE, no del modelo. */
   why: string;
-  /** Donde buscarlo. */
+  /** Dónde buscarlo. */
   where: string;
   /** Camino alterno aceptable. */
   alternative: string | null;
-  /** El error clasico que este campo invita a cometer. */
+  /** El error clásico que este campo invita a cometer. */
   antipattern: string | null;
   citation?: Citation;
 }
@@ -142,16 +138,16 @@ export interface BlockingQuestion {
    ========================================================================== */
 
 export interface TurnResult {
+  /** Trae dentro `derived` y `decision_log`. */
   spec: ProjectSpec;
   /** null mientras no se cierre el umbral 1. */
   gate: FamilyVerdict[] | null;
   /** null mientras no se cierre el umbral 2. */
   shortlist: Shortlist | null;
   questions: BlockingQuestion[];
-  decisions: DecisionEntry[];
   message: ChatMessage;
-  /** Lo que explicitamente no afirmamos. Lo ensambla codigo, no el modelo. */
+  /** Lo que explícitamente no afirmamos. Lo ensambla código, no el modelo. */
   disclaimers: string[];
-  /** Guardrail de fuera de alcance: se disparo antes de llamar al LLM. */
+  /** Guardrail de fuera de alcance: se disparó antes de llamar al LLM. */
   outOfScope?: { keyword: string; response: string };
 }

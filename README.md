@@ -57,9 +57,10 @@ es la pantalla principal, no plomería invisible.
 | `app/page.tsx` | La única ruta. Dos vistas —cliente e ingeniero— con un toggle. |
 | `app/api/turn/route.ts` | El punto de integración. **Que lo abra una sola persona.** |
 | `components/` | Chat, ficha de tres estados, compuerta, shortlist, vista ingeniero. |
-| `lib/project-spec.ts` | **El contrato.** `Field` y `ProjectSpec` en Zod, tipos por `z.infer<>`. |
+| `lib/project-spec.ts` | **El contrato (T0.2).** Sobres, `DEFAULTS`, umbrales y derivados en Zod. |
 | `lib/turn.ts` | La forma de un turno: el seam entre la UI y el backend. |
-| `lib/fixtures/` | El caso de §5 resuelto a mano y el fuera de alcance. |
+| `lib/fixtures/` | Los dos casos del contrato: Barranquilla y el fuera de alcance. |
+| `lib/demo/` | Andamio de la UI: turno 2, compuerta y shortlist simulados. **Se borra** cuando aterricen A, B y C. |
 | `lib/llm/` | Cadena de proveedores con rotación de claves. |
 | `lib/brief/generate.ts` | El brief PSS-ready. Lo ensambla código, no el modelo. |
 | `corpus_txt/` | 104 documentos extraídos a texto. Solo ~30 entran al retrieval. |

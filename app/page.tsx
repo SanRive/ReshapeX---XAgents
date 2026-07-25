@@ -5,36 +5,35 @@ import { Chat, type Exchange } from "@/components/chat";
 import { EngineerView } from "@/components/engineer-view";
 import { Ficha } from "@/components/ficha";
 import { SiteHeader, type View } from "@/components/site-header";
+import { emptySpec, type ProjectSpec } from "@/lib/project-spec";
+import { DEMO_SCRIPT, EXAMPLES, type ScriptedTurn } from "@/lib/demo/turns";
 import {
-  DEMO_SCRIPT,
-  EXAMPLES,
-  emptySpec,
-  type ScriptedTurn,
-} from "@/lib/fixtures/conversation";
-import { detectOutOfScope, RESPONSE_OUT_OF_SCOPE } from "@/lib/fixtures/out-of-scope";
+  FUERA_DE_ALCANCE_RESPUESTA,
+  detectOutOfScope,
+} from "@/lib/fixtures/out-of-scope";
 import type { TurnResult } from "@/lib/turn";
 
 /**
- * D1 — la unica ruta.
+ * D1 — la única ruta.
  *
  * Dos vistas sobre el mismo estado: el cliente conversa y ve su ficha llenarse;
  * el ingeniero recibe el brief. Un toggle, sin routing.
  *
  * ─────────────────────────────────────────────────────────────────────────────
- * ESTADO DE INTEGRACION (I4 — la hace D, no quien integra)
+ * ESTADO DE INTEGRACIÓN (I4 — la hace D, no quien integra)
  *
- * Hoy los turnos salen de `DEMO_SCRIPT`, el fixture del caso §5. Para conectar
- * el pipeline real basta cambiar `runTurn` por:
+ * Hoy los turnos salen de `lib/demo/turns.ts`. Para conectar el pipeline real
+ * basta cambiar el cuerpo de `runTurn` por:
  *
  *   const res = await fetch("/api/turn", {
  *     method: "POST",
  *     headers: { "content-type": "application/json" },
- *     body: JSON.stringify({ message: input, spec: currentSpec }),
+ *     body: JSON.stringify({ message: input, spec }),
  *   });
  *   const turn: TurnResult = await res.json();
  *
- * `TurnResult` ya es la forma que devuelve el endpoint. Ningun componente de
- * esta carpeta cambia — solo esta funcion.
+ * `TurnResult` ya es la forma que devuelve el endpoint y `spec` ya es el
+ * `ProjectSpec` del contrato. Ningún componente cambia.
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
@@ -52,7 +51,7 @@ export default function Page() {
   async function runTurn(input: string) {
     setPending(true);
 
-    // El guardrail de fuera de alcance es codigo determinista y corre ANTES de
+    // El guardrail de fuera de alcance es código determinista y corre ANTES de
     // cualquier llamada al modelo. Funciona sobre entrada libre, no solo sobre
     // el ejemplo precargado: un juez puede escribir lo que quiera y sigue en pie.
     const keyword = detectOutOfScope(input);
@@ -138,50 +137,39 @@ function matchScript(input: string): ScriptedTurn | undefined {
   return DEMO_SCRIPT.find((t) => norm(t.input) === needle);
 }
 
-function outOfScopeTurn(keyword: string, spec: TurnResult["spec"]): TurnResult {
+function outOfScopeTurn(keyword: string, spec: ProjectSpec): TurnResult {
   return {
+    // El spec no se toca: el guardrail corta antes de extraer nada.
     spec,
     gate: null,
     shortlist: null,
     questions: [],
-    decisions: [
-      {
-        kind: "guardrail",
-        text: `Keyword «${keyword}» detectada antes de llamar al modelo. Respuesta fija, sin gastar la llamada y sin margen para improvisar.`,
-      },
-    ],
     disclaimers: [],
-    outOfScope: { keyword, response: RESPONSE_OUT_OF_SCOPE },
+    outOfScope: { keyword, response: FUERA_DE_ALCANCE_RESPUESTA },
     message: {
       id: `oos-${Date.now()}`,
       speaker: "agent",
-      text: RESPONSE_OUT_OF_SCOPE,
+      text: FUERA_DE_ALCANCE_RESPUESTA,
     },
   };
 }
 
 /** Entrada libre que no es fuera de alcance y no coincide con el guion. Se dice
- *  la verdad: la extraccion todavia no esta conectada. Inventar una ficha aqui
- *  seria justo lo que este producto existe para no hacer. */
-function notWiredTurn(spec: TurnResult["spec"]): TurnResult {
+ *  la verdad: la extracción todavía no está conectada. Inventar una ficha aquí
+ *  sería justo lo que este producto existe para no hacer. */
+function notWiredTurn(spec: ProjectSpec): TurnResult {
   return {
     spec,
     gate: null,
     shortlist: null,
     questions: [],
-    decisions: [
-      {
-        kind: "extract",
-        text: "Entrada libre recibida. La extracción con LLM (pista A) todavía no está conectada a esta vista.",
-      },
-    ],
     disclaimers: [],
     message: {
       id: `nw-${Date.now()}`,
       speaker: "agent",
       text: `Recibí el mensaje, pero la extracción todavía no está conectada a esta vista: **POST /api/turn** está definido y sin implementar.
 
-Lo que sí corre ahora mismo es el guardrail de fuera de alcance, que es código determinista — pruébelo pidiendo sirenas o un chiller.
+Lo que sí corre ahora mismo es el guardrail de fuera de alcance, que es código determinista — pruébelo pidiendo sirenas, un chiller o un calefactor.
 
 Para ver el caso completo, cargue **Correo de Barranquilla** con el botón de abajo y luego **Respuesta del cliente**.`,
     },
