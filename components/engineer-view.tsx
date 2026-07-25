@@ -19,11 +19,13 @@ import {
   basisCitation,
   blocksText,
   formatFieldValue,
+  splitFieldValue,
   num,
 } from "@/lib/format";
 import { briefFilename, generateBrief } from "@/lib/brief/generate";
 import type { DecisionEntry, TurnResult } from "@/lib/turn";
 import { GateVerdicts } from "./gate-verdicts";
+import { QuickRead } from "./quick-read";
 import { ShortlistTable } from "./shortlist-table";
 
 /**
@@ -127,6 +129,11 @@ export function EngineerView({ turn }: { turn: TurnResult }) {
         </div>
       </header>
 
+      {/* Lectura rapida: las cuatro cifras que se buscan antes de leer nada.
+          Va antes del disclaimer a proposito — primero QUE dice el documento,
+          despues con que reservas. */}
+      <QuickRead turn={turn} />
+
       {/* El disclaimer es elemento central de pantalla, no nota al pie: quien
           conversa con el agente es, por definición, quien no puede validar la
           recomendación. */}
@@ -142,14 +149,25 @@ export function EngineerView({ turn }: { turn: TurnResult }) {
         </p>
       </div>
 
-      {PSS_TABS.map((tab) => (
-        <section key={tab.title} className="plate px-4 py-3.5">
-          <div className="brief-prose">
-            <h3>{tab.title}</h3>
-            <p className="mb-2 text-[0.8125rem] text-[var(--color-ink-faint)]">
-              {tab.note}
-            </p>
+      {PSS_TABS.map((tab, i) => (
+        <section key={tab.title} className="plate overflow-hidden">
+          {/* Cabecera de seccion en banda propia, con el ordinal grande a la
+              izquierda. Antes los tres TAB eran placas identicas y el ojo no
+              tenia donde agarrarse para agrupar; el numero da el ancla. */}
+          <div className="flex items-baseline gap-3 border-b border-[var(--color-hairline)] bg-[var(--color-panel-lift)] px-4 py-2.5">
+            <span className="u-datum text-[1.5rem] leading-none font-medium text-[var(--color-hairline)]">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <div className="min-w-0">
+              <h3 className="u-nameplate text-[0.9375rem] leading-tight">
+                {tab.title.replace(/^Tab \d+ · /, "")}
+              </h3>
+              <p className="text-[0.75rem] leading-snug text-[var(--color-ink-faint)]">
+                {tab.note}
+              </p>
+            </div>
           </div>
+          <div className="px-4 py-1.5">
           {tab.fields.map((key) => (
             <BriefRow key={key} fieldKey={key} spec={spec} />
           ))}
@@ -177,6 +195,7 @@ export function EngineerView({ turn }: { turn: TurnResult }) {
               )}
             </>
           )}
+          </div>
         </section>
       ))}
 
@@ -217,28 +236,47 @@ function BriefRow({ fieldKey, spec }: { fieldKey: FieldKey; spec: ProjectSpec })
   const blocks = blocksText(fieldKey, spec);
   const blank = field.status === "missing" && !blocks;
 
+  // Tres pesos, no uno. Un campo que traba una decision tiene que verse antes
+  // que el color del gabinete; un pendiente-PSS que no bloquea nada, despues.
+  // Solo marca en rojo lo que FALTA y ademas traba algo. `blocksText` devuelve
+  // la traba del campo aunque este resuelto — un inferido con canto rojo dice
+  // que hay un problema donde no lo hay.
+  const peso =
+    field.status === "missing" && blocks
+      ? "brief-row--blocks"
+      : blank
+        ? "brief-row--quiet"
+        : "";
+
+  const { value, unit } = splitFieldValue(fieldKey, field);
+  const sinValor = field.value === null;
+
   return (
-    <div className="brief-row">
-      <div className="flex items-baseline gap-2">
-        <span className="text-[0.8125rem]">{FIELD_LABELS[fieldKey] ?? fieldKey}</span>
-        <code className="u-datum text-[0.6875rem] text-[var(--color-ink-faint)]">
+    <div className={`brief-row ${peso}`}>
+      {/* Columna 1 · la etiqueta. Nombre humano arriba, clave tecnica debajo:
+          el ingeniero busca la clave en PSS, el cliente lee el nombre. */}
+      <div className="min-w-0">
+        <span className="block text-[0.8125rem] leading-snug">
+          {FIELD_LABELS[fieldKey] ?? fieldKey}
+        </span>
+        <code className="u-datum block text-[0.6875rem] leading-snug text-[var(--color-ink-faint)]">
           {fieldKey}
         </code>
       </div>
-      <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
-        <span
-          className={`u-datum ${field.status === "missing" ? "text-[var(--color-ink-faint)]" : "font-medium"}`}
-        >
-          {formatFieldValue(fieldKey, field)}
-        </span>
-        <span className={`chip ${blank ? "chip-neutral" : STATUS_CHIP[field.status]}`}>
-          <span aria-hidden>{blank ? "·" : STATUS_GLYPH[field.status]}</span>
-          {blank ? "sin dato" : STATUS_WORD[field.status]}
-        </span>
-        <span className="min-w-0 basis-full text-[0.75rem] leading-snug text-[var(--color-ink-faint)]">
-          {support(field, blocks)}
-        </span>
-      </div>
+
+      {/* Columna 2 · LA CIFRA. Lo mas pesado de la fila. */}
+      <span className={`brief-value ${sinValor ? "brief-value--muted" : ""}`}>
+        {value}
+        {unit && <span className="brief-unit">{unit}</span>}
+      </span>
+
+      {/* Columna 3 · el estado, alineado a la derecha para formar columna. */}
+      <span className={`chip ${blank ? "chip-neutral" : STATUS_CHIP[field.status]}`}>
+        <span aria-hidden>{blank ? "\u00b7" : STATUS_GLYPH[field.status]}</span>
+        {blank ? "sin dato" : STATUS_WORD[field.status]}
+      </span>
+
+      <span className="brief-support">{support(field, blocks)}</span>
     </div>
   );
 }

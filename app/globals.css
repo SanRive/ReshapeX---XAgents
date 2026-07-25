@@ -519,12 +519,52 @@ body {
   margin-bottom: 0.5rem;
 }
 
+/* Tres columnas, no dos: etiqueta · CIFRA · estado.
+   En una hoja de datos el numero manda y la etiqueta acompana. Con dos columnas
+   el valor quedaba metido en el mismo bloque que su evidencia y su chip, y
+   acababa pesando igual que el rotulo — que es justo lo que hacia la ficha
+   ilegible de un vistazo. */
 .brief-row {
   display: grid;
-  grid-template-columns: minmax(0, 13rem) minmax(0, 1fr);
-  gap: 0.75rem;
-  padding: 0.35rem 0;
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: 1rem;
+  row-gap: 0.15rem;
+  padding: 0.5rem 0;
   border-bottom: 1px solid var(--color-hairline-soft);
+}
+
+/* La evidencia va DEBAJO de la cifra, no a lo ancho: se lee como pie del dato
+   al que pertenece, y deja el margen izquierdo limpio para recorrer etiquetas. */
+.brief-row > .brief-support {
+  grid-column: 2 / -1;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--color-ink-faint);
+}
+
+/* La cifra. Tabular para que las columnas de numeros se alineen solas. */
+.brief-value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+
+.brief-value--muted {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--color-ink-faint);
+}
+
+/* La unidad es sufijo, no dato: un escalon por debajo y sin peso. */
+.brief-unit {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-ink-faint);
+  margin-left: 0.25rem;
 }
 
 .brief-row:last-child {
@@ -862,4 +902,43 @@ body {
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--color-hairline) transparent;
+}
+
+/* ============================================================================
+   Jerarquía de la ficha del ingeniero
+   ----------------------------------------------------------------------------
+   El problema que resuelven estas tres reglas: antes toda fila del brief pesaba
+   exactamente lo mismo, así que «Color · RAL 7035» se leía con la misma fuerza
+   que «Capacidad requerida · 5 067 Btu/h», y un campo que traba el shortlist no
+   se distinguía de uno que no bloquea nada.
+
+   Tres pesos, no uno:
+     · el que TRABA una decisión — canto rojo, fondo levísimo, se ve al vuelo
+     · el normal — declarado o inferido, sin adorno
+     · el que no bloquea — pendiente-PSS, atenuado para que no compita
+   ========================================================================== */
+
+.brief-row--blocks {
+  /* El canto entra hacia dentro para no descuadrar la rejilla de la placa. */
+  box-shadow: inset 3px 0 0 var(--color-missing);
+  background: linear-gradient(
+    90deg,
+    var(--color-missing-wash) 0%,
+    transparent 34%
+  );
+  padding-left: 0.6rem;
+  margin-left: -0.6rem;
+  margin-right: -0.6rem;
+  padding-right: 0.6rem;
+}
+
+/* Un pendiente-PSS es contexto, no una tarea. Baja el contraste sin llegar a
+   esconderlo: sigue siendo legible, deja de reclamar atención. */
+.brief-row--quiet {
+  opacity: 0.62;
+}
+
+.brief-row--quiet:hover,
+.brief-row--quiet:focus-within {
+  opacity: 1;
 }
