@@ -1,0 +1,626 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   Engineering Copilot Pfannenberg — sistema de tokens
+   ----------------------------------------------------------------------------
+   La paleta sale de codigos RAL reales del mundo del tablero electrico:
+   RAL 7016 antracita y RAL 7035 gris claro son los acabados de gabinete que
+   cita el catalogo (§4.3: "Acabados RAL 7035, ANSI 61, inoxidable"), y los tres
+   colores de estado son los colores de señal industriales — RAL 6018, 1023,
+   3020. Los tres de estado van deepened respecto al RAL puro para pasar 3:1
+   contra la superficie clara; el RAL puro solo sobrevive como color de señal en
+   area grande, no como tinta.
+
+   Los tres estados NUNCA se distinguen solo por color: cada uno lleva glifo,
+   etiqueta escrita y un patron de riel distinto (solido / rayado / punteado).
+   Es requisito de accesibilidad y ademas es la lectura correcta bajo daltonismo
+   rojo-verde, que es exactamente el par que usa la ficha.
+   ========================================================================== */
+
+@theme {
+  /* --- superficie -------------------------------------------------------- */
+  --color-field: #e4e6e3; /* RAL 7035 · el gris del gabinete */
+  --color-field-deep: #d3d7d2;
+  --color-panel: #fbfbf9; /* RAL 9003 signal white */
+  --color-anthracite: #2f353a; /* RAL 7016 */
+  --color-anthracite-lift: #3b4349;
+  --color-graphite: #59626a;
+  --color-hairline: #c6cbc5;
+  --color-hairline-soft: #e0e3df;
+
+  /* --- tinta ------------------------------------------------------------- */
+  --color-ink: #22282c;
+  --color-ink-muted: #5d666d;
+  --color-ink-faint: #8b939a;
+  --color-ink-inverse: #eef0ec;
+
+  /* --- acento: RAL 5021 water blue, saturado --------------------------- */
+  --color-water: #00778a;
+  --color-water-deep: #005463;
+  --color-water-wash: #e2f0f2;
+
+  /* --- estados de la ficha ---------------------------------------------- */
+  --color-declared: #3f7a28; /* RAL 6018 yellow green, deepened */
+  --color-declared-wash: #eaf2e4;
+  --color-inferred: #a86a00; /* RAL 1023 traffic yellow, deepened */
+  --color-inferred-wash: #f8efdd;
+  --color-missing: #c0110f; /* RAL 3020 traffic red */
+  --color-missing-wash: #fbe8e6;
+
+  /* --- tipografia -------------------------------------------------------- */
+  --font-display: var(--font-archivo), "Archivo", "Helvetica Neue", sans-serif;
+  --font-body: var(--font-plex-sans), "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
+
+  --text-eyebrow: 0.6875rem;
+  --text-eyebrow--line-height: 1.1;
+  --text-micro: 0.75rem;
+  --text-micro--line-height: 1.45;
+
+  /* --- geometria --------------------------------------------------------- */
+  --radius-plate: 3px;
+  --radius-mark: 4px;
+}
+
+/* ============================================================================
+   Base
+   ========================================================================== */
+
+html {
+  background: var(--color-field);
+}
+
+body {
+  background: var(--color-field);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+}
+
+::selection {
+  background: var(--color-water);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-water);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================================
+   Tipografia — la placa de datos
+   ----------------------------------------------------------------------------
+   Archivo es variable en anchura. La cabecera va en ancho expandido, como el
+   grabado de una placa de equipo; el cuerpo va en Plex Sans y todo dato medible
+   —temperaturas, Btu/h, dimensiones, numeros de articulo, citas— va en Plex
+   Mono. La regla es literal: si es un valor que un ingeniero podria copiar a
+   PSS, va en monoespaciada.
+   ========================================================================== */
+
+.u-nameplate {
+  font-family: var(--font-display);
+  font-variation-settings: "wdth" 118;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.02;
+  text-transform: uppercase;
+}
+
+.u-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-eyebrow);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+}
+
+.u-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.02em;
+  color: var(--color-ink-muted);
+}
+
+.u-datum {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* ============================================================================
+   Placa — la superficie base de todo bloque de contenido
+   ========================================================================== */
+
+.plate {
+  background: var(--color-panel);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-plate);
+}
+
+/* Variante acentuada. Va como clase propia y no como utilidad de borde: `.plate`
+   usa la forma corta `border:`, que gana a cualquier utilidad de un solo lado
+   por orden de aparicion. */
+.plate-accent {
+  border-left: 3px solid var(--color-water);
+}
+
+.plate-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.6rem 0.875rem;
+  border-bottom: 1px solid var(--color-hairline-soft);
+}
+
+/* ============================================================================
+   La ficha de tres estados — el elemento firma
+   ----------------------------------------------------------------------------
+   Cada campo es un recibo: nombre tecnico, valor, y la prueba de donde salio.
+   El riel izquierdo codifica el estado dos veces, por color y por patron.
+   ========================================================================== */
+
+.fieldcard {
+  position: relative;
+  padding: 0.6rem 0.875rem 0.65rem 1.15rem;
+  border-bottom: 1px solid var(--color-hairline-soft);
+  transition: background 160ms ease;
+}
+
+.fieldcard:last-child {
+  border-bottom: 0;
+}
+
+.fieldcard::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+}
+
+.fieldcard-declared::before {
+  background: var(--color-declared);
+}
+
+.fieldcard-inferred::before {
+  /* rayado: segunda codificacion del estado, no solo el color */
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--color-inferred) 0 3px,
+    transparent 3px 6px
+  );
+}
+
+.fieldcard-missing::before {
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--color-missing) 0 3px,
+    transparent 3px 7px
+  );
+}
+
+/* Un campo vacio no es un fallo. Antes de leer nada, «falta» solo significa que
+   la ficha esta en blanco — pintarla entera de rojo grita una alarma que no
+   existe. El rojo se reserva para lo que ya sabemos que traba una decision. */
+.fieldcard-empty::before {
+  background: var(--color-hairline);
+}
+
+.fieldcard-hot {
+  background: var(--color-water-wash);
+}
+
+/* La cita literal. Va con guillemets y en monoespaciada porque es texto que se
+   copio del correo caracter por caracter — el formato lo dice antes que la
+   etiqueta. */
+.receipt {
+  margin-top: 0.3rem;
+  padding: 0.3rem 0.5rem;
+  background: var(--color-field);
+  border-left: 2px solid var(--color-hairline);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  line-height: 1.5;
+  color: var(--color-ink-muted);
+}
+
+.receipt-declared {
+  border-left-color: var(--color-declared);
+  background: var(--color-declared-wash);
+  color: #2e5a1d;
+}
+
+.receipt-inferred {
+  border-left-color: var(--color-inferred);
+  background: var(--color-inferred-wash);
+  color: #7a4d00;
+}
+
+.receipt-missing {
+  border-left-color: var(--color-missing);
+  background: var(--color-missing-wash);
+  color: #8e0d0b;
+}
+
+/* ============================================================================
+   Chips de estado — glifo + palabra, nunca color a secas
+   ========================================================================== */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.chip-declared {
+  background: var(--color-declared-wash);
+  color: #2e5a1d;
+}
+.chip-inferred {
+  background: var(--color-inferred-wash);
+  color: #7a4d00;
+}
+.chip-missing {
+  background: var(--color-missing-wash);
+  color: #8e0d0b;
+}
+.chip-neutral {
+  background: var(--color-field);
+  color: var(--color-ink-muted);
+}
+.chip-water {
+  background: var(--color-water-wash);
+  color: var(--color-water-deep);
+}
+
+/* ============================================================================
+   Medidor de los dos umbrales (§3.6)
+   ----------------------------------------------------------------------------
+   Ocho pastillas: tres abren la compuerta de tecnologia, cinco mas abren el
+   shortlist. La division no es decorativa — es la afirmacion central del
+   producto, que la compuerta dispara antes y con menos datos que el shortlist.
+   ========================================================================== */
+
+.gauge {
+  display: flex;
+  gap: 2px;
+}
+
+.gauge-pip {
+  height: 6px;
+  flex: 1 1 0;
+  border-radius: 1px;
+  background: var(--color-field-deep);
+}
+
+.gauge-pip-on {
+  background: var(--color-declared);
+}
+.gauge-pip-soft {
+  background: var(--color-inferred);
+}
+
+.gauge-split {
+  width: 1px;
+  align-self: stretch;
+  background: var(--color-graphite);
+  margin: 0 4px;
+}
+
+/* ============================================================================
+   Chat
+   ========================================================================== */
+
+.bubble {
+  border-radius: var(--radius-plate);
+  padding: 0.6rem 0.8rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.bubble-client {
+  background: var(--color-anthracite);
+  color: var(--color-ink-inverse);
+}
+
+.bubble-agent {
+  background: var(--color-panel);
+  border: 1px solid var(--color-hairline);
+}
+
+.bubble-system {
+  background: var(--color-water-wash);
+  border: 1px solid #b9d9de;
+  color: var(--color-water-deep);
+}
+
+/* La evidencia resaltada dentro del correo del cliente: el mismo fragmento que
+   luego aparece en la ficha. Es la costura visible entre chat y ficha. */
+.evidence {
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 -2px 0 0 var(--color-declared);
+  padding: 0 1px;
+}
+
+.evidence-inferred {
+  box-shadow: inset 0 -2px 0 0 var(--color-inferred);
+}
+
+/* ============================================================================
+   Tabla de seleccion rapida — el artefacto nativo del catalogo
+   ----------------------------------------------------------------------------
+   La barra de rango es la unica visualizacion de la app. Marcas finas, extremos
+   redondeados 4px, y una linea de umbral que es el requerido con margen del 10%.
+   ========================================================================== */
+
+.qs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-micro);
+}
+
+.qs-table th {
+  font-family: var(--font-mono);
+  font-size: var(--text-eyebrow);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+  text-align: left;
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid var(--color-hairline);
+  white-space: nowrap;
+}
+
+.qs-table td {
+  padding: 0.55rem 0.6rem;
+  border-bottom: 1px solid var(--color-hairline-soft);
+  vertical-align: middle;
+}
+
+.qs-table tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Cada modelo ocupa dos filas —cifras arriba, razon abajo— y tienen que leerse
+   como un solo bloque. La linea va solo debajo del par. */
+.qs-pair-top > * {
+  border-bottom: 0;
+}
+
+.qs-rejected td {
+  color: var(--color-ink-faint);
+}
+
+.range-track {
+  position: relative;
+  height: 8px;
+  background: var(--color-field-deep);
+  border-radius: var(--radius-mark);
+}
+
+.range-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: var(--radius-mark);
+  /* separacion de 2px contra la marca de umbral, por si se tocan */
+  box-shadow: 0 0 0 2px var(--color-panel);
+}
+
+.range-threshold {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 2px;
+  background: var(--color-anthracite);
+}
+
+/* ============================================================================
+   Vista ingeniero — el brief
+   ========================================================================== */
+
+.brief-prose h3 {
+  font-family: var(--font-display);
+  font-variation-settings: "wdth" 112;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  font-size: 0.9375rem;
+  margin-bottom: 0.5rem;
+}
+
+.brief-row {
+  display: grid;
+  grid-template-columns: minmax(0, 13rem) minmax(0, 1fr);
+  gap: 0.75rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--color-hairline-soft);
+}
+
+.brief-row:last-child {
+  border-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  .brief-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.15rem;
+  }
+}
+
+/* ============================================================================
+   Controles
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-plate);
+  border: 1px solid transparent;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    background 140ms ease,
+    color 140ms ease,
+    border-color 140ms ease;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-solid {
+  background: var(--color-anthracite);
+  color: var(--color-ink-inverse);
+}
+.btn-solid:hover:not(:disabled) {
+  background: var(--color-water-deep);
+}
+
+.btn-quiet {
+  background: transparent;
+  border-color: var(--color-hairline);
+  color: var(--color-ink-muted);
+}
+.btn-quiet:hover:not(:disabled) {
+  border-color: var(--color-water);
+  color: var(--color-water-deep);
+}
+
+/* Botones sobre la placa de antracita. */
+.btn-inverse {
+  background: var(--color-ink-inverse);
+  color: var(--color-anthracite);
+}
+.btn-inverse:hover:not(:disabled) {
+  background: #fff;
+}
+
+.btn-ghost-inverse {
+  background: transparent;
+  border-color: rgba(238, 240, 236, 0.3);
+  color: rgba(238, 240, 236, 0.82);
+}
+.btn-ghost-inverse:hover:not(:disabled) {
+  border-color: rgba(238, 240, 236, 0.6);
+  color: #fff;
+}
+
+.seg {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: var(--radius-plate);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.seg-item {
+  padding: 0.28rem 0.7rem;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.06em;
+  color: rgba(238, 240, 236, 0.62);
+  cursor: pointer;
+  transition:
+    background 140ms ease,
+    color 140ms ease;
+}
+
+.seg-item:hover {
+  color: var(--color-ink-inverse);
+}
+
+.seg-item-on {
+  background: var(--color-ink-inverse);
+  color: var(--color-anthracite);
+}
+.seg-item-on:hover {
+  color: var(--color-anthracite);
+}
+
+/* ============================================================================
+   Entrada del turno
+   ========================================================================== */
+
+.composer {
+  width: 100%;
+  resize: none;
+  background: var(--color-panel);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-plate);
+  padding: 0.65rem 0.8rem;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--color-ink);
+}
+
+.composer::placeholder {
+  color: var(--color-ink-faint);
+}
+
+.composer:focus {
+  outline: 2px solid var(--color-water);
+  outline-offset: -1px;
+  border-color: var(--color-water);
+}
+
+/* ============================================================================
+   Aparicion de campo — el momento en que una frase se vuelve dato tipado.
+   Un solo gesto, corto, y solo cuando el campo cambia de estado.
+   ========================================================================== */
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+    background: var(--color-water-wash);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    background: transparent;
+  }
+}
+
+.animate-settle {
+  animation: settle 340ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Barra de scroll discreta dentro de los paneles */
+.scroll-pane {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-hairline) transparent;
+}
