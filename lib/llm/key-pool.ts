@@ -109,17 +109,36 @@ export class KeyPool {
  */
 export function classifyFailure(status: number | undefined, message = ""): FailureKind {
   const m = message.toLowerCase();
-  if (status === 401 || status === 403) return "auth";
-  if (status === 402) return "auth";
-  if (status === 429) return "quota";
-  if (status === 400) {
-    // Algunos proveedores devuelven 400 con cuerpo de cuota agotada.
-    if (m.includes("quota") || m.includes("credit") || m.includes("billing")) {
-      return "quota";
-    }
-    return "fatal";
+
+  /**
+   * El mensaje se mira ANTES que el código de estado.
+   *
+   * Groq devuelve algunos rate limits con status 400, no 429. Con el orden
+   * anterior, la rama del 400 devolvía "fatal" y nunca se llegaba a mirar el
+   * texto — así que un simple límite de cuota abortaba la cadena entera y el
+   * turno moría teniendo tres claves sanas sin usar. Verificado en vivo el
+   * 2026-07-25: «Fallaron los 1 intentos de proveedor: groq-1 (fatal: Rate
+   * limit reached for model openai/gpt-oss-120b…)».
+   */
+  if (
+    m.includes("rate limit") ||
+    m.includes("rate_limit") ||
+    m.includes("quota") ||
+    m.includes("credit") ||
+    m.includes("billing") ||
+    m.includes("too many requests")
+  ) {
+    return "quota";
   }
-  if (m.includes("rate limit") || m.includes("quota exceeded")) return "quota";
+
   if (m.includes("invalid api key") || m.includes("unauthorized")) return "auth";
+
+  if (status === 401 || status === 403 || status === 402) return "auth";
+  if (status === 429) return "quota";
+  // Un 400 que no es de cuota sí es nuestro payload: no rota claves de este
+  // proveedor. Pero la cadena continúa al SIGUIENTE proveedor — ver
+  // `withProviderFallback`, porque otro modelo puede aceptar el mismo payload.
+  if (status === 400) return "fatal";
+
   return "transient";
 }

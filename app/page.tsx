@@ -8,8 +8,9 @@ import { SiteHeader, type View } from "@/components/site-header";
 import { emptySpec, FIELD_KEYS, type AnyField, type ProjectSpec } from "@/lib/project-spec";
 import { EXAMPLES } from "@/lib/demo/turns";
 import {
-  FUERA_DE_ALCANCE_RESPUESTA,
   detectOutOfScope,
+  detectSmallTalk,
+  respuestaFueraDeAlcance,
 } from "@/lib/fixtures/out-of-scope";
 import type { TurnResult } from "@/lib/turn";
 
@@ -41,6 +42,13 @@ export default function Page() {
     // El guardrail de fuera de alcance también corre AQUÍ, no solo en el
     // servidor. Duplicarlo es deliberado: es instantáneo, funciona sin red, y
     // es el primer paso de la demo. Si el wifi del venue cae, esto sigue en pie.
+    const smallTalk = detectSmallTalk(input);
+    if (smallTalk) {
+      pushTurn(input, plainTurn(spec, smallTalk, `st-${Date.now()}`));
+      setPending(false);
+      return;
+    }
+
     const keyword = detectOutOfScope(input);
     if (keyword) {
       pushTurn(input, outOfScopeTurn(keyword, spec));
@@ -142,6 +150,18 @@ function EmptyBrief({ onBack }: { onBack: () => void }) {
 
 /* ========================================================================== */
 
+/** Turno sin analisis: saludo o meta-pregunta. El spec no se toca. */
+function plainTurn(spec: ProjectSpec, text: string, id: string): TurnResult {
+  return {
+    spec,
+    gate: null,
+    shortlist: null,
+    questions: [],
+    disclaimers: [],
+    message: { id, speaker: "agent", text },
+  };
+}
+
 /** Qué campos cambiaron de estado este turno. Solo sirve para animarlos. */
 function diffFields(previo: ProjectSpec, nuevo: ProjectSpec): string[] {
   return FIELD_KEYS.filter((k) => {
@@ -159,11 +179,11 @@ function outOfScopeTurn(keyword: string, spec: ProjectSpec): TurnResult {
     shortlist: null,
     questions: [],
     disclaimers: [],
-    outOfScope: { keyword, response: FUERA_DE_ALCANCE_RESPUESTA },
+    outOfScope: { keyword, response: respuestaFueraDeAlcance(keyword) },
     message: {
       id: `oos-${Date.now()}`,
       speaker: "agent",
-      text: FUERA_DE_ALCANCE_RESPUESTA,
+      text: respuestaFueraDeAlcance(keyword),
     },
   };
 }

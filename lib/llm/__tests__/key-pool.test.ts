@@ -164,19 +164,37 @@ describe("withProviderFallback", () => {
     expect(trace.id).toBe("groq-2");
   });
 
-  it("un 400 corta la cadena en seco: el payload es nuestro, no la clave", async () => {
-    const { withProviderFallback, ProviderCallError, AllProvidersFailedError } =
-      await loadProviders();
+  it("un 400 descarta ese proveedor pero NO la cadena: sigue con el siguiente", async () => {
+    const { withProviderFallback, ProviderCallError } = await loadProviders();
     const seen: string[] = [];
 
-    await expect(
-      withProviderFallback(async ({ apiKey }) => {
-        seen.push(apiKey);
-        throw new ProviderCallError("schema inválido", 400);
-      }),
-    ).rejects.toBeInstanceOf(AllProvidersFailedError);
+    // Groq rechaza el payload; Mistral lo acepta. Es el caso real: `json_schema`
+    // estricto lo valida cada proveedor a su manera, y un payload que uno
+    // rechaza puede ser perfectamente valido para otro.
+    const { trace } = await withProviderFallback(async ({ apiKey, config }) => {
+      seen.push(apiKey);
+      if (config.name === "groq") throw new ProviderCallError("schema inválido", 400);
+      return "ok";
+    });
 
-    expect(seen).toEqual(["gk-1"]);
+    // Solo UNA clave de groq: rotar claves del mismo proveedor con un payload
+    // malo solo las gasta.
+    expect(seen.filter((k) => k.startsWith("gk"))).toEqual(["gk-1"]);
+    // Pero la cadena continuo hasta un proveedor que si acepta.
+    expect(trace.id.startsWith("mistral")).toBe(true);
+  });
+
+  it("un rate limit NO se clasifica como fatal aunque llegue con status 400", async () => {
+    const { classifyFailure } = await import("../key-pool");
+
+    // Groq devuelve algunos rate limits con 400, no con 429. Clasificarlos como
+    // fatales mataba el turno teniendo tres claves sanas sin usar.
+    expect(
+      classifyFailure(400, "Rate limit reached for model `openai/gpt-oss-120b` in organization"),
+    ).toBe("quota");
+    expect(classifyFailure(429, "too many requests")).toBe("quota");
+    // Un 400 que de verdad es del payload sigue siendo fatal.
+    expect(classifyFailure(400, "invalid json schema for response_format")).toBe("fatal");
   });
 
   it("el timeout aborta el intento y pasa al siguiente sin quemar la clave", async () => {

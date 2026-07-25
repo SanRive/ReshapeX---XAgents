@@ -143,7 +143,11 @@ export async function withProviderFallback<T>(
     ]);
   }
 
+  /** Proveedores cuyo payload fue rechazado: no se prueban mas claves suyas. */
+  const proveedoresDescartados = new Set<string>();
+
   for (const attempt of attempts) {
+    if (proveedoresDescartados.has(attempt.config.name)) continue;
     const pool = POOLS[attempt.config.name];
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -182,8 +186,20 @@ export async function withProviderFallback<T>(
         reason: controller.signal.aborted ? `timeout ${timeoutMs} ms` : `${kind}: ${message}`,
       });
 
-      // Un 400 real es nuestro payload, no la clave. Rotar solo gasta claves.
-      if (kind === "fatal") break;
+      /**
+       * Un 400 real es nuestro payload, no la clave: rotar claves del MISMO
+       * proveedor solo las gasta. Pero no se aborta la cadena — se salta al
+       * siguiente PROVEEDOR, porque un payload que Groq rechaza puede ser
+       * perfectamente válido para Mistral. Es literalmente el caso que ya nos
+       * pasó: `json_schema` estricto exige que toda propiedad esté en
+       * `required`, y cada proveedor lo valida a su manera.
+       *
+       * Antes esto hacía `break` de todo y el turno moría con tres claves sanas
+       * sin tocar.
+       */
+      if (kind === "fatal") {
+        proveedoresDescartados.add(attempt.config.name);
+      }
     } finally {
       clearTimeout(timer);
     }

@@ -2,7 +2,11 @@ import { NextResponse } from "next/server";
 import { generateText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 
-import { FUERA_DE_ALCANCE_RESPUESTA, detectOutOfScope } from "@/lib/fixtures/out-of-scope";
+import {
+  detectOutOfScope,
+  detectSmallTalk,
+  respuestaFueraDeAlcance,
+} from "@/lib/fixtures/out-of-scope";
 import { providerHealth, PROVIDER_CHAIN } from "@/lib/llm/providers";
 import { extract } from "@/lib/extract/extract";
 import {
@@ -101,6 +105,22 @@ export async function POST(request: Request) {
   const body = (await request.json()) as TurnRequest;
   const decisions: LogEntry[] = [];
 
+  // ── Fuera de TAREA · saludo o meta-pregunta ───────────────────────────────
+  // Antes que nada y sin llamar al modelo: un «hola» no es un caso tecnico y no
+  // merece 16 segundos ni una llamada de extraccion.
+  const smallTalk = detectSmallTalk(body.message);
+  if (smallTalk) {
+    const saludo: TurnResult = {
+      spec: body.spec,
+      gate: null,
+      shortlist: null,
+      questions: [],
+      disclaimers: [],
+      message: { id: `st-${Date.now()}`, speaker: "agent", text: smallTalk },
+    };
+    return NextResponse.json(saludo);
+  }
+
   // ── I3 · guardrail determinista, ANTES de gastar una llamada ──────────────
   const keyword = detectOutOfScope(body.message);
   if (keyword) {
@@ -110,8 +130,12 @@ export async function POST(request: Request) {
       shortlist: null,
       questions: [],
       disclaimers: [],
-      outOfScope: { keyword, response: FUERA_DE_ALCANCE_RESPUESTA },
-      message: { id: `oos-${Date.now()}`, speaker: "agent", text: FUERA_DE_ALCANCE_RESPUESTA },
+      outOfScope: { keyword, response: respuestaFueraDeAlcance(keyword) },
+      message: {
+        id: `oos-${Date.now()}`,
+        speaker: "agent",
+        text: respuestaFueraDeAlcance(keyword),
+      },
     };
     return NextResponse.json(result);
   }
