@@ -15,7 +15,7 @@ AgentSprint · Universidad EAFIT, Medellín · 2026-07-25.
 
 ## 🔗 Probarlo ahora
 
-[**https://27vv4slq-3000.use2.devtunnels.ms/**](https://engineercopilot.vercel.app/)
+https://engineercopilot.vercel.app/
 
 Instancia en vivo para el jurado del evento. Tres botones cargan casos reales:
 *fuera de alcance*, *correo de Barranquilla* y *respuesta del cliente*. También
